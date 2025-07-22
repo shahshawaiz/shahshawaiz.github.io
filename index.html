@@ -3,109 +3,129 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shawaiz Shah – AI / Data Science / LLM Engineer</title>
-  <meta name="description" content="Interactive portfolio of Shawaiz Shah: LLMs (advanced vector retrieval), Voice AI (WebRTC, Pipecat), Video Analysis, Signal Processing." />
+  <title>Shawaiz Shah – Visual & Interactive AI Portfolio</title>
+  <meta name="description" content="LLMs / Vector Retrieval • Voice AI (WebRTC, Pipecat) • Video Analysis • Signal Processing" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#ffffff;--fg:#111827;--muted:#6b7280;--card:#f9fafb;--accent:#3b82f6;--accent2:#10b981;--max:1100px;
-      --radius:14px;--shadow:0 6px 20px rgba(0,0,0,.08);
-    }
-    [data-theme="dark"]{
-      --bg:#0f172a;--fg:#e2e8f0;--muted:#94a3b8;--card:#1e293b;--accent:#60a5fa;--accent2:#34d399;--shadow:0 6px 20px rgba(0,0,0,.4);
-    }
+    :root{--bg:#030712;--fg:#e5f2ff;--muted:#64748b;--card:#0f172a;--accent:#0ea5e9;--accent2:#22d3ee;--max:1200px;--radius:18px;--shadow:0 8px 28px rgba(0,0,0,.55);}  
+    [data-theme="light"]{--bg:#f8fafc;--fg:#0f172a;--muted:#475569;--card:#ffffff;--accent:#0ea5e9;--accent2:#22d3ee;--shadow:0 8px 24px rgba(0,0,0,.08);}      
     *{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
-    body{font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont;background:var(--bg);color:var(--fg);line-height:1.6;}
-    a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
-    header{position:sticky;top:0;background:var(--bg);z-index:60;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(6px);}    
-    nav{max-width:var(--max);margin:auto;display:flex;justify-content:space-between;align-items:center;padding:.9rem 1rem;}
+    body{font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont;background:var(--bg);color:var(--fg);line-height:1.6;overflow-x:hidden;}
+    a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+    header{position:fixed;top:0;left:0;right:0;background:rgba(15,23,42,.65);backdrop-filter:blur(12px);z-index:90;border-bottom:1px solid rgba(255,255,255,.05);}    
+    [data-theme="light"] header{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.08);}    
+    nav{max-width:var(--max);margin:auto;padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
     nav ul{list-style:none;display:flex;gap:1.1rem;flex-wrap:wrap;}
-    nav a{font-size:.92rem;font-weight:500;color:var(--fg);opacity:.9;} nav a.active{color:var(--accent);}
+    nav a{font-size:.95rem;font-weight:500;opacity:.9;position:relative;}
+    nav a.active:after{content:"";position:absolute;left:0;bottom:-6px;width:100%;height:2px;background:var(--accent);}    
     #themeToggle{border:none;background:var(--card);color:var(--fg);padding:.45rem .65rem;border-radius:50%;cursor:pointer;box-shadow:var(--shadow);font-size:1rem;}
-    .hero{padding:6rem 1rem 4rem;background:var(--card);border-radius:0 0 var(--radius) var(--radius);text-align:center;}
-    h1{font-size:2.6rem;line-height:1.15;margin-bottom:.6rem;font-weight:700;}
-    h1 span{color:var(--accent);}    
-    .subtitle{max-width:680px;margin:0 auto 1.4rem;color:var(--muted);}    
-    .btn{display:inline-block;padding:.7rem 1.15rem;border-radius:10px;border:1px solid var(--accent);color:var(--accent);font-size:.9rem;font-weight:500;margin:.3rem .25rem;transition:all .16s;}
+
+    /* HERO */
+    .hero{position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:6rem 1rem 3rem;}
+    #particles{position:absolute;inset:0;z-index:-1;}
+    h1{font-size:3rem;line-height:1.1;margin-bottom:.7rem;font-weight:700;letter-spacing:-.5px;}
+    h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;color:transparent;}
+    .subtitle{max-width:760px;margin:0 auto 1.6rem;color:var(--muted);font-size:1.05rem;}
+    .cta{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;}
+    .btn{display:inline-block;padding:.75rem 1.2rem;border-radius:12px;border:1px solid var(--accent);color:var(--accent);font-size:.9rem;font-weight:500;transition:all .18s;}
     .btn.fill{background:var(--accent);color:#fff;}
     .btn:hover{transform:translateY(-2px);}    
+
     main{max-width:var(--max);margin:auto;padding:3.5rem 1rem;}
-    section{margin-bottom:4rem;scroll-margin-top:6rem;}
-    h2{font-size:1.7rem;margin-bottom:1.5rem;font-weight:700;}
-    h3{font-size:1.1rem;margin:.6rem 0 .25rem;font-weight:600;}
-    p{margin-bottom:.75rem;}
-    .muted{color:var(--muted);font-size:.9rem;}
-    .card{background:var(--card);padding:1.3rem 1.6rem;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:1rem;opacity:0;transform:translateY(20px);transition:opacity .6s, transform .6s;}
-    .tag{display:inline-block;background:var(--accent + 22);} /* placeholder */
-    .tags{margin-top:.2rem;}
-    .tag{background:var(--accent);color:#fff;padding:.22rem .6rem;border-radius:999px;font-size:.74rem;margin:0 .35rem .35rem 0;opacity:.9;}
-    .filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
-    .filter-btn{border:1px solid var(--muted);background:transparent;color:var(--fg);padding:.35rem .7rem;border-radius:999px;font-size:.8rem;cursor:pointer;}
-    .filter-btn.active{background:var(--accent2);color:#fff;border-color:var(--accent2);}    
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;}
-    .project{background:var(--card);padding:1.1rem 1.2rem;border-radius:var(--radius);box-shadow:var(--shadow);position:relative;cursor:pointer;opacity:0;transform:translateY(20px);transition:opacity .6s, transform .6s;}
-    .project h4{margin-bottom:.35rem;font-size:1.05rem;}
-    .project .mini-tags{margin-top:.4rem;}
-    .project .mini-tags span{display:inline-block;background:rgba(0,0,0,.08);color:var(--fg);padding:.15rem .45rem;border-radius:6px;font-size:.68rem;margin:0 .25rem .25rem 0;}
-    /* Modal */
-    #modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:1rem;z-index:100;}
-    #modalContent{max-width:760px;width:100%;background:var(--bg);color:var(--fg);border-radius:var(--radius);padding:2rem 2.2rem;max-height:90vh;overflow:auto;box-shadow:var(--shadow);}
-    #modalClose{position:absolute;top:1.2rem;right:1.4rem;font-size:1.6rem;background:none;border:none;color:var(--muted);cursor:pointer;}
-    /* Timeline */
-    .timeline{position:relative;padding-left:1.4rem;}
-    .timeline:before{content:"";position:absolute;left:.45rem;top:0;width:2px;height:100%;background:rgba(0,0,0,.1);}    
-    .tl-item{position:relative;margin-bottom:1.7rem;}
-    .tl-item:before{content:"";position:absolute;left:-.15rem;top:.4rem;width:12px;height:12px;background:var(--accent2);border-radius:50%;}
-    footer{border-top:1px solid rgba(0,0,0,.06);padding:2rem 1rem;text-align:center;font-size:.85rem;color:var(--muted);}    
-    #backTop{position:fixed;right:1rem;bottom:1.1rem;background:var(--accent);color:#fff;border:none;padding:.65rem .83rem;border-radius:50%;font-size:1.1rem;cursor:pointer;display:none;z-index:50;}
-    /* simple accordion */
+    section{margin-bottom:5rem;scroll-margin-top:6rem;}
+    h2{font-size:2rem;font-weight:700;margin-bottom:2rem;text-align:center;}
+
+    /* PROJECTS */
+    .filters{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;}
+    .filter-btn{border:1px solid var(--muted);background:transparent;color:var(--fg);padding:.45rem .9rem;border-radius:999px;font-size:.82rem;cursor:pointer;transition:all .18s;}
+    .filter-btn.active,.filter-btn:hover{background:var(--accent2);border-color:var(--accent2);color:#fff;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.4rem;}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;cursor:pointer;transform:translateY(30px);opacity:0;transition:opacity .6s,transform .6s;}
+    .card.visible{opacity:1;transform:translateY(0);}    
+    .thumb{height:170px;background:#000;position:relative;overflow:hidden;}
+    .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s;}
+    .card:hover .thumb img{transform:scale(1.07);}    
+    .card-body{padding:1.25rem 1.4rem 1.6rem;display:flex;flex-direction:column;min-height:200px;}
+    .card-body h3{font-size:1.15rem;margin-bottom:.45rem;}
+    .card-body p{color:var(--muted);font-size:.9rem;flex:1;}
+    .mini-tags{margin-top:.7rem;}
+    .mini-tags span{display:inline-block;background:rgba(255,255,255,.08);color:var(--fg);padding:.18rem .5rem;border-radius:7px;font-size:.68rem;margin:0 .3rem .3rem 0;}
+    [data-theme="light"] .mini-tags span{background:rgba(0,0,0,.08);}    
+    .learn{margin-top:1rem;align-self:flex-start;background:var(--accent);color:#fff;border:none;padding:.45rem .8rem;border-radius:8px;font-size:.8rem;cursor:pointer;}
+
+    /* MODAL */
+    #modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:1rem;z-index:120;}
+    #modalContent{max-width:860px;width:100%;background:var(--card);color:var(--fg);border-radius:var(--radius);padding:2rem 2.2rem;max-height:92vh;overflow:auto;box-shadow:var(--shadow);position:relative;}
+    #modalClose{position:absolute;top:1.1rem;right:1.3rem;font-size:1.8rem;background:none;border:none;color:var(--muted);cursor:pointer;}
+    #modalTitle{margin-bottom:.6rem;font-size:1.4rem;}
+    #modalImg{width:100%;border-radius:12px;margin:1rem 0;}
+    #modalLinks a{margin:.3rem .3rem 0 0;}
+
+    /* TIMELINE */
+    .timeline{position:relative;padding-left:1.7rem;max-width:880px;margin:0 auto;}
+    .timeline:before{content:"";position:absolute;left:.58rem;top:0;width:2px;height:100%;background:rgba(255,255,255,.08);} 
+    [data-theme="light"] .timeline:before{background:rgba(0,0,0,.12);}   
+    .tl-item{position:relative;margin-bottom:2rem;opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s;}
+    .tl-item.visible{opacity:1;transform:translateY(0);}    
+    .tl-item:before{content:"";position:absolute;left:-.22rem;top:.45rem;width:13px;height:13px;background:var(--accent2);border-radius:50%;}
+    .tl-card{background:var(--card);padding:1.2rem 1.4rem;border-radius:var(--radius);box-shadow:var(--shadow);}    
+    .tl-card h3{font-size:1.05rem;margin-bottom:.3rem;}
+    .tl-card .muted{font-size:.8rem;}
+
+    /* ACCORDIONS */
     details{background:var(--card);padding:1rem 1.2rem;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:1rem;}
     details summary{cursor:pointer;font-weight:600;}
-    details[open]{animation:fadeIn .3s ease-in;}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    @media(max-width:640px){h1{font-size:2.2rem;} .hero{padding:4rem 1rem 2.5rem;}}
+
+    footer{border-top:1px solid rgba(255,255,255,.07);padding:2rem 1rem;text-align:center;font-size:.85rem;color:var(--muted);}    
+    [data-theme="light"] footer{border-color:rgba(0,0,0,.08);}    
+    #backTop{position:fixed;right:1rem;bottom:1.2rem;background:var(--accent);color:#fff;border:none;padding:.65rem .83rem;border-radius:50%;font-size:1.1rem;cursor:pointer;display:none;z-index:70;}
+
+    /* PARALLAX SHAPES */
+    .shape{position:absolute;border-radius:50%;opacity:.1;pointer-events:none;mix-blend-mode:overlay;}
+    .shape1{width:320px;height:320px;background:var(--accent);top:10%;left:-8%;}
+    .shape2{width:260px;height:260px;background:var(--accent2);bottom:5%;right:-6%;}
+
+    @media(max-width:640px){h1{font-size:2.3rem;} .hero{padding:5.5rem 1rem 2.8rem;} }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 <header>
   <nav>
     <div style="font-weight:600;">Shawaiz Shah</div>
     <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
+      <li><a href="#projects" class="active">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+    <button id="themeToggle" aria-label="Toggle theme">☀️</button>
   </nav>
 </header>
+
 <section class="hero" id="top">
-  <h1>Hi, I'm <span>Shawaiz</span>.</h1>
-  <p class="subtitle">AI Engineer & Sr. Data Scientist specializing in <strong>LLMs & advanced vector retrieval</strong>, <strong>Voice AI (WebRTC, Pipecat)</strong>, <strong>Video Analysis</strong>, and <strong>Signal Processing</strong>. I love shipping research‑grade ideas into production.</p>
-  <a class="btn fill" href="mailto:shahshawaiz@gmail.com">Email Me</a>
-  <a class="btn" href="https://github.com/shahshawaiz" target="_blank" rel="noopener">GitHub</a>
-  <a class="btn" href="https://de.linkedin.com/in/shawaiz-shah-32b40537" target="_blank" rel="noopener">LinkedIn</a>
+  <canvas id="particles"></canvas>
+  <div class="shape shape1"></div>
+  <div class="shape shape2"></div>
+  <div>
+    <h1>Hi, I'm <span>Shawaiz</span>.</h1>
+    <p class="subtitle">AI Engineer & Sr. Data Scientist focused on <strong>LLMs & advanced vector retrieval</strong>, <strong>Voice AI (WebRTC, Pipecat)</strong>, <strong>Video Analysis</strong>, and <strong>Signal Processing</strong>. I turn research into reliable, scalable products.</p>
+    <div class="cta">
+      <a class="btn fill" href="mailto:shahshawaiz@gmail.com">Email Me</a>
+      <a class="btn" href="https://github.com/shahshawaiz" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://de.linkedin.com/in/shawaiz-shah-32b40537" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
 </section>
 
 <main>
-  <!-- ABOUT -->
-  <section id="about">
-    <h2>About</h2>
-    <div class="card">
-      <p>I build end‑to‑end data & AI products: from problem framing and data pipelines to model development, evaluation, and deployment. Recent work includes conversational product recommenders, RAG systems with hybrid retrieval (dense + sparse + rerankers), and low‑latency voicebots over WebRTC.</p>
-      <p class="muted">Currently in Berlin, open to interesting collaborations.</p>
-    </div>
-  </section>
-
   <!-- PROJECTS -->
   <section id="projects">
     <h2>Highlighted Projects</h2>
     <div class="filters" id="filters"></div>
-    <div class="projects-grid" id="projectsGrid"></div>
+    <div class="grid" id="projectsGrid"></div>
   </section>
 
   <!-- EXPERIENCE -->
@@ -118,12 +138,12 @@
   <section id="skills">
     <h2>Skills</h2>
     <details open>
-      <summary>Core ML & AI</summary>
-      <p>Machine Learning, Statistical Modeling, Optimization, LLMs/RAG, Computer Vision, Time‑Series Forecasting, Dynamic Pricing, Activity Detection, Signal Processing</p>
+      <summary>Core ML / AI</summary>
+      <p>LLMs, RAG (hybrid retrieval), Machine Learning, Statistical Modeling, Optimization, Computer Vision, Time‑Series Forecasting, Dynamic Pricing, Activity Detection, Signal Processing</p>
     </details>
     <details>
       <summary>Tools & Platforms</summary>
-      <p>Python, Java, SQL, PyTorch, TensorFlow, Scikit‑learn, GCP Vertex AI, BigQuery, Apache Airflow, Celery, RabbitMQ, Docker, PGVector, LlamaIndex</p>
+      <p>Python, Java, SQL, PyTorch, TensorFlow, Scikit‑learn, GCP Vertex AI, BigQuery, Apache Airflow, Celery, RabbitMQ, Docker, PGVector, LlamaIndex, WebRTC, Pipecat</p>
     </details>
     <details>
       <summary>Languages</summary>
@@ -138,7 +158,7 @@
   <!-- CONTACT -->
   <section id="contact">
     <h2>Contact</h2>
-    <div class="card">
+    <div class="tl-card" style="max-width:520px;margin:0 auto;">
       <p>Berlin, Germany<br>
       <a href="tel:+4917634422565">+49 176 34422565</a><br>
       <a href="mailto:shahshawaiz@gmail.com">shahshawaiz@gmail.com</a></p>
@@ -152,66 +172,94 @@
 
 <button id="backTop" aria-label="Back to top">↑</button>
 
-<!-- Modal for project details -->
+<!-- MODAL -->
 <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div id="modalContent">
     <button id="modalClose" aria-label="Close">×</button>
     <h3 id="modalTitle"></h3>
     <p id="modalDesc" class="muted" style="margin-top:.3rem;margin-bottom:1rem;"></p>
+    <img id="modalImg" src="" alt="" />
     <div id="modalBody"></div>
     <div id="modalLinks" style="margin-top:1rem;"></div>
   </div>
 </div>
 
 <script>
-// ------- DATA ------- //
+document.addEventListener('DOMContentLoaded',()=>{
+// ----------- PARTICLE BACKGROUND ----------- //
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let w, h, particles = [];
+function resize(){w = canvas.width = window.innerWidth;h = canvas.height = document.querySelector('.hero').offsetHeight;}
+window.addEventListener('resize', resize);resize();
+function createParticles(){particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,r:Math.random()*2+0.5});}}
+createParticles();
+function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,255,255,.8)';
+  for(const p of particles){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ----------- DATA ----------- //
 const projects = [
   {
-    title: "RAG System with Hybrid Vector Retrieval",
-    short: "Production RAG: dense/sparse retrieval, rerankers, PGVector + BQ, eval harness",
-    tags: ["LLMs","Vector Retrieval","RAG","PGVector","LlamaIndex"],
+    title: "Hybrid Vector RAG Platform",
+    short: "Dense + BM25 + rerankers, PGVector/BQ, eval harness",
+    tags: ["LLMs","Vector Retrieval","RAG"],
+    img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
-      <li>Architected hybrid retrieval (dense embeddings + BM25) with reciprocal rank fusion.</li>
-      <li>Used PGVector for low-latency ANN search; offline eval set w/ MRR & nDCG metrics.</li>
-      <li>Chunking strategies (semantic + sliding window) and prompt templating for domain QA.</li>
-      <li>LLM feedback loop to auto-label failure cases and refine retriever.</li>
+      <li>Hybrid retrieval (embeddings + sparse BM25) fused via RRF.</li>
+      <li>PGVector ANN index & BigQuery fallback; MRR/nDCG eval suite.</li>
+      <li>Semantic & sliding-window chunking, prompt templates, eval loops.</li>
     </ul>`,
-    links: [{label:"Talk slides", url:"#"},{label:"Repo (private)", url:"#"}]
+    links: [{label:"Slides", url:"#"}]
   },
   {
-    title: "Voice AI over WebRTC & Pipecat",
-    short: "Real-time conversational agent (200ms turn) using WebRTC + Pipecat + OpenAI",
-    tags: ["Voice AI","WebRTC","Pipecat","Streaming"],
+    title: "WebRTC Voice Agent (Pipecat)",
+    short: "Bi-directional audio, barge-in, <200ms latency",
+    tags: ["Voice AI","WebRTC","Pipecat"],
+    img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
-      <li>Implemented bi-directional audio streaming with WebRTC for browser ↔ server.</li>
-      <li>Pipecat orchestrated STT → LLM → TTS chain with barge-in & latency optimizations.</li>
-      <li>Fallback to PSTN via GSM/VoIP; monitored QoS and jitter buffers.</li>
-    </ul>`,
-    links: [{label:"Demo video", url:"#"}]
-  },
-  {
-    title: "Video Activity Detection & Vital Sign Estimation",
-    short: "RepNet/EfficientDet for repetition counting; SVM on frequency features for HR",
-    tags: ["Video Analysis","Computer Vision","Signal Processing"],
-    body: `<ul>
-      <li>Built video pipeline: object detection (EfficientDet) + action repetition (RepNet).</li>
-      <li>Signal processing on PPG-like waveform to classify heart rate zones.</li>
-      <li>Optimized OpenCV preprocessing, FFT features, noise reduction filters.</li>
+      <li>WebRTC streaming client ↔ server, jitter buffer tuning.</li>
+      <li>Pipecat orchestrated STT → LLM → TTS chain.</li>
+      <li>Fallback PSTN via GSM/VoIP, QoS monitoring.</li>
     </ul>`
   },
   {
-    title: "Demand Forecasting & Dynamic Pricing",
-    short: "ARIMA+/Prophet + price elasticity curves to drive pricing decisions",
-    tags: ["Time-Series","Pricing","Forecasting"],
+    title: "Realtime Video Analysis",
+    short: "EfficientDet + RepNet for repetition/action detection in live streams",
+    tags: ["Video Analysis","Computer Vision"],
+    img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
-      <li>Hybrid ARIMA/Prophet with event regressors for promo periods.</li>
-      <li>Modeled elasticity via Bayesian regression; integrated into pricing engine.</li>
+      <li>End-to-end pipeline: detection (EfficientDet) + repetition counting (RepNet).</li>
+      <li>Optimized OpenCV preprocessing, batched inference, WebSocket streaming.</li>
     </ul>`
   },
   {
-    title: "Explainable Image Classification (XAI)",
-    short: "Master's thesis: Deep image classifier w/ Grad-CAM, LIME visualizations",
-    tags: ["XAI","Deep Learning","Computer Vision"],
+    title: "Vital Signs from Wearables",
+    short: "PPG cleanup (filters/FFT) & SVM classification for HR zones",
+    tags: ["Signal Processing","Biomedical"],
+    img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80",
+    body: `<ul>
+      <li>Designed full signal chain: denoising, feature extraction (FFT, HRV).</li>
+      <li>SVM & Bayesian models to classify zones; 95% accuracy on test set.</li>
+    </ul>`
+  },
+  {
+    title: "Dynamic Pricing / Forecasting",
+    short: "ARIMA+/Prophet & elasticity modeling powering pricing engine",
+    tags: ["Time-Series","Pricing"],
+    img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80",
+    body: `<ul>
+      <li>Hybrid ARIMA/Prophet with promo/event regressors.</li>
+      <li>Bayesian elasticity curves integrated into production service.</li>
+    </ul>`
+  },
+  {
+    title: "Explainable Image Classifier",
+    short: "Grad-CAM & LIME on deep models (Master's thesis)",
+    tags: ["XAI","Computer Vision"],
+    img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
     body: `<p>Explored interpretability techniques to justify model decisions on niche product images.</p>`
   }
 ];
@@ -219,88 +267,102 @@ const projects = [
 const experience = [
   {role:"AI & Data Science Lead", company:"Holomedix AI SE", period:"Jan 2025 – Present", location:"Berlin, Germany", desc:"Wearable health telemetry & voice AI (GSM/VoIP), data platforms (BigQuery, Vertex AI), and real‑time experiences.", tags:["Vertex AI","BigQuery","WebRTC","OpenAI","Pipecat"]},
   {role:"Senior Data Scientist", company:"Lovehoney Group", period:"Apr 2021 – Dec 2024", location:"Berlin, Germany", desc:"Conversational AI for product matching (~65% hit rate), dynamic pricing, ARIMA+ demand forecasting.", tags:["LlamaIndex","PGVector","BQML","Forecasting"]},
-  {role:"Data Scientist", company:"WOW Tech Europe GmbH", period:"Apr 2021 – Jul 2024", location:"Berlin, Germany", desc:"Video/activity detection (RepNet, EfficientDet) and vital sign classification using SVM & signal processing.", tags:["Computer Vision","Transformers","OpenCV","Signal Processing"]},
+  {role:"Data Scientist", company:"WOW Tech Europe GmbH", period:"Apr 2021 – Jul 2024", location:"Berlin, Germany", desc:"Video/activity detection (RepNet, EfficientDet) & vital sign classification using SVM & signal processing.", tags:["Computer Vision","Signal Processing"]},
   {role:"Master’s Thesis Student", company:"WOW Tech Europe GmbH", period:"Aug 2020 – Mar 2021", location:"Berlin, Germany", desc:"Image-based adult toy recognition with Deep Learning & Explainable AI.", tags:[]},
-  {role:"Software Engineer", company:"Artory GmbH", period:"May 2019 – Mar 2020", location:"Berlin, Germany", desc:"Software design/dev, DevOps, and reverse image search prototype.", tags:[]}
+  {role:"Software Engineer", company:"Artory GmbH", period:"May 2019 – Mar 2020", location:"Berlin, Germany", desc:"Software design/dev, DevOps, reverse image search prototype.", tags:[]}
 ];
 
-// ------- RENDER HELPERS ------- //
+// ----------- RENDER ----------- //
 const filtersEl = document.getElementById('filters');
 const projectsGrid = document.getElementById('projectsGrid');
-const modal = document.getElementById('modal');
-const modalTitle = document.getElementById('modalTitle');
-const modalDesc = document.getElementById('modalDesc');
-const modalBody = document.getElementById('modalBody');
-const modalLinks = document.getElementById('modalLinks');
-
-const tags = [...new Set(projects.flatMap(p=>p.tags || []))];
-let activeFilters = new Set();
+const tags = [...new Set(projects.flatMap(p=>p.tags||[]))];
+let activeTag = '__all';
 
 function renderFilters(){
-  filtersEl.innerHTML = '<button class="filter-btn active" data-tag="__all">All</button>' + tags.map(t=>`<button class="filter-btn" data-tag="${t}">${t}</button>`).join('');
+  filtersEl.innerHTML = `<button class="filter-btn active" data-tag="__all">All</button>` +
+    tags.map(t=>`<button class="filter-btn" data-tag="${t}">${t}</button>`).join('');
   filtersEl.addEventListener('click', e=>{
-    const btn = e.target.closest('button');
-    if(!btn) return;
-    const tag = btn.dataset.tag;
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    if(tag==='__all'){activeFilters.clear();} else {activeFilters=new Set([tag]);}
-    renderProjects();
+    const b = e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); activeTag = b.dataset.tag; renderProjects();
   });
 }
 
-function projectCard(p, idx){
-  return `<article class="project" data-idx="${idx}">
-    <h4>${p.title}</h4>
-    <p class="muted">${p.short}</p>
-    <div class="mini-tags">${(p.tags||[]).map(t=>`<span>${t}</span>`).join('')}</div>
+function cardTemplate(p, idx){
+  return `<article class="card" data-idx="${idx}" data-tags='${JSON.stringify(p.tags||[])}'>
+    <div class="thumb"><img loading=\"lazy\" src=\"${p.img}\" alt="${p.title}"></div>
+    <div class="card-body">
+      <h3>${p.title}</h3>
+      <p>${p.short}</p>
+      <div class="mini-tags">${(p.tags||[]).map(t=>`<span>${t}</span>`).join('')}</div>
+      <button class="learn">Learn More</button>
+    </div>
   </article>`;
 }
 
 function renderProjects(){
-  const filtered = projects.filter(p=> activeFilters.size===0 || (p.tags||[]).some(t=>activeFilters.has(t)) );
-  projectsGrid.innerHTML = filtered.map((p,i)=>projectCard(p, projects.indexOf(p))).join('');
-}
-
-function openModal(p){
-  modalTitle.textContent = p.title;
-  modalDesc.textContent = p.short;
-  modalBody.innerHTML = p.body || '';
-  modalLinks.innerHTML = (p.links||[]).map(l=>`<a class="btn" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('');
-  modal.style.display = 'flex';
+  const filtered = projects.filter(p=> activeTag==='__all' || (p.tags||[]).includes(activeTag));
+  projectsGrid.innerHTML = filtered.map(p=>cardTemplate(p, projects.indexOf(p))).join('');
+  document.querySelectorAll('.card').forEach(el=>observer.observe(el));
 }
 
 function renderExperience(){
   const tl = document.getElementById('experienceTl');
-  tl.innerHTML = experience.map(e=>`<div class="tl-item card">
+  tl.innerHTML = experience.map(e=>`<div class="tl-item">
+    <div class="tl-card">
       <h3>${e.role} – ${e.company}</h3>
       <span class="muted">${e.period} · ${e.location}</span>
-      <p class="muted" style="margin-top:.4rem;">${e.desc}</p>
-      ${(e.tags||[]).length?'<div class="tags">'+e.tags.map(t=>`<span class=tag>${t}</span>`).join('')+'</div>':''}
-    </div>`).join('');
+      <p class="muted" style="margin-top:.5rem;">${e.desc}</p>
+      ${(e.tags||[]).length?'<div class="mini-tags" style="margin-top:.6rem;">'+e.tags.map(t=>`<span>${t}</span>`).join('')+'</div>':''}
+    </div>
+  </div>`).join('');
+  document.querySelectorAll('.tl-item').forEach(el=>observer.observe(el));
 }
 
-// ------- SCROLL EFFECTS ------- //
+// Intersection reveal
 const observer = new IntersectionObserver((entries)=>{
   entries.forEach(entry=>{
     if(entry.isIntersecting){
-      entry.target.style.opacity = 1;
-      entry.target.style.transform = 'translateY(0)';
+      entry.target.classList.add('visible');
       observer.unobserve(entry.target);
     }
   });
 },{threshold:0.15});
 
-function animateIn(){
-  document.querySelectorAll('.card, .project').forEach(el=>observer.observe(el));
+// Modal logic
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalImg = document.getElementById('modalImg');
+const modalBody = document.getElementById('modalBody');
+const modalLinks = document.getElementById('modalLinks');
+
+function openModal(p){
+  modalTitle.textContent = p.title;
+  modalDesc.textContent = p.short;
+  modalImg.src = p.img;
+  modalBody.innerHTML = p.body || '';
+  modalLinks.innerHTML = (p.links||[]).map(l=>`<a class="btn" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('');
+  modal.style.display='flex';
 }
 
-// ------- UTILITIES ------- //
-const backTop=document.getElementById('backTop');
-window.addEventListener('scroll',()=>{backTop.style.display=window.scrollY>800?'block':'none';});
-backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+document.addEventListener('click', e=>{
+  if(e.target.classList.contains('learn')){
+    const card = e.target.closest('.card');
+    const idx = +card.dataset.idx;
+    openModal(projects[idx]);
+  }
+});
 
-// active nav
+document.getElementById('modalClose').addEventListener('click',()=>modal.style.display='none');
+modal.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
+
+// Back to top
+const topBtn=document.getElementById('backTop');
+window.addEventListener('scroll',()=>{topBtn.style.display=window.scrollY>900?'block':'none';});
+topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// nav active
 const navLinks=document.querySelectorAll('nav a[href^="#"]');
 const sections=[...navLinks].map(a=>document.querySelector(a.getAttribute('href')));
 const navObserver = new IntersectionObserver(entries=>{
@@ -311,33 +373,23 @@ const navObserver = new IntersectionObserver(entries=>{
       if(l) l.classList.add('active');
     }
   });
-},{threshold:0.4});
+},{threshold:0.5});
 sections.forEach(s=>navObserver.observe(s));
 
 // Theme toggle
 const themeBtn=document.getElementById('themeToggle');
-function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);themeBtn.textContent=t==='dark'?'☀️':'🌙';}
-const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-setTheme(saved);
-themeBtn.addEventListener('click',()=>setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
+function setTheme(t){document.body.setAttribute('data-theme',t);localStorage.setItem('theme',t);themeBtn.textContent=t==='dark'?'☀️':'🌙';}
+const savedTheme = 'dark';
+setTheme(savedTheme);
+themeBtn.addEventListener('click',()=>setTheme(document.body.getAttribute('data-theme')==='dark'?'light':'dark'));
 
-// Init
+// INIT
 renderFilters();
 renderProjects();
 renderExperience();
-animateIn();
 
 document.getElementById('year').textContent=new Date().getFullYear();
-
-projectsGrid.addEventListener('click',e=>{
-  const card = e.target.closest('.project');
-  if(!card) return;
-  const idx = +card.dataset.idx;
-  openModal(projects[idx]);
-});
-
-document.getElementById('modalClose').addEventListener('click',()=>modal.style.display='none');
-modal.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
+}); // DOMContentLoaded end
 </script>
 </body>
 </html>
