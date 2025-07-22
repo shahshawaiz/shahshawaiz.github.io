@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shawaiz Shah – Visual & Interactive AI Portfolio</title>
-  <meta name="description" content="LLMs / Vector Retrieval • Voice AI (WebRTC, Pipecat) • Video Analysis • Signal Processing" />
+  <meta name="description" content="LLMs / RAG • Voice AI (WebRTC, Pipecat) • Video Analysis • Signal Processing" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,32 +23,28 @@
     nav a.active:after{content:"";position:absolute;left:0;bottom:-6px;width:100%;height:2px;background:var(--accent);}    
     #themeToggle{border:none;background:var(--card);color:var(--fg);padding:.45rem .65rem;border-radius:50%;cursor:pointer;box-shadow:var(--shadow);font-size:1rem;}
 
-    /* HERO */
-    .hero{position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:6rem 1rem 3rem;}
-    #particles{position:absolute;inset:0;z-index:-1;}
+    main{max-width:var(--max);margin:auto;padding:3.5rem 1rem;}
+    section{margin-bottom:5rem;scroll-margin-top:6rem;}
     h1{font-size:3rem;line-height:1.1;margin-bottom:.7rem;font-weight:700;letter-spacing:-.5px;}
     h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;color:transparent;}
+    h2{font-size:2rem;font-weight:700;margin-bottom:2rem;text-align:center;}
     .subtitle{max-width:760px;margin:0 auto 1.6rem;color:var(--muted);font-size:1.05rem;}
     .cta{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;}
     .btn{display:inline-block;padding:.75rem 1.2rem;border-radius:12px;border:1px solid var(--accent);color:var(--accent);font-size:.9rem;font-weight:500;transition:all .18s;}
     .btn.fill{background:var(--accent);color:#fff;}
     .btn:hover{transform:translateY(-2px);}    
 
-    main{max-width:var(--max);margin:auto;padding:3.5rem 1rem;}
-    section{margin-bottom:5rem;scroll-margin-top:6rem;}
-    h2{font-size:2rem;font-weight:700;margin-bottom:2rem;text-align:center;}
-
     /* PROJECTS */
     .filters{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;}
     .filter-btn{border:1px solid var(--muted);background:transparent;color:var(--fg);padding:.45rem .9rem;border-radius:999px;font-size:.82rem;cursor:pointer;transition:all .18s;}
     .filter-btn.active,.filter-btn:hover{background:var(--accent2);border-color:var(--accent2);color:#fff;}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.4rem;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem;}
     .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:relative;cursor:pointer;transform:translateY(30px);opacity:0;transition:opacity .6s,transform .6s;}
     .card.visible{opacity:1;transform:translateY(0);}    
-    .thumb{height:170px;background:#000;position:relative;overflow:hidden;}
+    .thumb{height:180px;background:#000;position:relative;overflow:hidden;}
     .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s;}
     .card:hover .thumb img{transform:scale(1.07);}    
-    .card-body{padding:1.25rem 1.4rem 1.6rem;display:flex;flex-direction:column;min-height:200px;}
+    .card-body{padding:1.25rem 1.4rem 1.6rem;display:flex;flex-direction:column;min-height:220px;}
     .card-body h3{font-size:1.15rem;margin-bottom:.45rem;}
     .card-body p{color:var(--muted);font-size:.9rem;flex:1;}
     .mini-tags{margin-top:.7rem;}
@@ -75,7 +71,6 @@
     .tl-card h3{font-size:1.05rem;margin-bottom:.3rem;}
     .tl-card .muted{font-size:.8rem;}
 
-    /* ACCORDIONS */
     details{background:var(--card);padding:1rem 1.2rem;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:1rem;}
     details summary{cursor:pointer;font-weight:600;}
 
@@ -88,7 +83,11 @@
     .shape1{width:320px;height:320px;background:var(--accent);top:10%;left:-8%;}
     .shape2{width:260px;height:260px;background:var(--accent2);bottom:5%;right:-6%;}
 
-    @media(max-width:640px){h1{font-size:2.3rem;} .hero{padding:5.5rem 1rem 2.8rem;} }
+    /* ABOUT (hero moved below) */
+    #about{position:relative;min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 1rem 3rem;}
+    #particles{position:absolute;inset:0;z-index:-1;}
+
+    @media(max-width:640px){h1{font-size:2.3rem;} #about{padding:5.5rem 1rem 2.8rem;} }
   </style>
 </head>
 <body data-theme="dark">
@@ -97,6 +96,7 @@
     <div style="font-weight:600;">Shawaiz Shah</div>
     <ul>
       <li><a href="#projects" class="active">Projects</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -105,27 +105,28 @@
   </nav>
 </header>
 
-<section class="hero" id="top">
-  <canvas id="particles"></canvas>
-  <div class="shape shape1"></div>
-  <div class="shape shape2"></div>
-  <div>
-    <h1>Hi, I'm <span>Shawaiz</span>.</h1>
-    <p class="subtitle">AI Engineer & Sr. Data Scientist focused on <strong>LLMs & advanced vector retrieval</strong>, <strong>Voice AI (WebRTC, Pipecat)</strong>, <strong>Video Analysis</strong>, and <strong>Signal Processing</strong>. I turn research into reliable, scalable products.</p>
-    <div class="cta">
-      <a class="btn fill" href="mailto:shahshawaiz@gmail.com">Email Me</a>
-      <a class="btn" href="https://github.com/shahshawaiz" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href="https://de.linkedin.com/in/shawaiz-shah-32b40537" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-</section>
-
 <main>
-  <!-- PROJECTS -->
+  <!-- PROJECTS FIRST -->
   <section id="projects">
     <h2>Highlighted Projects</h2>
     <div class="filters" id="filters"></div>
     <div class="grid" id="projectsGrid"></div>
+  </section>
+
+  <!-- ABOUT / HERO (moved below projects) -->
+  <section id="about">
+    <canvas id="particles"></canvas>
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div>
+      <h1>Hi, I'm <span>Shawaiz</span>.</h1>
+      <p class="subtitle">AI Engineer & Sr. Data Scientist focused on <strong>LLMs & advanced vector retrieval</strong>, <strong>Voice AI (WebRTC, Pipecat)</strong>, <strong>Video Analysis</strong>, and <strong>Signal Processing</strong>. I turn research into reliable, scalable products.</p>
+      <div class="cta">
+        <a class="btn fill" href="mailto:shahshawaiz@gmail.com">Email Me</a>
+        <a class="btn" href="https://github.com/shahshawaiz" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://de.linkedin.com/in/shawaiz-shah-32b40537" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
   </section>
 
   <!-- EXPERIENCE -->
@@ -186,68 +187,70 @@
 
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
-// ----------- PARTICLE BACKGROUND ----------- //
+// ----------- PARTICLE BACKGROUND (for about section) ----------- //
 const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let w, h, particles = [];
-function resize(){w = canvas.width = window.innerWidth;h = canvas.height = document.querySelector('.hero').offsetHeight;}
-window.addEventListener('resize', resize);resize();
-function createParticles(){particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,r:Math.random()*2+0.5});}}
-createParticles();
-function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,255,255,.8)';
-  for(const p of particles){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
-  requestAnimationFrame(draw);
+if(canvas){
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  function resize(){w = canvas.width = window.innerWidth;h = canvas.height = document.querySelector('#about').offsetHeight;}
+  window.addEventListener('resize', resize);resize();
+  function createParticles(){particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,r:Math.random()*2+0.5});}}
+  createParticles();
+  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,255,255,.8)';
+    for(const p of particles){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
+    requestAnimationFrame(draw);
+  }
+  draw();
 }
-draw();
 
-// ----------- DATA ----------- //
+// ----------- DATA (improved tile content) ----------- //
 const projects = [
   {
     title: "Hybrid Vector RAG Platform",
-    short: "Dense + BM25 + rerankers, PGVector/BQ, eval harness",
+    short: "Production-grade retrieval stack: dense + sparse fusion, eval harness, observability.",
     tags: ["LLMs","Vector Retrieval","RAG"],
     img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
-      <li>Hybrid retrieval (embeddings + sparse BM25) fused via RRF.</li>
-      <li>PGVector ANN index & BigQuery fallback; MRR/nDCG eval suite.</li>
-      <li>Semantic & sliding-window chunking, prompt templates, eval loops.</li>
+      <li>Hybrid retrieval (embedding ANN + BM25) fused with Reciprocal Rank Fusion (RRF).</li>
+      <li>PGVector ANN index & BigQuery fallback; automated MRR/nDCG eval suite and Canary tests.</li>
+      <li>Semantic & sliding‑window chunking, prompt templates, guardrails, telemetry dashboards.</li>
     </ul>`,
     links: [{label:"Slides", url:"#"}]
   },
   {
     title: "WebRTC Voice Agent (Pipecat)",
-    short: "Bi-directional audio, barge-in, <200ms latency",
+    short: "Full‑duplex voice assistant with barge‑in, <200 ms latency and PSTN fallback.",
     tags: ["Voice AI","WebRTC","Pipecat"],
     img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
-      <li>WebRTC streaming client ↔ server, jitter buffer tuning.</li>
-      <li>Pipecat orchestrated STT → LLM → TTS chain.</li>
-      <li>Fallback PSTN via GSM/VoIP, QoS monitoring.</li>
+      <li>Browser WebRTC client ↔ server streams; jitter buffer + AGC/NS tuning for quality.</li>
+      <li>Pipecat orchestrated STT → LLM → TTS pipeline with interruption handling.</li>
+      <li>PSTN/GSM bridge, QoS metrics, incident alerts.</li>
     </ul>`
   },
   {
     title: "Realtime Video Analysis",
-    short: "EfficientDet + RepNet for repetition/action detection in live streams",
+    short: "EfficientDet for detection + RepNet for repetition/action detection in live streams.",
     tags: ["Video Analysis","Computer Vision"],
     img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
-      <li>End-to-end pipeline: detection (EfficientDet) + repetition counting (RepNet).</li>
-      <li>Optimized OpenCV preprocessing, batched inference, WebSocket streaming.</li>
+      <li>End‑to‑end pipeline: detection (EfficientDet) + repetition counting (RepNet).</li>
+      <li>Optimized OpenCV preprocessing, batched inference, WebSocket streaming to dashboard.</li>
     </ul>`
   },
   {
     title: "Vital Signs from Wearables",
-    short: "PPG cleanup (filters/FFT) & SVM classification for HR zones",
+    short: "PPG cleanup (filters/FFT) & SVM classification for heart‑rate zones.",
     tags: ["Signal Processing","Biomedical"],
     img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
       <li>Designed full signal chain: denoising, feature extraction (FFT, HRV).</li>
-      <li>SVM & Bayesian models to classify zones; 95% accuracy on test set.</li>
+      <li>SVM & Bayesian models to classify zones; 95% accuracy on holdout set.</li>
     </ul>`
   },
   {
     title: "Dynamic Pricing / Forecasting",
-    short: "ARIMA+/Prophet & elasticity modeling powering pricing engine",
+    short: "ARIMA+/Prophet & elasticity modeling powering pricing engine at scale.",
     tags: ["Time-Series","Pricing"],
     img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80",
     body: `<ul>
@@ -257,7 +260,7 @@ const projects = [
   },
   {
     title: "Explainable Image Classifier",
-    short: "Grad-CAM & LIME on deep models (Master's thesis)",
+    short: "Grad‑CAM & LIME on deep models (Master's thesis) to justify predictions.",
     tags: ["XAI","Computer Vision"],
     img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
     body: `<p>Explored interpretability techniques to justify model decisions on niche product images.</p>`
@@ -342,7 +345,7 @@ function openModal(p){
   modalDesc.textContent = p.short;
   modalImg.src = p.img;
   modalBody.innerHTML = p.body || '';
-  modalLinks.innerHTML = (p.links||[]).map(l=>`<a class="btn" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('');
+  modalLinks.innerHTML = (p.links||[]).map(l=>`<a class=\"btn\" href=\"${l.url}\" target=\"_blank\" rel=\"noopener\">${l.label}</a>`).join('');
   modal.style.display='flex';
 }
 
@@ -364,7 +367,7 @@ topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
 // nav active
 const navLinks=document.querySelectorAll('nav a[href^="#"]');
-const sections=[...navLinks].map(a=>document.querySelector(a.getAttribute('href')));
+const sections=[...navLinks].map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
 const navObserver = new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
     if(entry.isIntersecting){
@@ -379,8 +382,9 @@ sections.forEach(s=>navObserver.observe(s));
 // Theme toggle
 const themeBtn=document.getElementById('themeToggle');
 function setTheme(t){document.body.setAttribute('data-theme',t);localStorage.setItem('theme',t);themeBtn.textContent=t==='dark'?'☀️':'🌙';}
-const savedTheme = 'dark';
+const savedTheme = localStorage.getItem('theme')||'dark';
 setTheme(savedTheme);
+ThemeToggleInit=false;
 themeBtn.addEventListener('click',()=>setTheme(document.body.getAttribute('data-theme')==='dark'?'light':'dark'));
 
 // INIT
