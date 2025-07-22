@@ -1,13 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
+  <!-- BASIC -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shawaiz Shah – Visual & Interactive AI Portfolio</title>
-  <meta name="description" content="LLMs / RAG • Voice AI (WebRTC, Pipecat) • Video Analysis • Signal Processing" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Shawaiz Shah | AI Engineer & Senior Data Scientist – LLMs, RAG, Voice AI, Video Analysis</title>
+  <meta name="description" content="Portfolio of Shawaiz Shah, AI Engineer & Senior Data Scientist in Berlin. Projects in LLMs, RAG/Vector Retrieval, Voice AI (WebRTC, Pipecat), Video Analysis, Signal Processing, Time‑Series Forecasting, and Dynamic Pricing." />
+  <meta name="author" content="Shawaiz Shah" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://example.com/" />
+  <link rel="alternate" hreflang="en" href="https://example.com/" />
+
+  <!-- SOCIAL / OPEN GRAPH -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Shawaiz Shah – Visual & Interactive AI Portfolio" />
+  <meta property="og:description" content="LLMs & RAG • Voice AI (WebRTC, Pipecat) • Video Analysis • Signal Processing" />
+  <meta property="og:url" content="https://example.com/" />
+  <meta property="og:image" content="https://example.com/static/preview.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@yourhandle" />
+
+  <!-- PREFETCH / PRECONNECT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+  <!-- STRUCTURED DATA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Shawaiz Shah",
+    "image": "https://example.com/static/portrait.jpg",
+    "jobTitle": "AI Engineer & Senior Data Scientist",
+    "url": "https://example.com/",
+    "sameAs": [
+      "https://github.com/shahshawaiz",
+      "https://de.linkedin.com/in/shawaiz-shah-32b40537"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Berlin",
+      "addressCountry": "DE"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Shawaiz Shah Portfolio",
+    "url": "https://example.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://example.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Projects","item":"https://example.com/#projects"},
+      {"@type":"ListItem","position":2,"name":"About","item":"https://example.com/#about"},
+      {"@type":"ListItem","position":3,"name":"Experience","item":"https://example.com/#experience"},
+      {"@type":"ListItem","position":4,"name":"Skills","item":"https://example.com/#skills"},
+      {"@type":"ListItem","position":5,"name":"Contact","item":"https://example.com/#contact"}
+    ]
+  }
+  </script>
+
+  <!-- STYLES -->
   <style>
     :root{--bg:#030712;--fg:#e5f2ff;--muted:#64748b;--card:#0f172a;--accent:#0ea5e9;--accent2:#22d3ee;--max:1200px;--radius:18px;--shadow:0 8px 28px rgba(0,0,0,.55);}  
     [data-theme="light"]{--bg:#f8fafc;--fg:#0f172a;--muted:#475569;--card:#ffffff;--accent:#0ea5e9;--accent2:#22d3ee;--shadow:0 8px 24px rgba(0,0,0,.08);}      
@@ -89,11 +155,15 @@
 
     @media(max-width:640px){h1{font-size:2.3rem;} #about{padding:5.5rem 1rem 2.8rem;} }
   </style>
+
+  <!-- CRITICAL JS DEFERRED -->
+  <script defer src="/static/js/portfolio.js"></script>
+  <noscript><style>.card,.tl-item{opacity:1;transform:none;}</style></noscript>
 </head>
 <body data-theme="dark">
-<header>
-  <nav>
-    <div style="font-weight:600;">Shawaiz Shah</div>
+<header role="banner">
+  <nav aria-label="Primary">
+    <div style="font-weight:600;" aria-label="Home">Shawaiz Shah</div>
     <ul>
       <li><a href="#projects" class="active">Projects</a></li>
       <li><a href="#about">About</a></li>
@@ -105,23 +175,24 @@
   </nav>
 </header>
 
-<main>
-  <!-- PROJECTS FIRST -->
-  <section id="projects">
-    <h2>Highlighted Projects</h2>
-    <div class="filters" id="filters"></div>
+<main id="content" role="main">
+  <!-- PROJECTS FIRST (SEO: main content high) -->
+  <section id="projects" aria-labelledby="projects-title">
+    <h2 id="projects-title">Highlighted AI & Data Science Projects</h2>
+    <p class="subtitle">Case studies covering LLMs, Vector Retrieval/RAG, Voice AI with WebRTC, Computer Vision, Signal Processing, and Forecasting.</p>
+    <div class="filters" id="filters" aria-label="Project filters"></div>
     <div class="grid" id="projectsGrid"></div>
   </section>
 
-  <!-- ABOUT / HERO (moved below projects) -->
-  <section id="about">
-    <canvas id="particles"></canvas>
-    <div class="shape shape1"></div>
-    <div class="shape shape2"></div>
+  <!-- ABOUT / HERO -->
+  <section id="about" aria-labelledby="about-title">
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <div class="shape shape1" aria-hidden="true"></div>
+    <div class="shape shape2" aria-hidden="true"></div>
     <div>
-      <h1>Hi, I'm <span>Shawaiz</span>.</h1>
+      <h1 id="about-title">Hi, I'm <span>Shawaiz</span>.</h1>
       <p class="subtitle">AI Engineer & Sr. Data Scientist focused on <strong>LLMs & advanced vector retrieval</strong>, <strong>Voice AI (WebRTC, Pipecat)</strong>, <strong>Video Analysis</strong>, and <strong>Signal Processing</strong>. I turn research into reliable, scalable products.</p>
-      <div class="cta">
+      <div class="cta" role="group" aria-label="Primary calls to action">
         <a class="btn fill" href="mailto:shahshawaiz@gmail.com">Email Me</a>
         <a class="btn" href="https://github.com/shahshawaiz" target="_blank" rel="noopener">GitHub</a>
         <a class="btn" href="https://de.linkedin.com/in/shawaiz-shah-32b40537" target="_blank" rel="noopener">LinkedIn</a>
@@ -130,14 +201,14 @@
   </section>
 
   <!-- EXPERIENCE -->
-  <section id="experience">
-    <h2>Experience</h2>
+  <section id="experience" aria-labelledby="experience-title">
+    <h2 id="experience-title">Experience</h2>
     <div class="timeline" id="experienceTl"></div>
   </section>
 
   <!-- SKILLS -->
-  <section id="skills">
-    <h2>Skills</h2>
+  <section id="skills" aria-labelledby="skills-title">
+    <h2 id="skills-title">Skills</h2>
     <details open>
       <summary>Core ML / AI</summary>
       <p>LLMs, RAG (hybrid retrieval), Machine Learning, Statistical Modeling, Optimization, Computer Vision, Time‑Series Forecasting, Dynamic Pricing, Activity Detection, Signal Processing</p>
@@ -157,17 +228,17 @@
   </section>
 
   <!-- CONTACT -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <div class="tl-card" style="max-width:520px;margin:0 auto;">
-      <p>Berlin, Germany<br>
+  <section id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">Contact</h2>
+    <address class="tl-card" style="max-width:520px;margin:0 auto;">
+      Berlin, Germany<br>
       <a href="tel:+4917634422565">+49 176 34422565</a><br>
-      <a href="mailto:shahshawaiz@gmail.com">shahshawaiz@gmail.com</a></p>
-    </div>
+      <a href="mailto:shahshawaiz@gmail.com">shahshawaiz@gmail.com</a>
+    </address>
   </section>
 </main>
 
-<footer>
+<footer role="contentinfo">
   &copy; <span id="year"></span> Shawaiz Shah. Built with ❤ and vanilla HTML/CSS/JS.
 </footer>
 
@@ -179,221 +250,210 @@
     <button id="modalClose" aria-label="Close">×</button>
     <h3 id="modalTitle"></h3>
     <p id="modalDesc" class="muted" style="margin-top:.3rem;margin-bottom:1rem;"></p>
-    <img id="modalImg" src="" alt="" />
+    <img id="modalImg" src="" alt="" loading="lazy" />
     <div id="modalBody"></div>
     <div id="modalLinks" style="margin-top:1rem;"></div>
   </div>
 </div>
 
+<!-- INLINE JS (optional: move to external file for caching) -->
 <script>
-document.addEventListener('DOMContentLoaded',()=>{
-// ----------- PARTICLE BACKGROUND (for about section) ----------- //
-const canvas = document.getElementById('particles');
-if(canvas){
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
-  function resize(){w = canvas.width = window.innerWidth;h = canvas.height = document.querySelector('#about').offsetHeight;}
-  window.addEventListener('resize', resize);resize();
-  function createParticles(){particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,r:Math.random()*2+0.5});}}
-  createParticles();
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,255,255,.8)';
-    for(const p of particles){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-// ----------- DATA (improved tile content) ----------- //
-const projects = [
-  {
-    title: "Hybrid Vector RAG Platform",
-    short: "Production-grade retrieval stack: dense + sparse fusion, eval harness, observability.",
-    tags: ["LLMs","Vector Retrieval","RAG"],
-    img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
-    body: `<ul>
-      <li>Hybrid retrieval (embedding ANN + BM25) fused with Reciprocal Rank Fusion (RRF).</li>
-      <li>PGVector ANN index & BigQuery fallback; automated MRR/nDCG eval suite and Canary tests.</li>
-      <li>Semantic & sliding‑window chunking, prompt templates, guardrails, telemetry dashboards.</li>
-    </ul>`,
-    links: [{label:"Slides", url:"#"}]
-  },
-  {
-    title: "WebRTC Voice Agent (Pipecat)",
-    short: "Full‑duplex voice assistant with barge‑in, <200 ms latency and PSTN fallback.",
-    tags: ["Voice AI","WebRTC","Pipecat"],
-    img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80",
-    body: `<ul>
-      <li>Browser WebRTC client ↔ server streams; jitter buffer + AGC/NS tuning for quality.</li>
-      <li>Pipecat orchestrated STT → LLM → TTS pipeline with interruption handling.</li>
-      <li>PSTN/GSM bridge, QoS metrics, incident alerts.</li>
-    </ul>`
-  },
-  {
-    title: "Realtime Video Analysis",
-    short: "EfficientDet for detection + RepNet for repetition/action detection in live streams.",
-    tags: ["Video Analysis","Computer Vision"],
-    img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-    body: `<ul>
-      <li>End‑to‑end pipeline: detection (EfficientDet) + repetition counting (RepNet).</li>
-      <li>Optimized OpenCV preprocessing, batched inference, WebSocket streaming to dashboard.</li>
-    </ul>`
-  },
-  {
-    title: "Vital Signs from Wearables",
-    short: "PPG cleanup (filters/FFT) & SVM classification for heart‑rate zones.",
-    tags: ["Signal Processing","Biomedical"],
-    img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80",
-    body: `<ul>
-      <li>Designed full signal chain: denoising, feature extraction (FFT, HRV).</li>
-      <li>SVM & Bayesian models to classify zones; 95% accuracy on holdout set.</li>
-    </ul>`
-  },
-  {
-    title: "Dynamic Pricing / Forecasting",
-    short: "ARIMA+/Prophet & elasticity modeling powering pricing engine at scale.",
-    tags: ["Time-Series","Pricing"],
-    img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80",
-    body: `<ul>
-      <li>Hybrid ARIMA/Prophet with promo/event regressors.</li>
-      <li>Bayesian elasticity curves integrated into production service.</li>
-    </ul>`
-  },
-  {
-    title: "Explainable Image Classifier",
-    short: "Grad‑CAM & LIME on deep models (Master's thesis) to justify predictions.",
-    tags: ["XAI","Computer Vision"],
-    img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-    body: `<p>Explored interpretability techniques to justify model decisions on niche product images.</p>`
-  }
-];
-
-const experience = [
-  {role:"AI & Data Science Lead", company:"Holomedix AI SE", period:"Jan 2025 – Present", location:"Berlin, Germany", desc:"Wearable health telemetry & voice AI (GSM/VoIP), data platforms (BigQuery, Vertex AI), and real‑time experiences.", tags:["Vertex AI","BigQuery","WebRTC","OpenAI","Pipecat"]},
-  {role:"Senior Data Scientist", company:"Lovehoney Group", period:"Apr 2021 – Dec 2024", location:"Berlin, Germany", desc:"Conversational AI for product matching (~65% hit rate), dynamic pricing, ARIMA+ demand forecasting.", tags:["LlamaIndex","PGVector","BQML","Forecasting"]},
-  {role:"Data Scientist", company:"WOW Tech Europe GmbH", period:"Apr 2021 – Jul 2024", location:"Berlin, Germany", desc:"Video/activity detection (RepNet, EfficientDet) & vital sign classification using SVM & signal processing.", tags:["Computer Vision","Signal Processing"]},
-  {role:"Master’s Thesis Student", company:"WOW Tech Europe GmbH", period:"Aug 2020 – Mar 2021", location:"Berlin, Germany", desc:"Image-based adult toy recognition with Deep Learning & Explainable AI.", tags:[]},
-  {role:"Software Engineer", company:"Artory GmbH", period:"May 2019 – Mar 2020", location:"Berlin, Germany", desc:"Software design/dev, DevOps, reverse image search prototype.", tags:[]}
-];
-
-// ----------- RENDER ----------- //
-const filtersEl = document.getElementById('filters');
-const projectsGrid = document.getElementById('projectsGrid');
-const tags = [...new Set(projects.flatMap(p=>p.tags||[]))];
-let activeTag = '__all';
-
-function renderFilters(){
-  filtersEl.innerHTML = `<button class="filter-btn active" data-tag="__all">All</button>` +
-    tags.map(t=>`<button class="filter-btn" data-tag="${t}">${t}</button>`).join('');
-  filtersEl.addEventListener('click', e=>{
-    const b = e.target.closest('button'); if(!b) return;
-    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active'); activeTag = b.dataset.tag; renderProjects();
-  });
-}
-
-function cardTemplate(p, idx){
-  return `<article class="card" data-idx="${idx}" data-tags='${JSON.stringify(p.tags||[])}'>
-    <div class="thumb"><img loading=\"lazy\" src=\"${p.img}\" alt="${p.title}"></div>
-    <div class="card-body">
-      <h3>${p.title}</h3>
-      <p>${p.short}</p>
-      <div class="mini-tags">${(p.tags||[]).map(t=>`<span>${t}</span>`).join('')}</div>
-      <button class="learn">Learn More</button>
-    </div>
-  </article>`;
-}
-
-function renderProjects(){
-  const filtered = projects.filter(p=> activeTag==='__all' || (p.tags||[]).includes(activeTag));
-  projectsGrid.innerHTML = filtered.map(p=>cardTemplate(p, projects.indexOf(p))).join('');
-  document.querySelectorAll('.card').forEach(el=>observer.observe(el));
-}
-
-function renderExperience(){
-  const tl = document.getElementById('experienceTl');
-  tl.innerHTML = experience.map(e=>`<div class="tl-item">
-    <div class="tl-card">
-      <h3>${e.role} – ${e.company}</h3>
-      <span class="muted">${e.period} · ${e.location}</span>
-      <p class="muted" style="margin-top:.5rem;">${e.desc}</p>
-      ${(e.tags||[]).length?'<div class="mini-tags" style="margin-top:.6rem;">'+e.tags.map(t=>`<span>${t}</span>`).join('')+'</div>':''}
-    </div>
-  </div>`).join('');
-  document.querySelectorAll('.tl-item').forEach(el=>observer.observe(el));
-}
-
-// Intersection reveal
-const observer = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+// Defer execution until DOM ready
+(function(){
+  document.addEventListener('DOMContentLoaded',()=>{
+    // ----------- PARTICLE BACKGROUND ----------- //
+    const canvas = document.getElementById('particles');
+    if(canvas){
+      const ctx = canvas.getContext('2d');
+      let w, h, particles = [];
+      function resize(){w = canvas.width = window.innerWidth;h = canvas.height = document.querySelector('#about').offsetHeight;}
+      window.addEventListener('resize', resize);resize();
+      function createParticles(){particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,r:Math.random()*2+0.5});}}
+      createParticles();
+      function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,255,255,.8)';
+        for(const p of particles){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
+        requestAnimationFrame(draw);
+      }
+      draw();
     }
-  });
-},{threshold:0.15});
 
-// Modal logic
-const modal = document.getElementById('modal');
-const modalTitle = document.getElementById('modalTitle');
-const modalDesc = document.getElementById('modalDesc');
-const modalImg = document.getElementById('modalImg');
-const modalBody = document.getElementById('modalBody');
-const modalLinks = document.getElementById('modalLinks');
+    // ----------- DATA ----------- //
+    const projects = [
+      {
+        title: "Hybrid Vector RAG Platform",
+        short: "Production-grade retrieval stack: dense + sparse fusion, eval harness, observability.",
+        tags: ["LLMs","Vector Retrieval","RAG"],
+        img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
+        body: `<ul>
+          <li>Hybrid retrieval (embedding ANN + BM25) fused with Reciprocal Rank Fusion (RRF).</li>
+          <li>PGVector ANN index & BigQuery fallback; automated MRR/nDCG eval suite and Canary tests.</li>
+          <li>Semantic & sliding‑window chunking, prompt templates, guardrails, telemetry dashboards.</li>
+        </ul>`,
+        links: [{label:"Slides", url:"#"}]
+      },
+      {
+        title: "WebRTC Voice Agent (Pipecat)",
+        short: "Full‑duplex voice assistant with barge‑in, <200 ms latency and PSTN fallback.",
+        tags: ["Voice AI","WebRTC","Pipecat"],
+        img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80",
+        body: `<ul>
+          <li>Browser WebRTC client ↔ server streams; jitter buffer + AGC/NS tuning for quality.</li>
+          <li>Pipecat orchestrated STT → LLM → TTS pipeline with interruption handling.</li>
+          <li>PSTN/GSM bridge, QoS metrics, incident alerts.</li>
+        </ul>`
+      },
+      {
+        title: "Realtime Video Analysis",
+        short: "EfficientDet for detection + RepNet for repetition/action detection in live streams.",
+        tags: ["Video Analysis","Computer Vision"],
+        img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+        body: `<ul>
+          <li>End‑to‑end pipeline: detection (EfficientDet) + repetition counting (RepNet).</li>
+          <li>Optimized OpenCV preprocessing, batched inference, WebSocket streaming to dashboard.</li>
+        </ul>`
+      },
+      {
+        title: "Vital Signs from Wearables",
+        short: "PPG cleanup (filters/FFT) & SVM classification for heart‑rate zones.",
+        tags: ["Signal Processing","Biomedical"],
+        img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80",
+        body: `<ul>
+          <li>Designed full signal chain: denoising, feature extraction (FFT, HRV).</li>
+          <li>SVM & Bayesian models to classify zones; 95% accuracy on holdout set.</li>
+        </ul>`
+      },
+      {
+        title: "Dynamic Pricing / Forecasting",
+        short: "ARIMA+/Prophet & elasticity modeling powering pricing engine at scale.",
+        tags: ["Time-Series","Pricing"],
+        img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80",
+        body: `<ul>
+          <li>Hybrid ARIMA/Prophet with promo/event regressors.</li>
+          <li>Bayesian elasticity curves integrated into production service.</li>
+        </ul>`
+      },
+      {
+        title: "Explainable Image Classifier",
+        short: "Grad‑CAM & LIME on deep models (Master's thesis) to justify predictions.",
+        tags: ["XAI","Computer Vision"],
+        img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
+        body: `<p>Explored interpretability techniques to justify model decisions on niche product images.</p>`
+      }
+    ];
 
-function openModal(p){
-  modalTitle.textContent = p.title;
-  modalDesc.textContent = p.short;
-  modalImg.src = p.img;
-  modalBody.innerHTML = p.body || '';
-  modalLinks.innerHTML = (p.links||[]).map(l=>`<a class=\"btn\" href=\"${l.url}\" target=\"_blank\" rel=\"noopener\">${l.label}</a>`).join('');
-  modal.style.display='flex';
-}
+    const experience = [
+      {role:"AI & Data Science Lead", company:"Holomedix AI SE", period:"Jan 2025 – Present", location:"Berlin, Germany", desc:"Wearable health telemetry & voice AI (GSM/VoIP), data platforms (BigQuery, Vertex AI), and real‑time experiences.", tags:["Vertex AI","BigQuery","WebRTC","OpenAI","Pipecat"]},
+      {role:"Senior Data Scientist", company:"Lovehoney Group", period:"Apr 2021 – Dec 2024", location:"Berlin, Germany", desc:"Conversational AI for product matching (~65% hit rate), dynamic pricing, ARIMA+ demand forecasting.", tags:["LlamaIndex","PGVector","BQML","Forecasting"]},
+      {role:"Data Scientist", company:"WOW Tech Europe GmbH", period:"Apr 2021 – Jul 2024", location:"Berlin, Germany", desc:"Video/activity detection (RepNet, EfficientDet) & vital sign classification using SVM & signal processing.", tags:["Computer Vision","Signal Processing"]},
+      {role:"Master’s Thesis Student", company:"WOW Tech Europe GmbH", period:"Aug 2020 – Mar 2021", location:"Berlin, Germany", desc:"Image-based adult toy recognition with Deep Learning & Explainable AI.", tags:[]},
+      {role:"Software Engineer", company:"Artory GmbH", period:"May 2019 – Mar 2020", location:"Berlin, Germany", desc:"Software design/dev, DevOps, reverse image search prototype.", tags:[]}
+    ];
 
-document.addEventListener('click', e=>{
-  if(e.target.classList.contains('learn')){
-    const card = e.target.closest('.card');
-    const idx = +card.dataset.idx;
-    openModal(projects[idx]);
-  }
-});
+    // ----------- RENDER ----------- //
+    const filtersEl = document.getElementById('filters');
+    const projectsGrid = document.getElementById('projectsGrid');
+    const tags = [...new Set(projects.flatMap(p=>p.tags||[]))];
+    let activeTag = '__all';
 
-document.getElementById('modalClose').addEventListener('click',()=>modal.style.display='none');
-modal.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
-
-// Back to top
-const topBtn=document.getElementById('backTop');
-window.addEventListener('scroll',()=>{topBtn.style.display=window.scrollY>900?'block':'none';});
-topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-
-// nav active
-const navLinks=document.querySelectorAll('nav a[href^="#"]');
-const sections=[...navLinks].map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-const navObserver = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      navLinks.forEach(l=>l.classList.remove('active'));
-      const l = document.querySelector(`nav a[href="#${entry.target.id}"]`);
-      if(l) l.classList.add('active');
+    function renderFilters(){
+      filtersEl.innerHTML = `<button class="filter-btn active" data-tag="__all">All</button>` +
+        tags.map(t=>`<button class=\"filter-btn\" data-tag=\"${t}\">${t}</button>`).join('');
+      filtersEl.addEventListener('click', e=>{
+        const b = e.target.closest('button'); if(!b) return;
+        document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active'); activeTag = b.dataset.tag; renderProjects();
+      });
     }
+
+    function cardTemplate(p, idx){
+      return `<article class=\"card\" data-idx=\"${idx}\" data-tags='${JSON.stringify(p.tags||[])}' itemscope itemtype=\"https://schema.org/CreativeWork\">\n    <div class=\"thumb\"><img loading=\"lazy\" src=\"${p.img}\" alt=\"${p.title}\" itemprop=\"image\"></div>\n    <div class=\"card-body\">\n      <h3 itemprop=\"name\">${p.title}</h3>\n      <p itemprop=\"description\">${p.short}</p>\n      <div class=\"mini-tags\">${(p.tags||[]).map(t=>`<span>${t}</span>`).join('')}</div>\n      <button class=\"learn\" aria-label=\"Learn more about ${p.title}\">Learn More</button>\n    </div>\n  </article>`;
+    }
+
+    function renderProjects(){
+      const filtered = projects.filter(p=> activeTag==='__all' || (p.tags||[]).includes(activeTag));
+      projectsGrid.innerHTML = filtered.map(p=>cardTemplate(p, projects.indexOf(p))).join('');
+      document.querySelectorAll('.card').forEach(el=>observer.observe(el));
+    }
+
+    function renderExperience(){
+      const tl = document.getElementById('experienceTl');
+      tl.innerHTML = experience.map(e=>`<div class=\"tl-item\">\n    <div class=\"tl-card\" itemscope itemtype=\"https://schema.org/JobPosting\">\n      <h3 itemprop=\"title\">${e.role} – ${e.company}</h3>\n      <span class=\"muted\" itemprop=\"datePosted\">${e.period} · ${e.location}</span>\n      <p class=\"muted\" style=\"margin-top:.5rem;\" itemprop=\"description\">${e.desc}</p>\n      ${(e.tags||[]).length?'<div class=\"mini-tags\" style=\"margin-top:.6rem;\">'+e.tags.map(t=>`<span>${t}</span>`).join('')+'</div>':''}\n    </div>\n  </div>`).join('');
+      document.querySelectorAll('.tl-item').forEach(el=>observer.observe(el));
+    }
+
+    // Intersection reveal
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },{threshold:0.15});
+
+    // Modal logic
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalImg = document.getElementById('modalImg');
+    const modalBody = document.getElementById('modalBody');
+    const modalLinks = document.getElementById('modalLinks');
+
+    function openModal(p){
+      modalTitle.textContent = p.title;
+      modalDesc.textContent = p.short;
+      modalImg.src = p.img;
+      modalImg.alt = p.title + ' screenshot';
+      modalBody.innerHTML = p.body || '';
+      modalLinks.innerHTML = (p.links||[]).map(l=>`<a class=\"btn\" href=\"${l.url}\" target=\"_blank\" rel=\"noopener\">${l.label}</a>`).join('');
+      modal.style.display='flex';
+    }
+
+    document.addEventListener('click', e=>{
+      if(e.target.classList.contains('learn')){
+        const card = e.target.closest('.card');
+        const idx = +card.dataset.idx;
+        openModal(projects[idx]);
+      }
+    });
+
+    document.getElementById('modalClose').addEventListener('click',()=>modal.style.display='none');
+    modal.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
+
+    // Back to top
+    const topBtn=document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{topBtn.style.display=window.scrollY>900?'block':'none';});
+    topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+    // nav active
+    const navLinks=document.querySelectorAll('nav a[href^="#"]');
+    const sections=[...navLinks].map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const navObserver = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          navLinks.forEach(l=>l.classList.remove('active'));
+          const l = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+          if(l) l.classList.add('active');
+        }
+      });
+    },{threshold:0.5});
+    sections.forEach(s=>navObserver.observe(s));
+
+    // Theme toggle
+    const themeBtn=document.getElementById('themeToggle');
+    function setTheme(t){document.body.setAttribute('data-theme',t);localStorage.setItem('theme',t);themeBtn.textContent=t==='dark'?'☀️':'🌙';}
+    const savedTheme = localStorage.getItem('theme')||'dark';
+    setTheme(savedTheme);
+    themeBtn.addEventListener('click',()=>setTheme(document.body.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+    // INIT
+    renderFilters();
+    renderProjects();
+    renderExperience();
+
+    document.getElementById('year').textContent=new Date().getFullYear();
   });
-},{threshold:0.5});
-sections.forEach(s=>navObserver.observe(s));
-
-// Theme toggle
-const themeBtn=document.getElementById('themeToggle');
-function setTheme(t){document.body.setAttribute('data-theme',t);localStorage.setItem('theme',t);themeBtn.textContent=t==='dark'?'☀️':'🌙';}
-const savedTheme = localStorage.getItem('theme')||'dark';
-setTheme(savedTheme);
-ThemeToggleInit=false;
-themeBtn.addEventListener('click',()=>setTheme(document.body.getAttribute('data-theme')==='dark'?'light':'dark'));
-
-// INIT
-renderFilters();
-renderProjects();
-renderExperience();
-
-document.getElementById('year').textContent=new Date().getFullYear();
-}); // DOMContentLoaded end
+})();
 </script>
 </body>
 </html>
