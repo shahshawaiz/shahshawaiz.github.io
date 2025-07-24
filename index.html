@@ -4,8 +4,8 @@
   <!-- BASIC -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shawaiz Shah | AI Engineer & Senior Data Scientist – LLMs, RAG, Voice AI, Video Analysis</title>
-  <meta name="description" content="Portfolio of Shawaiz Shah, AI Engineer & Senior Data Scientist in Berlin. Projects in LLMs, RAG/Vector Retrieval, Voice AI (WebRTC, Pipecat), Video Analysis, Signal Processing, Time‑Series Forecasting, and Dynamic Pricing." />
+  <title>Shawaiz Shah | AI Engineer & Senior Data Scientist – LLMs, Agentic Workflows, AI Voice Agents, Video Analysis</title>
+  <meta name="description" content="Portfolio of Shawaiz Shah, AI Engineer & Senior Data Scientist in Berlin. Projects in LLMs & agentic workflows, AI Voice Agents (PSTN & VoIP), Video Analysis, Signal Processing, Forecasting & Scalable GCP Data Pipelines." />
   <meta name="author" content="Shawaiz Shah" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://example.com/" />
@@ -14,7 +14,7 @@
   <!-- SOCIAL / OPEN GRAPH -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Shawaiz Shah – Visual & Interactive AI Portfolio" />
-  <meta property="og:description" content="LLMs & RAG • Voice AI (WebRTC, Pipecat) • Video Analysis • Signal Processing" />
+  <meta property="og:description" content="LLMs & Agentic Workflows • AI Voice Agents (PSTN & VoIP) • Video Analysis • Signal Processing" />
   <meta property="og:url" content="https://example.com/" />
   <meta property="og:image" content="https://example.com/static/preview.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -174,6 +174,7 @@
       .thumb{height:160px;}
       .card-body{padding:1rem 1.1rem 1.2rem;}
     }
+      .profile-pic {border-radius:50%;width:100px;height:100px;object-fit:cover;margin:0 auto 1rem;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.3);}  
   </style>
 
   <!-- CRITICAL JS DEFERRED -->
@@ -198,8 +199,8 @@
 <main id="content" role="main">
   <!-- PROJECTS FIRST (SEO: main content high) -->
   <section id="projects" aria-labelledby="projects-title">
-    <h2 id="projects-title">Highlighted AI & Data Science Projects</h2>
-    <p class="subtitle">Case studies covering LLMs, Vector Retrieval/RAG, Voice AI with WebRTC, Computer Vision, Signal Processing, and Forecasting.</p>
+    <h2 id="projects-title">Featured AI & Data Science Work</h2>
+    <p class="subtitle">Explore select case studies in LLM Agentic Workflows, AI Voice Agents (PSTN & VoIP), Video Analysis, Signal Processing, Forecasting, and Scalable GCP Data Pipelines.</p>
     <div class="filters" id="filters" aria-label="Project filters"></div>
     <div class="grid" id="projectsGrid"></div>
   </section>
@@ -210,8 +211,9 @@
     <div class="shape shape1" aria-hidden="true"></div>
     <div class="shape shape2" aria-hidden="true"></div>
     <div>
+      <img class="profile-pic" src="https://media.licdn.com/dms/image/v2/D4E03AQHuhrnKV5yudg/profile-displayphoto-shrink_400_400/B4EZaQqujpGQAk-/0/1746183842662?e=1756339200&v=beta&t=q02jIqRhpLzf58V36lIU7LPlKlxPBbtzYgruoBpmY58" alt="Shawaiz Shah" />
       <h1 id="about-title">Hi, I'm <span>Shawaiz</span>.</h1>
-      <p class="subtitle">AI Engineer & Sr. Data Scientist focused on <strong>LLMs & advanced vector retrieval</strong>, <strong>Voice AI (WebRTC, Pipecat)</strong>, <strong>Video Analysis</strong>, and <strong>Signal Processing</strong>. I turn research into reliable, scalable products.</p>
+      <p class="subtitle">AI Engineer & Sr. Data Scientist focused on <strong>LLMs & agentic workflows</strong>, <strong>AI Voice Agents (PSTN & VoIP)</strong>, <strong>Video Analysis</strong>, and <strong>Signal Processing</strong>. I turn research into reliable, scalable products.</p>
       <div class="cta" role="group" aria-label="Primary calls to action">
         <a class="btn fill" href="mailto:shahshawaiz@gmail.com">Email Me</a>
         <a class="btn" href="https://github.com/shahshawaiz" target="_blank" rel="noopener">GitHub</a>
@@ -231,11 +233,11 @@
     <h2 id="skills-title">Skills</h2>
     <details open>
       <summary>Core ML / AI</summary>
-      <p>LLMs, RAG (hybrid retrieval), Machine Learning, Statistical Modeling, Optimization, Computer Vision, Time‑Series Forecasting, Dynamic Pricing, Activity Detection, Signal Processing</p>
+      <p>LLMs, Agentic Workflows (embedding indexes + BM25), Machine Learning, Statistical Modeling, Optimization, Computer Vision, Time‑Series Forecasting, Dynamic Pricing, Activity Detection, Signal Processing</p>
     </details>
     <details>
       <summary>Tools & Platforms</summary>
-      <p>Python, Java, SQL, PyTorch, TensorFlow, Scikit‑learn, GCP Vertex AI, BigQuery, Apache Airflow, Celery, RabbitMQ, Docker, PGVector, LlamaIndex, WebRTC, Pipecat</p>
+      <p>Python, Java, SQL, PyTorch, TensorFlow, Scikit‑learn, GCP Vertex AI, BigQuery, Pub/Sub, Dataflow, Composer, Stackdriver, Apache Airflow, Celery, RabbitMQ, Docker, PGVector, LlamaIndex, WebRTC, Telnyx, Twilio</p>
     </details>
     <details>
       <summary>Languages</summary>
@@ -276,65 +278,60 @@
   </div>
 </div>
 
-<!-- INLINE JS (optional: move to external file for caching) -->
 <script>
-// Defer execution until DOM ready
 (function(){
   document.addEventListener('DOMContentLoaded',()=>{
-    // ----------- PARTICLE BACKGROUND ----------- //
+    // PARTICLE BACKGROUND
     const canvas = document.getElementById('particles');
     if(canvas){
-      const ctx = canvas.getContext('2d');
-      let w, h, particles = [];
-      function resize(){w = canvas.width = window.innerWidth;h = canvas.height = document.querySelector('#about').offsetHeight;}
-      window.addEventListener('resize', resize);resize();
+      const ctx = canvas.getContext('2d'); let w,h,particles=[];
+      function resize(){w=canvas.width=window.innerWidth;h=canvas.height=document.querySelector('#about').offsetHeight;}
+      window.addEventListener('resize',resize);resize();
       function createParticles(){particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,r:Math.random()*2+0.5});}}
       createParticles();
-      function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,255,255,.8)';
-        for(const p of particles){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;}
-        requestAnimationFrame(draw);
-      }
-      draw();
+      function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='rgba(255,255,255,.8)';particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;});requestAnimationFrame(draw);}draw();
     }
 
-    // ----------- DATA ----------- //
+    // PROJECT DATA
     const projects = [
       {
-        title: "Hybrid Vector RAG Platform",
-        short: "Production-grade retrieval stack: dense + sparse fusion, eval harness, observability.",
-        tags: ["LLMs","Vector Retrieval","RAG"],
+        title: "LLM Agentic Workflows",
+        short: "Production-grade retrieval & eval platform: embedding indexes + BM25 fusion, LLM-centric evals; powering industry-grade product in production.",
+        tags: ["LLMs","Agentic Workflows"],
         img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
         body: `<ul>
-          <li>Hybrid retrieval (embedding ANN + BM25) fused with Reciprocal Rank Fusion (RRF).</li>
-          <li>PGVector ANN index & BigQuery fallback; automated MRR/nDCG eval suite and Canary tests.</li>
-          <li>Semantic & sliding‑window chunking, prompt templates, guardrails, telemetry dashboards.</li>
+          <li>Hybrid retrieval (embedding indexes + BM25) with lightweight score fusion.</li>
+          <li>PGVector embedding index & BigQuery fallback.</li>
+          <li>LLM-centered evaluation harness (LLMs as judges, zero-shot & pairwise).</li>
         </ul>`,
         links: [{label:"Slides", url:"#"}]
       },
       {
-        title: "WebRTC Voice Agent (Pipecat)",
-        short: "Full‑duplex voice assistant with barge‑in, <200 ms latency and PSTN fallback.",
-        tags: ["Voice AI","WebRTC","Pipecat"],
+        title: "AI Voice Agents (PSTN & VoIP-powered)",
+        short: "Transcoding & transport with WebRTC/WebSockets, Telnyx & Twilio integration; deployed as enterprise-grade voice assistant in production.",
+        tags: ["Voice AI","WebRTC","AI Voice Agents"],
         img: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1200&q=80",
         body: `<ul>
-          <li>Browser WebRTC client ↔ server streams; jitter buffer + AGC/NS tuning for quality.</li>
-          <li>Pipecat orchestrated STT → LLM → TTS pipeline with interruption handling.</li>
-          <li>PSTN/GSM bridge, QoS metrics, incident alerts.</li>
+          <li>Media transcoding across RTP/WebRTC/WebSockets (VP8/H264, Opus, PCM).</li>
+          <li>Programmable APIs: Telnyx & Twilio for SIP trunking, SMS, call setup.</li>
+          
+          <li>Orchestrated STT → LLM → TTS flows with real-time interruption handling.</li>
+          <li>PSTN/GSM bridging, end-to-end QoS metrics & incident alerting.</li>
         </ul>`
       },
       {
         title: "Realtime Video Analysis",
-        short: "EfficientDet for detection + RepNet for repetition/action detection in live streams.",
+        short: "EfficientDet for detection + RepNet for action detection in live streams.",
         tags: ["Video Analysis","Computer Vision"],
         img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
         body: `<ul>
-          <li>End‑to‑end pipeline: detection (EfficientDet) + repetition counting (RepNet).</li>
-          <li>Optimized OpenCV preprocessing, batched inference, WebSocket streaming to dashboard.</li>
+          <li>End-to-end pipeline: detection (EfficientDet) + repetition counting (RepNet).</li>
+          <li>Optimized OpenCV preprocessing, batched inference & WebSocket dashboard streaming.</li>
         </ul>`
       },
       {
         title: "Vital Signs from Wearables",
-        short: "PPG cleanup (filters/FFT) & SVM classification for heart‑rate zones.",
+        short: "PPG cleanup (filters/FFT) & SVM classification for heart-rate zones.",
         tags: ["Signal Processing","Biomedical"],
         img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=80",
         body: `<ul>
@@ -343,33 +340,35 @@
         </ul>`
       },
       {
-        title: "Dynamic Pricing / Forecasting",
-        short: "ARIMA+/Prophet & elasticity modeling powering pricing engine at scale.",
-        tags: ["Time-Series","Pricing"],
+        title: "Dynamic Pricing & Forecasting",
+        short: "Scalable GCP pipeline for demand forecasting & price optimization; powering real-time pricing engine in production.",
+        tags: ["Time-Series","Pricing","GCP"],
         img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1200&q=80",
         body: `<ul>
-          <li>Hybrid ARIMA/Prophet with promo/event regressors.</li>
-          <li>Bayesian elasticity curves integrated into production service.</li>
+          <li>Streaming ingestion: Pub/Sub → Dataflow; batch ETL via Composer (Airflow).</li>
+          <li>Stored in BigQuery; deployed models via Vertex AI pipelines.</li>
+          <li>Monitoring with Stackdriver alerts & dashboards.</li>
         </ul>`
       },
       {
         title: "Explainable Image Classifier",
-        short: "Grad‑CAM & LIME on deep models (Master's thesis) to justify predictions.",
+        short: "Grad-CAM & LIME on deep models to justify visual predictions.",
         tags: ["XAI","Computer Vision"],
         img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-        body: `<p>Explored interpretability techniques to justify model decisions on niche product images.</p>`
+        body: `<p>Explored interpretability techniques (Grad-CAM, LIME) on niche product images to justify model decisions.</p>`
       }
     ];
 
+    // EXPERIENCE DATA
     const experience = [
-      {role:"AI & Data Science Lead", company:"Holomedix AI SE", period:"Jan 2025 – Present", location:"Berlin, Germany", desc:"Wearable health telemetry & voice AI (GSM/VoIP), data platforms (BigQuery, Vertex AI), and real‑time experiences.", tags:["Vertex AI","BigQuery","WebRTC","OpenAI","Pipecat"]},
-      {role:"Senior Data Scientist", company:"Lovehoney Group", period:"Apr 2021 – Dec 2024", location:"Berlin, Germany", desc:"Conversational AI for product matching (~65% hit rate), dynamic pricing, ARIMA+ demand forecasting.", tags:["LlamaIndex","PGVector","BQML","Forecasting"]},
+      {role:"AI & Data Science Lead", company:"Holomedix AI SE", period:"Jan 2025 – Present", location:"Berlin, Germany", desc:"Wearable health telemetry & voice AI (GSM/VoIP), data platforms on GCP (Pub/Sub, Dataflow, Composer, BigQuery, Vertex AI).", tags:["Vertex AI","BigQuery","WebRTC","Telnyx","Twilio"]},
+      {role:"Senior Data Scientist", company:"Lovehoney Group", period:"Apr 2021 – Dec 2024", location:"Berlin, Germany", desc:"Conversational AI for product matching (~65% hit rate), dynamic pricing & forecasting pipelines on GCP.", tags:["LlamaIndex","PGVector","BQML","Forecasting","GCP"]},
       {role:"Data Scientist", company:"WOW Tech Europe GmbH", period:"Apr 2021 – Jul 2024", location:"Berlin, Germany", desc:"Video/activity detection (RepNet, EfficientDet) & vital sign classification using SVM & signal processing.", tags:["Computer Vision","Signal Processing"]},
       {role:"Master’s Thesis Student", company:"WOW Tech Europe GmbH", period:"Aug 2020 – Mar 2021", location:"Berlin, Germany", desc:"Image-based adult toy recognition with Deep Learning & Explainable AI.", tags:[]},
       {role:"Software Engineer", company:"Artory GmbH", period:"May 2019 – Mar 2020", location:"Berlin, Germany", desc:"Software design/dev, DevOps, reverse image search prototype.", tags:[]}
     ];
 
-    // ----------- RENDER ----------- //
+    // RENDER LOGIC (unchanged)
     const filtersEl = document.getElementById('filters');
     const projectsGrid = document.getElementById('projectsGrid');
     const tags = [...new Set(projects.flatMap(p=>p.tags||[]))];
@@ -401,17 +400,9 @@
       document.querySelectorAll('.tl-item').forEach(el=>observer.observe(el));
     }
 
-    // Intersection reveal
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },{threshold:0.15});
+    const observer = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.15});
 
-    // Modal logic
+    // Modal
     const modal = document.getElementById('modal');
     const modalTitle = document.getElementById('modalTitle');
     const modalDesc = document.getElementById('modalDesc');
@@ -429,14 +420,7 @@
       modal.style.display='flex';
     }
 
-    document.addEventListener('click', e=>{
-      if(e.target.classList.contains('learn')){
-        const card = e.target.closest('.card');
-        const idx = +card.dataset.idx;
-        openModal(projects[idx]);
-      }
-    });
-
+    document.addEventListener('click', e=>{if(e.target.classList.contains('learn')){const card = e.target.closest('.card');const idx = +card.dataset.idx;openModal(projects[idx]);}});
     document.getElementById('modalClose').addEventListener('click',()=>modal.style.display='none');
     modal.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
 
@@ -445,32 +429,20 @@
     window.addEventListener('scroll',()=>{topBtn.style.display=window.scrollY>900?'block':'none';});
     topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    // nav active
+    // Nav active
     const navLinks=document.querySelectorAll('nav a[href^="#"]');
     const sections=[...navLinks].map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const navObserver = new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          navLinks.forEach(l=>l.classList.remove('active'));
-          const l = document.querySelector(`nav a[href="#${entry.target.id}"]`);
-          if(l) l.classList.add('active');
-        }
-      });
-    },{threshold:0.5});
+    const navObserver = new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const l=document.querySelector(`nav a[href="#${entry.target.id}"]`);if(l) l.classList.add('active');}});},{threshold:0.5});
     sections.forEach(s=>navObserver.observe(s));
 
     // Theme toggle
     const themeBtn=document.getElementById('themeToggle');
     function setTheme(t){document.body.setAttribute('data-theme',t);localStorage.setItem('theme',t);themeBtn.textContent=t==='dark'?'☀️':'🌙';}
-    const savedTheme = localStorage.getItem('theme')||'dark';
-    setTheme(savedTheme);
+    const savedTheme = localStorage.getItem('theme')||'dark';setTheme(savedTheme);
     themeBtn.addEventListener('click',()=>setTheme(document.body.getAttribute('data-theme')==='dark'?'light':'dark'));
 
     // INIT
-    renderFilters();
-    renderProjects();
-    renderExperience();
-
+    renderFilters();renderProjects();renderExperience();
     document.getElementById('year').textContent=new Date().getFullYear();
   });
 })();
