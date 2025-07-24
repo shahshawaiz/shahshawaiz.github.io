@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                          http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <url>
+    <!-- The main (and only) page -->
+    <loc>https://www.shawaiz.de/</loc>
+    <!-- ISO‑8601 timestamp of last modification -->
+    <lastmod>2025-07-24T00:00:00+02:00</lastmod>
+    <!-- How often the content is likely to change -->
+    <changefreq>weekly</changefreq>
+    <!-- Priority relative to other URLs on your site -->
+    <priority>1.00</priority>
+  </url>
+
+</urlset>
