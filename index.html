@@ -50,7 +50,7 @@
 
   <!-- STYLES -->
   <style>
-    /* ... your CSS remains unchanged ... */
+    /* ... your existing CSS ... */
     :root{--bg:#030712;--fg:#e5f2ff;--muted:#64748b;--card:#0f172a;--accent:#0ea5e9;--accent2:#22d3ee;--max:1200px;--radius:18px;--shadow:0 8px 28px rgba(0,0,0,.55);}  
     [data-theme="light"]{--bg:#f8fafc;--fg:#0f172a;--muted:#475569;--card:#ffffff;--accent:#0ea5e9;--accent2:#22d3ee;--shadow:0 8px 24px rgba(0,0,0,.08);}      
     *{box-sizing:border-box;margin:0;padding:0;}
@@ -132,6 +132,56 @@
       .card-body{padding:1rem 1.1rem 1.2rem;}
     }
     .profile-pic {border-radius:50%;width:100px;height:100px;object-fit:cover;margin:0 auto 1rem;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.3);}  
+
+    /* --- AVATAR MODAL STYLES --- */
+    #avatarModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 130;
+    }
+
+    #avatarModalContent {
+      max-width: 420px;
+      width: 100%;
+      height: 85vh;
+      max-height: 700px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    #avatarModalClose {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.8rem;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      z-index: 10;
+    }
+    #avatarModalClose:hover {
+      color: var(--fg);
+    }
+
+    #avatarIframe {
+      flex-grow: 1;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+    }
+    /* Note: No special CSS needed for the avatar button, it just uses the existing .btn and .fill classes */
   </style>
   <noscript><style>.card,.tl-item{opacity:1;transform:none;}</style></noscript>
 </head>
@@ -164,7 +214,10 @@
       <h1 id="about-title"></h1>
       <p class="subtitle"></p>
       <div class="cta" role="group" aria-label="Primäre Handlungsaufforderungen">
-        <a class="btn fill" href="mailto:shahshawaiz@gmail.com"></a>
+        <!-- MODIFIED: Avatar button is now first and has the 'fill' class -->
+        <a class="btn fill" id="speakBtn" href="#" role="button"></a>
+        <!-- MODIFIED: Email button is now second and is a standard outline button -->
+        <a class="btn" href="mailto:shahshawaiz@gmail.com"></a>
         <a class="btn" href="https://github.com/shahshawaiz" target="_blank" rel="noopener">GitHub</a>
         <a class="btn" href="https://de.linkedin.com/in/shawaiz-shah-32b40537" target="_blank" rel="noopener">LinkedIn</a>
       </div>
@@ -228,6 +281,21 @@
   </div>
 </div>
 
+<!-- AVATAR MODAL HTML -->
+<div id="avatarModal" role="dialog" aria-modal="true" aria-labelledby="avatarModalTitle">
+  <div id="avatarModalContent">
+    <button id="avatarModalClose" aria-label="Schließen">×</button>
+    <h3 id="avatarModalTitle" class="visually-hidden" style="display:none;">Interactive Avatar</h3>
+    <iframe
+      id="avatarIframe"
+      data-src="https://shawaiz-live.vercel.app/"
+      title="Interactive Avatar"
+      allow="microphone; camera">
+    </iframe>
+  </div>
+</div>
+<!-- END AVATAR MODAL -->
+
 <script>
 (function() {
   // --- TRANSLATIONS (with your leadership update) ---
@@ -255,6 +323,8 @@
       learnMore: "Mehr erfahren",
       learnMoreAria: "Mehr erfahren über",
       screenshotAlt: "Bildschirmfoto",
+      speakToAvatar: "Sprich mit meinem Avatar",
+      closeAria: "Schließen",
       schemaPerson: { "@context": "https://schema.org", "@type": "Person", "name": "Shawaiz Shah", "image": "https://shawaiz.de/static/portrait.jpeg", "jobTitle": "KI-Führungskraft & Senior Datenwissenschaftler", "url": "https://shawaiz.de/", "sameAs": ["https://github.com/shahshawaiz", "https://de.linkedin.com/in/shawaiz-shah-32b40537"], "address": { "@type": "PostalAddress", "addressLocality": "Berlin", "addressCountry": "DE" } },
       schemaWebsite: { "@context": "https://schema.org", "@type": "WebSite", "name": "Shawaiz Shah Portfolio", "url": "https://shawaiz.de/", "potentialAction": { "@type": "SearchAction", "target": "https://shawaiz.de/?q={search_term_string}", "query-input": "required name=search_term_string" } },
       schemaBreadcrumbs: { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ {"@type":"ListItem","position":1,"name":"Projekte","item":"https://shawaiz.de/#projects"}, {"@type":"ListItem","position":2,"name":"Über mich","item":"https://shawaiz.de/#about"}, {"@type":"ListItem","position":3,"name":"Erfahrung","item":"https://shawaiz.de/#experience"}, {"@type":"ListItem","position":4,"name":"Fähigkeiten","item":"https://shawaiz.de/#skills"}, {"@type":"ListItem","position":5,"name":"Kontakt","item":"https://shawaiz.de/#contact"} ]},
@@ -284,6 +354,8 @@
       learnMore: "Learn More",
       learnMoreAria: "Learn more about",
       screenshotAlt: "screenshot",
+      speakToAvatar: "Speak to my Avatar",
+      closeAria: "Close",
       schemaPerson: { "@context": "https://schema.org", "@type": "Person", "name": "Shawaiz Shah", "image": "https://shawaiz.de/static/portrait.jpeg", "jobTitle": "AI Leader & Senior Data Scientist", "url": "https://shawaiz.de/", "sameAs": ["https://github.com/shahshawaiz", "https://www.linkedin.com/in/shawaiz-shah-32b40537"], "address": { "@type": "PostalAddress", "addressLocality": "Berlin", "addressCountry": "DE" } },
       schemaWebsite: { "@context": "https://schema.org", "@type": "WebSite", "name": "Shawaiz Shah Portfolio", "url": "https://shawaiz.de/", "potentialAction": { "@type": "SearchAction", "target": "https://shawaiz.de/?q={search_term_string}", "query-input": "required name=search_term_string" } },
       schemaBreadcrumbs: { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [ {"@type":"ListItem","position":1,"name":"Projects","item":"https://shawaiz.de/#projects"}, {"@type":"ListItem","position":2,"name":"About","item":"https://shawaiz.de/#about"}, {"@type":"ListItem","position":3,"name":"Experience","item":"https://shawaiz.de/#experience"}, {"@type":"ListItem","position":4,"name":"Skills","item":"https://shawaiz.de/#skills"}, {"@type":"ListItem","position":5,"name":"Contact","item":"https://shawaiz.de/#contact"} ]},
@@ -296,7 +368,7 @@
     let currentLang = localStorage.getItem('lang') || 'de';
     let currentTheme = localStorage.getItem('theme') || 'dark';
 
-    // --- REFACTORED THEME LOGIC ---
+    // --- THEME LOGIC ---
     const themeToggleBtn = document.getElementById('themeToggle');
 
     function applyTheme(theme) {
@@ -310,8 +382,8 @@
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       applyTheme(newTheme);
     });
-    // --- END REFACTORED THEME LOGIC ---
 
+    // --- LANGUAGE LOGIC ---
     function setLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lang', lang);
@@ -321,7 +393,6 @@
       document.documentElement.lang = lang;
       document.querySelector('title').textContent = t.title;
       document.querySelector('meta[name="description"]').content = t.description;
-      // ... (rest of the setLanguage function is the same)
       document.querySelector('meta[property="og:title"]').content = t.ogTitle;
       document.querySelector('meta[property="og:description"]').content = t.ogDescription;
       const baseUrl = `https://shawaiz.de/${lang}/`;
@@ -340,11 +411,15 @@
       document.querySelector('#projects .subtitle').textContent = t.projectsSubtitle;
       document.querySelector('#about-title').innerHTML = t.aboutTitle;
       document.querySelector('#about .subtitle').innerHTML = t.aboutSubtitle;
-      document.querySelector('.cta a.fill').textContent = t.emailMe;
+      document.querySelector('.cta a[href^="mailto"]').textContent = t.emailMe;
       document.querySelector('#experience-title').textContent = t.experienceTitle;
       document.querySelector('#skills-title').textContent = t.skillsTitle;
       document.querySelector('#contact-title').textContent = t.contactTitle;
       document.querySelector('#addressLocation').textContent = t.addressLocation;
+
+      // --- Update Avatar Button Text ---
+      document.getElementById('speakBtn').textContent = t.speakToAvatar;
+      document.getElementById('avatarModalClose').setAttribute('aria-label', t.closeAria);
 
       // --- Skills Details ---
       document.querySelectorAll('#skills details').forEach((detail, i) => {
@@ -363,7 +438,6 @@
       renderExperience();
     }
 
-    // --- (The rest of the script is largely the same, just calling the new functions) ---
     document.getElementById('langToggle').addEventListener('click', () => {
       setLanguage(currentLang === 'de' ? 'en' : 'de');
     });
@@ -372,7 +446,7 @@
     const projectsGrid = document.getElementById('projectsGrid');
     let activeTag = '__all';
 
-    function renderFilters() { /* ... unchanged ... */ 
+    function renderFilters() {
       const tags = [...new Set(translations[currentLang].projectsData.flatMap(p => p.tags || []))];
       filtersEl.innerHTML = `<button class="filter-btn active" data-tag="__all">${translations[currentLang].allProjects}</button>` +
         tags.map(t => `<button class="filter-btn" data-tag="${t}">${t}</button>`).join('');
@@ -383,14 +457,14 @@
       });
     }
 
-    function renderProjects() { /* ... unchanged ... */ 
+    function renderProjects() {
       const projects = translations[currentLang].projectsData;
       const filtered = projects.filter(p => activeTag === '__all' || (p.tags||[]).includes(activeTag));
       projectsGrid.innerHTML = filtered.map(p => cardTemplate(p, projects.indexOf(p))).join('');
       document.querySelectorAll('.grid .card').forEach(el => observer.observe(el));
     }
     
-    function cardTemplate(p, idx) { /* ... unchanged ... */
+    function cardTemplate(p, idx) {
       const t = translations[currentLang];
       return `<article class="card" data-idx="${idx}" data-tags='${JSON.stringify(p.tags||[])}' itemscope itemtype="https://schema.org/CreativeWork">
         <div class="thumb"><img loading="lazy" src="${p.img}" alt="${p.title}" itemprop="image"></div>
@@ -403,7 +477,7 @@
       </article>`;
     }
 
-    function renderExperience() { /* ... unchanged ... */ 
+    function renderExperience() {
       const experience = translations[currentLang].experienceData;
       const tl = document.getElementById('experienceTl');
       tl.innerHTML = experience.map(e => `<div class="tl-item">
@@ -419,9 +493,9 @@
 
     const observer = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.1});
 
-    // --- Modal logic (unchanged) ---
+    // --- PROJECTS MODAL LOGIC ---
     const modal = document.getElementById('modal');
-    // ...
+    
     function openModal(project){
       const t = translations[currentLang];
       modal.querySelector('#modalTitle').textContent = project.title;
@@ -444,7 +518,38 @@
     document.getElementById('modalClose').addEventListener('click',()=>modal.style.display='none');
     modal.addEventListener('click',e=>{if(e.target===modal) modal.style.display='none';});
 
-    // --- Other observers and helpers (unchanged) ---
+    // --- AVATAR MODAL LOGIC ---
+    const avatarModal = document.getElementById('avatarModal');
+    const avatarIframe = document.getElementById('avatarIframe');
+    const speakBtn = document.getElementById('speakBtn');
+    const avatarCloseBtn = document.getElementById('avatarModalClose');
+
+    function openAvatarModal() {
+      if (avatarIframe.src !== avatarIframe.dataset.src) {
+        avatarIframe.src = avatarIframe.dataset.src;
+      }
+      avatarModal.style.display = 'flex';
+    }
+
+    function closeAvatarModal() {
+      avatarModal.style.display = 'none';
+      avatarIframe.src = ''; // Important: Clear src to release mic/camera
+    }
+    
+    speakBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openAvatarModal();
+    });
+    
+    avatarCloseBtn.addEventListener('click', closeAvatarModal);
+    
+    avatarModal.addEventListener('click', (e) => {
+      if (e.target === avatarModal) {
+        closeAvatarModal();
+      }
+    });
+
+    // --- OTHER HELPERS ---
     const topBtn=document.getElementById('backTop');
     window.addEventListener('scroll',()=>{topBtn.style.display=window.scrollY>900?'block':'none';});
     topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
@@ -454,11 +559,11 @@
     const navObserver = new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const l=document.querySelector(`nav a[href="#${entry.target.id}"]`);if(l) l.classList.add('active');}});},{threshold:0.5});
     sections.forEach(s=>navObserver.observe(s));
     
-    // --- PARTICLE BACKGROUND (unchanged) ---
+    // --- PARTICLE BACKGROUND ---
     const canvas = document.getElementById('particles');
     if(canvas){
         const ctx = canvas.getContext('2d'); let w,h,particles=[];
-        function resize(){w=canvas.width=window.innerWidth;h=canvas.height=document.querySelector('#about').offsetHeight;}
+        function resize(){w=canvas.width=window.innerWidth;h=document.querySelector('#about').offsetHeight;}
         window.addEventListener('resize',resize);resize();
         function createParticles(){particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,r:Math.random()*2+0.5});}}
         createParticles();
@@ -466,8 +571,8 @@
     }
     
     // --- INITIALIZATION ---
-    applyTheme(currentTheme); // Set initial theme
-    setLanguage(currentLang); // Set initial language
+    applyTheme(currentTheme);
+    setLanguage(currentLang);
   });
 })();
 </script>
