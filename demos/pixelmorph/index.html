@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PixelMorph · On-device image AI</title>
+<meta name="description" content="Remove image backgrounds and detect your face shape with AI that runs entirely in your browser. Your photos never leave your device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0a1a;--panel:#161127;--panel-2:#1e1735;--ink:#efeaff;--muted:#a59cc4;--line:#2c2350;--accent:#8b5cf6;--accent-2:#ec4899;--accent-ink:#fff;--ok:#4ade80;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:radial-gradient(1200px 500px at 70% -10%,rgba(139,92,246,.18),transparent),var(--bg);color:var(--ink);font:14.5px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+a{color:#c4b5fd}
+button,input,select{font:inherit;color:inherit}
+header .bar{max-width:1180px;margin:auto;padding:12px 16px;display:flex;gap:12px;align-items:center}
+.logo{font-weight:700;font-size:18px;letter-spacing:-.3px}
+.logo span{background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sp{flex:1}
+header a{font-size:13.5px;text-decoration:none}
+main{max-width:1180px;margin:auto;padding:12px 16px 50px}
+.hero{text-align:center;padding:18px 0 22px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,4vw,38px);letter-spacing:-.6px}
+.hero p{margin:0 auto;color:var(--muted);max-width:680px}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.badges span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:#ddd6fe}
+.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0 18px}
+.tabs button{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 16px;cursor:pointer;font-weight:600;color:var(--muted)}
+.tabs button[aria-selected=true]{background:linear-gradient(90deg,var(--accent),var(--accent-2));border-color:transparent;color:#fff}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+@media(max-width:940px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.card-b{padding:14px;display:grid;gap:12px}
+.stage{position:relative;min-height:380px;display:grid;place-items:center;border-radius:12px;overflow:hidden;
+  background-color:#221a3d;background-image:linear-gradient(45deg,#2a2148 25%,transparent 25%),linear-gradient(-45deg,#2a2148 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2a2148 75%),linear-gradient(-45deg,transparent 75%,#2a2148 75%);background-size:22px 22px;background-position:0 0,0 11px,11px -11px,-11px 0}
+.stage canvas,.stage video{max-width:100%;max-height:70vh;display:block}
+.drop{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);cursor:pointer;padding:20px;border:2px dashed var(--line);border-radius:12px;background:rgba(13,10,26,.72)}
+.drop b{color:var(--ink);font-size:16px;display:block;margin-bottom:4px}
+.drop.over{border-color:var(--accent);color:var(--ink)}
+.busy{position:absolute;inset:auto 12px 12px 12px;background:rgba(13,10,26,.85);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px;display:flex;gap:8px;align-items:center}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:sp 1s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hint{color:var(--muted);font-size:12.5px;margin:0}
+h2{margin:0;font-size:15px}
+h3{margin:4px 0 0;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:8px;border:2px solid var(--line);cursor:pointer}
+.sw[aria-pressed=true]{border-color:#fff}
+.sw.t{background-image:linear-gradient(45deg,#666 25%,transparent 25%),linear-gradient(-45deg,#666 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#666 75%),linear-gradient(-45deg,transparent 75%,#666 75%);background-size:10px 10px;background-color:#ddd}
+.shape{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center}
+.shape img{width:72px;height:72px;border-radius:12px;background:#fff;padding:4px}
+.shape b{font-size:22px}
+.meas{display:grid;gap:6px;font-size:13px}
+.meas div{display:grid;grid-template-columns:110px 1fr 46px;gap:8px;align-items:center}
+.meas i{display:block;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.meas span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.tips{white-space:pre-wrap;background:var(--panel-2);border-radius:10px;padding:10px 12px;font-size:13.5px;min-height:60px}
+.info{max-width:760px;margin:auto}
+.info ul{margin:6px 0;padding-left:20px}
+footer{text-align:center;color:var(--muted);font-size:12.5px;padding:0 16px 28px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13.5px;z-index:20;max-width:calc(100% - 32px)}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <span class="logo">Pixel<span>Morph</span></span>
+  <span class="sp"></span>
+  <a href="https://github.com/shahshawaiz/pixelmorph">GitHub</a>
+  <a href="../../projects/index.html">← All projects</a>
+</div></header>
+
+<main>
+  <section class="hero">
+    <h1>Image AI that never uploads your photos</h1>
+    <p>Background removal and face-shape detection running entirely in your browser, on your GPU or CPU. Nothing is sent to a server.</p>
+    <div class="badges"><span>On-device</span><span>No account</span><span>No API key</span><span>Free</span></div>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" data-t="bg" aria-selected="true">Background remover</button>
+    <button role="tab" data-t="face" aria-selected="false">Face shape detector</button>
+    <button role="tab" data-t="swap" aria-selected="false">Face swap</button>
+  </div>
+
+  <!-- Background remover -->
+  <section id="tab-bg" class="grid">
+    <div class="card"><div class="card-b">
+      <div class="stage" id="bgStage">
+        <canvas id="bgCanvas" hidden></canvas>
+        <div class="drop" id="bgDrop" tabindex="0" role="button"><div><b>Drop an image or click to choose</b>JPG or PNG · best for people and portraits</div></div>
+      </div>
+      <div class="row">
+        <button class="btn ghost sm" type="button" id="bgPick">Choose image</button>
+        <button class="btn ghost sm" type="button" id="bgCompare" hidden>Hold to see original</button>
+        <span class="sp"></span>
+        <button class="btn sm" type="button" id="bgSave" disabled>Download PNG</button>
+      </div>
+    </div></div>
+    <aside class="card"><div class="card-b">
+      <h2>Background</h2>
+      <div class="swatches" id="swatches">
+        <button class="sw t" type="button" data-bg="transparent" aria-pressed="true" title="Transparent" aria-label="Transparent"></button>
+        <button class="sw" type="button" data-bg="#ffffff" style="background:#fff" aria-pressed="false" aria-label="White"></button>
+        <button class="sw" type="button" data-bg="#111827" style="background:#111827" aria-pressed="false" aria-label="Black"></button>
+        <button class="sw" type="button" data-bg="#3b82f6" style="background:#3b82f6" aria-pressed="false" aria-label="Blue"></button>
+        <button class="sw" type="button" data-bg="#f472b6" style="background:#f472b6" aria-pressed="false" aria-label="Pink"></button>
+        <button class="sw" type="button" data-bg="blur" style="background:linear-gradient(135deg,#a78bfa,#f9a8d4);filter:blur(1px)" aria-pressed="false" aria-label="Blurred original" title="Blurred original"></button>
+      </div>
+      <h3>Model</h3>
+      <p class="hint">MODNet portrait matting (Apache-2.0, ≈25 MB, downloaded once and cached) via transformers.js, on WebGPU when available, otherwise WebAssembly.</p>
+      <p class="hint" id="bgInfo"></p>
+    </div></aside>
+  </section>
+
+  <!-- Face shape -->
+  <section id="tab-face" class="grid" hidden>
+    <div class="card"><div class="card-b">
+      <div class="stage" id="faceStage">
+        <canvas id="faceCanvas" hidden></canvas>
+        <video id="cam" playsinline muted hidden></video>
+        <div class="drop" id="faceDrop" tabindex="0" role="button"><div><b>Drop a front-facing photo or click to choose</b>Look straight at the camera, hair away from the face if you can</div></div>
+      </div>
+      <div class="row">
+        <button class="btn ghost sm" type="button" id="facePick">Choose photo</button>
+        <button class="btn ghost sm" type="button" id="camBtn">Use camera</button>
+        <button class="btn sm" type="button" id="snap" hidden>Take photo</button>
+      </div>
+    </div></div>
+    <aside class="stack" style="display:grid;gap:14px">
+      <div class="card"><div class="card-b" id="faceResult"><p class="hint">Your result appears here. The image is analysed locally with MediaPipe Face Landmarker (478 points).</p></div></div>
+      <div id="ai"></div>
+      <div class="card"><div class="card-b">
+        <h2>Style tips</h2>
+        <p class="hint">An on-device language model suggests hairstyles and glasses for your face shape. Only the shape name and ratios are used, never the photo.</p>
+        <button class="btn sm" type="button" id="tipsBtn" disabled>Get style tips</button>
+        <div class="tips" id="tips" hidden></div>
+      </div></div>
+    </aside>
+  </section>
+
+  <!-- Face swap -->
+  <section id="tab-swap" hidden>
+    <div class="card info"><div class="card-b">
+      <h2>Face swap: server version only</h2>
+      <p>The full PixelMorph app also does single- and multi-person face swap with InsightFace (ONNX Runtime) behind a FastAPI backend. It isn't part of this web demo, because:</p>
+      <ul>
+        <li>the swap model is about 550 MB, too large to download in a browser tab;</li>
+        <li>its weights are licensed for non-commercial research only;</li>
+        <li>swapping faces involves other people's likeness, which needs consent and safeguards that a public demo can't enforce.</li>
+      </ul>
+      <p class="hint">See the repository README to run the full app locally with Docker.</p>
+    </div></div>
+  </section>
+</main>
+<footer>PixelMorph by Shawaiz Shah · MIT licensed · Models run in your browser; images are never uploaded.</footer>
+<input type="file" id="file" accept="image/*" hidden>
+
+<script src="ondevice-llm.js"></script>
+<script>
+(() => {
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let toastT; function toast(m) { document.querySelector(".toast")?.remove(); const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.append(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 5000); }
+function busy(stage, msg) { stage.querySelector(".busy")?.remove(); if (!msg) return; const b = document.createElement("div"); b.className = "busy"; b.innerHTML = '<span class="spin"></span><span>' + esc(msg) + "</span>"; stage.append(b); }
+
+// ---------- Tabs ----------
+let tab = "bg";
+document.querySelector(".tabs").onclick = e => {
+  const b = e.target.closest("button[data-t]"); if (!b) return;
+  tab = b.dataset.t;
+  document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+  ["bg", "face", "swap"].forEach(t => $("tab-" + t).hidden = t !== tab);
+  if (tab !== "face") stopCam();
+};
+
+// ---------- Image input (shared) ----------
+let target = null; // "bg" | "face"
+function pick(t) { target = t; $("file").value = ""; $("file").click(); }
+$("file").onchange = e => { const f = e.target.files[0]; if (f) handle(target, f); };
+async function handle(t, file) {
+  if (!file.type.startsWith("image/")) { toast("Please choose an image file."); return; }
+  const img = await loadImage(URL.createObjectURL(file));
+  if (t === "bg") removeBg(img); else detectFace(img);
+}
+function loadImage(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error("Could not open image")); i.src = src; }); }
+function wireDrop(drop, t) {
+  drop.onclick = () => pick(t);
+  drop.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(t); } };
+  ["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", e => { const f = e.dataTransfer.files[0]; if (f) handle(t, f); });
+}
+wireDrop($("bgDrop"), "bg"); wireDrop($("faceDrop"), "face");
+$("bgPick").onclick = () => pick("bg"); $("facePick").onclick = () => pick("face");
+document.addEventListener("paste", e => { const f = [...(e.clipboardData?.files || [])].find(x => x.type.startsWith("image/")); if (f && tab !== "swap") handle(tab, f); });
+
+// ---------- Background removal: MODNet via transformers.js ----------
+const TF_URL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/transformers.min.js";
+let tf = null, modnet = null, modnetP = null, device = "";
+async function gpuAdapter() { try { return !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch { return false; } }
+function getModnet(forceWasm = false) {
+  if (forceWasm && modnet && device === "WebGPU") { modnet = null; modnetP = null; }
+  if (modnet) return Promise.resolve(modnet);
+  if (modnetP) return modnetP;
+  modnetP = (async () => {
+    tf = tf || await import(TF_URL);
+    tf.env.allowLocalModels = false;
+    const progress = p => { if (p.status === "progress" && p.total) busy($("bgStage"), `Downloading model ${Math.round(p.loaded * 100 / p.total)} % (first time only)`); };
+    let model = null;
+    if (!forceWasm && await gpuAdapter()) { try { model = await tf.AutoModel.from_pretrained("Xenova/modnet", { device: "webgpu", dtype: "fp32", progress_callback: progress }); device = "WebGPU"; } catch { model = null; } }
+    if (!model) { model = await tf.AutoModel.from_pretrained("Xenova/modnet", { device: "wasm", dtype: "fp32", progress_callback: progress }); device = "WebAssembly"; }
+    const processor = await tf.AutoProcessor.from_pretrained("Xenova/modnet");
+    modnet = { model, processor }; return modnet;
+  })();
+  modnetP.catch(() => { modnetP = null; });
+  return modnetP;
+}
+let bg = { img: null, mask: null, fill: "transparent" };
+async function removeBg(img) {
+  const stage = $("bgStage"); $("bgDrop").hidden = true; const cv = $("bgCanvas"); cv.hidden = false;
+  drawPlain(cv, img); bg = { ...bg, img, mask: null }; $("bgSave").disabled = true;
+  try {
+    busy(stage, "Loading model …");
+    let { model, processor } = await getModnet();
+    busy(stage, "Removing background on " + device + " …");
+    const t0 = performance.now();
+    const raw = await tf.RawImage.fromURL(img.src);
+    const { pixel_values } = await processor(raw);
+    let output;
+    try { ({ output } = await model({ input: pixel_values })); }
+    catch (err) {
+      if (device !== "WebGPU") throw err;
+      busy(stage, "GPU unavailable, retrying on CPU …");
+      ({ model, processor } = await getModnet(true));
+      ({ output } = await model({ input: pixel_values }));
+    }
+    const mask = await tf.RawImage.fromTensor(output[0].mul(255).to("uint8")).resize(img.naturalWidth, img.naturalHeight);
+    bg.mask = mask.data;
+    composite();
+    $("bgSave").disabled = false; $("bgCompare").hidden = false;
+    $("bgInfo").textContent = `Done in ${((performance.now() - t0) / 1000).toFixed(1)} s on ${device} · ${img.naturalWidth}×${img.naturalHeight}px`;
+  } catch (e) { toast("Background removal failed: " + (e.message || e)); }
+  finally { busy(stage, ""); }
+}
+function drawPlain(cv, img) { cv.width = img.naturalWidth; cv.height = img.naturalHeight; cv.getContext("2d").drawImage(img, 0, 0); }
+function composite() {
+  if (!bg.img || !bg.mask) return;
+  const cv = $("bgCanvas"), w = bg.img.naturalWidth, h = bg.img.naturalHeight, ctx = cv.getContext("2d");
+  cv.width = w; cv.height = h;
+  const fg = document.createElement("canvas"); fg.width = w; fg.height = h; const fctx = fg.getContext("2d");
+  fctx.drawImage(bg.img, 0, 0);
+  const px = fctx.getImageData(0, 0, w, h);
+  for (let i = 0; i < bg.mask.length; i++) px.data[i * 4 + 3] = bg.mask[i];
+  fctx.putImageData(px, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  if (bg.fill === "blur") { ctx.filter = `blur(${Math.max(8, Math.round(w / 60))}px)`; ctx.drawImage(bg.img, 0, 0); ctx.filter = "none"; }
+  else if (bg.fill !== "transparent") { ctx.fillStyle = bg.fill; ctx.fillRect(0, 0, w, h); }
+  ctx.drawImage(fg, 0, 0);
+}
+$("swatches").onclick = e => {
+  const b = e.target.closest("button[data-bg]"); if (!b) return;
+  bg.fill = b.dataset.bg; document.querySelectorAll(".sw").forEach(x => x.setAttribute("aria-pressed", String(x === b))); composite();
+};
+const showOrig = on => { if (!bg.img || !bg.mask) return; if (on) drawPlain($("bgCanvas"), bg.img); else composite(); };
+["pointerdown"].forEach(ev => $("bgCompare").addEventListener(ev, () => showOrig(true)));
+["pointerup", "pointerleave"].forEach(ev => $("bgCompare").addEventListener(ev, () => showOrig(false)));
+$("bgSave").onclick = () => $("bgCanvas").toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "pixelmorph-cutout.png"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }, "image/png");
+
+// ---------- Face shape: MediaPipe Face Landmarker ----------
+const MP = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+const MP_MODEL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+let vision = null, landmarker = null, landmarkerP = null;
+function getLandmarker() {
+  if (landmarker) return Promise.resolve(landmarker);
+  if (landmarkerP) return landmarkerP;
+  landmarkerP = (async () => {
+    vision = vision || await import(MP + "/vision_bundle.mjs");
+    const fileset = await vision.FilesetResolver.forVisionTasks(MP + "/wasm");
+    const make = delegate => vision.FaceLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: MP_MODEL, delegate }, runningMode: "IMAGE", numFaces: 1 });
+    try { landmarker = await make("GPU"); landmarker.__gpu = true; } catch { landmarker = await make("CPU"); }
+    landmarker.__make = make;
+    return landmarker;
+  })();
+  landmarkerP.catch(() => { landmarkerP = null; });
+  return landmarkerP;
+}
+const SHAPES = {
+  Oval: { file: "oval", tip: "Balanced proportions, length a little greater than width, gently rounded jaw." },
+  Round: { file: "round", tip: "Width and length are similar, with soft cheeks and a rounded jawline." },
+  Square: { file: "square", tip: "Strong, wide jaw about as wide as the forehead and cheekbones." },
+  Oblong: { file: "oblong", tip: "Face noticeably longer than it is wide, with similar widths top to bottom." },
+  "Heart-shaped": { file: "heart-shaped", tip: "Wider forehead and cheekbones tapering to a narrower chin." },
+  Diamond: { file: "diamond", tip: "Cheekbones are the widest point; forehead and jaw are narrower." },
+};
+// Refinement of PixelMorph's landmark ratios (backend/app/core/services/cv/faceshapedetector.py).
+function classify(lm, w, h) {
+  const P = i => ({ x: lm[i].x * w, y: lm[i].y * h });
+  const d = (a, b) => { const p = P(a), q = P(b); return Math.hypot(p.x - q.x, p.y - q.y); };
+  const length = d(10, 152), cheek = d(234, 454), forehead = d(54, 284), jaw = d(172, 397);
+  const L = length / cheek, F = forehead / cheek, J = jaw / cheek;
+  let shape;
+  // Thresholds calibrated for MediaPipe's geometry (cheek points 234/454 sit near the ears, so L is ~1.0–1.4).
+  if (L >= 1.35) shape = "Oblong";
+  else if (F < 0.78 && J < 0.75) shape = "Diamond";
+  else if (F - J > 0.1 && J < 0.8) shape = "Heart-shaped";
+  else if (L <= 1.2 && J >= 0.82) shape = "Square";
+  else if (L <= 1.12) shape = "Round";
+  else shape = "Oval";
+  return { shape, L, F, J };
+}
+let face = null;
+async function detectFace(img) {
+  stopCam();
+  const stage = $("faceStage"); $("faceDrop").hidden = true; const cv = $("faceCanvas"); cv.hidden = false;
+  const scale = Math.min(1, 1280 / Math.max(img.naturalWidth, img.naturalHeight));
+  cv.width = Math.round(img.naturalWidth * scale); cv.height = Math.round(img.naturalHeight * scale);
+  const ctx = cv.getContext("2d"); ctx.drawImage(img, 0, 0, cv.width, cv.height);
+  try {
+    busy(stage, "Loading face landmark model …");
+    const lmk = await getLandmarker();
+    busy(stage, "Analysing …");
+    let res;
+    try { res = lmk.detect(cv); }
+    catch (err) {
+      if (!lmk.__gpu) throw err;
+      busy(stage, "GPU unavailable, retrying on CPU …");
+      try { lmk.close(); } catch {}
+      landmarker = await lmk.__make("CPU"); landmarker.__make = lmk.__make;
+      res = landmarker.detect(cv);
+    }
+    if (!res.faceLandmarks || !res.faceLandmarks.length) { toast("No face found. Try a well-lit, front-facing photo."); return; }
+    const lm = res.faceLandmarks[0];
+    face = classify(lm, cv.width, cv.height);
+    drawFace(ctx, lm, cv.width, cv.height, face.shape);
+    showFace(face);
+  } catch (e) { toast("Face detection failed: " + (e.message || e)); }
+  finally { busy(stage, ""); }
+}
+function drawFace(ctx, lm, w, h, shape) {
+  const P = i => [lm[i].x * w, lm[i].y * h];
+  const lw = Math.max(2, w / 300);
+  // face oval from MediaPipe's connection list
+  ctx.strokeStyle = "rgba(167,139,250,.9)"; ctx.lineWidth = lw;
+  for (const c of vision.FaceLandmarker.FACE_LANDMARKS_FACE_OVAL) { const a = P(c.start), b = P(c.end); ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke(); }
+  // measurement lines
+  const lines = [[54, 284, "#f472b6"], [234, 454, "#a78bfa"], [172, 397, "#60a5fa"], [10, 152, "#4ade80"]];
+  ctx.setLineDash([lw * 3, lw * 2]);
+  for (const [a, b, col] of lines) { ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(...P(a)); ctx.lineTo(...P(b)); ctx.stroke(); }
+  ctx.setLineDash([]);
+  // label
+  const xs = lm.map(p => p.x * w), ys = lm.map(p => p.y * h);
+  const x0 = Math.min(...xs), y0 = Math.min(...ys);
+  const fs = Math.max(16, Math.round(w / 28)); ctx.font = `700 ${fs}px Inter, system-ui, sans-serif`;
+  const tw = ctx.measureText(shape).width, pad = fs * 0.4, ly = Math.max(fs + pad * 2, y0 - pad);
+  ctx.fillStyle = "rgba(139,92,246,.92)"; ctx.fillRect(x0, ly - fs - pad, tw + pad * 2, fs + pad * 1.6);
+  ctx.fillStyle = "#fff"; ctx.fillText(shape, x0 + pad, ly - pad * 0.4);
+}
+function showFace(f) {
+  const s = SHAPES[f.shape];
+  const bar = (label, v, max, col) => `<div><span>${label}</span><i style="width:${Math.min(100, v / max * 100)}%;background:${col}"></i><span>${v.toFixed(2)}</span></div>`;
+  $("faceResult").innerHTML = `<div class="shape"><img src="faceshapes/${s.file}.svg" alt=""><div><span class="hint">Your face shape</span><br><b>${esc(f.shape)}</b></div></div>
+    <p style="margin:0">${esc(s.tip)}</p>
+    <div class="meas">${bar("Length / cheeks", f.L, 2, "#4ade80")}${bar("Forehead / cheeks", f.F, 1.2, "#f472b6")}${bar("Jaw / cheeks", f.J, 1.2, "#60a5fa")}</div>
+    <p class="hint">A geometric heuristic from facial landmarks, for fun and styling ideas, not a measurement you should rely on.</p>`;
+  $("tipsBtn").disabled = false; $("tips").hidden = true;
+}
+
+// ---------- Camera ----------
+let stream = null;
+async function startCam() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 } }, audio: false });
+    const v = $("cam"); v.srcObject = stream; v.hidden = false; await v.play();
+    $("faceDrop").hidden = true; $("faceCanvas").hidden = true; $("snap").hidden = false; $("camBtn").textContent = "Stop camera";
+  } catch (e) { toast("Camera not available: " + (e.message || e.name)); }
+}
+function stopCam() { if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; } $("cam").hidden = true; $("snap").hidden = true; $("camBtn").textContent = "Use camera"; }
+$("camBtn").onclick = () => stream ? (stopCam(), $("faceCanvas").hidden || ($("faceDrop").hidden = true)) : startCam();
+$("snap").onclick = async () => {
+  const v = $("cam"), c = document.createElement("canvas"); c.width = v.videoWidth; c.height = v.videoHeight;
+  const x = c.getContext("2d"); x.translate(c.width, 0); x.scale(-1, 1); x.drawImage(v, 0, 0);
+  detectFace(await loadImage(c.toDataURL("image/jpeg", 0.92)));
+};
+
+// ---------- Style tips: on-device LLM ----------
+const llm = window.OnDeviceLLM;
+llm.mount($("ai"), { title: "On-device AI" });
+llm.init();
+let ctl = null;
+$("tipsBtn").onclick = async () => {
+  if (!face) return;
+  if (ctl) { ctl.abort(); return; }
+  if (!llm.ready) { toast("Set up the on-device AI first (panel above)."); $("ai").scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  const box = $("tips"); box.hidden = false; box.textContent = "…";
+  ctl = new AbortController(); $("tipsBtn").textContent = "Stop";
+  try {
+    await llm.ask({
+      system: "You are a friendly, inclusive stylist. Give practical, kind advice. Plain text, no markdown, no headings.",
+      prompt: `My face shape is ${face.shape} (length/cheek ratio ${face.L.toFixed(2)}, forehead/cheek ${face.F.toFixed(2)}, jaw/cheek ${face.J.toFixed(2)}). Give 4 short bullet points starting with "• ": two haircut ideas, one glasses frame style, and one thing to avoid. Max 70 words in total.`,
+      maxTokens: 200, temperature: 0.6, signal: ctl.signal, onText: t => box.textContent = t.replace(/\*\*/g, ""),
+    });
+  } catch (e) { if (e.name !== "AbortError") box.textContent = e.message || String(e); }
+  finally { ctl = null; $("tipsBtn").textContent = "Get style tips"; }
+};
+})();
+</script>
+</body>
+</html>

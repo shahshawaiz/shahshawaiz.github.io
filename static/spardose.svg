@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" font-family="ui-monospace,Menlo,Consolas,monospace">
+  <rect width="800" height="450" fill="#05090f"/>
+  <rect x="24" y="24" width="752" height="402" rx="14" fill="#0b1220" stroke="#1e293b"/>
+  <circle cx="52" cy="50" r="6" fill="#ef4444"/><circle cx="72" cy="50" r="6" fill="#f59e0b"/><circle cx="92" cy="50" r="6" fill="#22c55e"/>
+  <text x="400" y="55" fill="#64748b" font-size="15" text-anchor="middle">spardose — position analysis</text>
+  <g font-size="19">
+    <text x="52" y="110" fill="#22d3ee">$ analyze --position SOL/USDC</text>
+    <text x="52" y="146" fill="#94a3b8">› loading pool data … 214 positions</text>
+    <text x="52" y="178" fill="#94a3b8">› ranking by fee APR / impermanent loss</text>
+    <text x="52" y="222" fill="#e2e8f0">  RANGE        APR     IL      SCORE</text>
+    <text x="52" y="254" fill="#4ade80">  142–168     38.2%   -1.9%   0.91</text>
+    <text x="52" y="284" fill="#e2e8f0">  135–175     27.6%   -1.1%   0.84</text>
+    <text x="52" y="314" fill="#fbbf24">  150–158     61.0%   -6.4%   0.62</text>
+    <text x="52" y="360" fill="#22d3ee">$ <tspan fill="#e2e8f0">recommendation: rebalance to 142–168</tspan></text>
+    <rect x="52" y="378" width="12" height="22" fill="#22d3ee"/>
+  </g>
+</svg>

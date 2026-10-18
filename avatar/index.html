@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Talk to Shawaiz · On-device voice avatar</title>
+<meta name="description" content="A realtime voice conversation with Shawaiz Shah's AI avatar. Speech recognition, language model and voice all run locally in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030712;--panel:#0f172a;--panel-2:#111c31;--ink:#e5f2ff;--muted:#8193ab;--line:#1f2b42;--accent:#0ea5e9;--accent-2:#22d3ee;--rec:#f43f5e;--accent-ink:#fff;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;overflow:hidden}
+body{margin:0;background:radial-gradient(900px 500px at 50% 0%,rgba(14,165,233,.16),transparent),var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(16px,env(safe-area-inset-left,0px))}
+button,input,select{font:inherit;color:inherit}
+.top{display:flex;align-items:center;gap:10px;padding:14px 56px 6px 0;min-height:52px}
+.top b{font-size:15px}
+.top .pill{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--muted)}
+.top .sp{flex:1}
+.icon-btn{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:7px 10px;cursor:pointer}
+.stage{flex:1;display:grid;place-items:center;align-content:center;gap:14px;padding:22px 0 12px;min-height:0;overflow-y:auto}
+.avatar{--lvl:0;position:relative;width:min(46vw,220px,24vh);aspect-ratio:1;border-radius:50%;margin:18px}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;position:relative;z-index:2;border:3px solid var(--panel)}
+.avatar::before,.avatar::after{content:"";position:absolute;inset:-6px;border-radius:50%;z-index:1;transition:transform .08s linear,opacity .2s}
+.avatar::before{background:conic-gradient(from 0deg,var(--accent),var(--accent-2),var(--accent));opacity:.35;transform:scale(calc(1 + var(--lvl) * .16))}
+.avatar::after{inset:-18px;border:2px solid var(--accent-2);opacity:calc(.12 + var(--lvl) * .7);transform:scale(calc(1 + var(--lvl) * .22))}
+.avatar[data-s=listening]::before{background:conic-gradient(var(--rec),#fb7185,var(--rec))}
+.avatar[data-s=listening]::after{border-color:var(--rec)}
+.avatar[data-s=thinking]::before{animation:spin 1.6s linear infinite;opacity:.6}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatar[data-s=idle]::after{animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.06);opacity:.3}}
+@media (prefers-reduced-motion:reduce){.avatar::before,.avatar::after{animation:none!important;transition:none}}
+.status{text-align:center;min-height:48px}
+.status b{display:block;font-size:18px}
+.status span{color:var(--muted);font-size:13.5px}
+.caption{max-width:640px;text-align:center;color:#cfe3f5;font-size:16px;min-height:2.6em;padding:0 8px}
+.controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+.mic{width:76px;height:76px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:grid;place-items:center;box-shadow:0 10px 30px rgba(14,165,233,.35)}
+.mic svg{width:30px;height:30px}
+.mic.live{background:var(--rec);box-shadow:0 10px 30px rgba(244,63,94,.35)}
+.ghost{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:13.5px}
+.dock{max-width:760px;width:100%;margin:0 auto 14px;display:grid;gap:10px}
+.typebar{display:flex;gap:8px}
+.typebar input{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+.typebar button{border:0;border-radius:12px;padding:0 16px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+details.log{background:var(--panel);border:1px solid var(--line);border-radius:12px}
+details.log summary{cursor:pointer;padding:9px 14px;color:var(--muted);font-size:13px}
+.turns{max-height:30vh;overflow-y:auto;padding:0 14px 12px;display:grid;gap:8px;font-size:14px}
+.turn b{color:var(--accent-2);font-weight:600;margin-right:6px}
+.turn.me b{color:#fda4af}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--panel);border-left:1px solid var(--line);z-index:30;overflow-y:auto;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) max(16px,env(safe-area-inset-right,0px)) 20px 16px;display:grid;gap:14px;align-content:start}
+.drawer h2{margin:0;font-size:16px}
+.drawer label{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+.drawer select{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px}
+.cb{display:flex!important;grid-template-columns:none;gap:8px;align-items:flex-start;color:var(--ink)!important;cursor:pointer}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+.setup{max-width:520px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:10px;font-size:14px}
+.setup ol{margin:0;padding-left:18px;display:grid;gap:4px}
+.bar{height:5px;border-radius:3px;background:var(--panel-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13.5px;z-index:40;max-width:calc(100% - 32px)}
+</style>
+</head>
+<body>
+<div class="top">
+  <b>Shawaiz · AI avatar</b><span class="pill">on-device</span><span class="sp"></span>
+  <button class="icon-btn" id="openSettings" type="button" aria-label="Settings">⚙️</button>
+</div>
+
+<div class="stage">
+  <div class="avatar" id="avatar" data-s="idle"><img src="../static/portrait.jpeg" alt="Shawaiz Shah"></div>
+  <div class="status" id="status"><b>Talk to my AI avatar</b><span>Press the microphone and just speak, in English or German</span></div>
+  <div class="caption" id="caption" aria-live="polite"></div>
+  <div class="setup" id="setup" hidden></div>
+  <div class="controls">
+    <button class="mic" id="mic" type="button" aria-label="Start conversation" aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </button>
+    <button class="ghost" id="stopTalk" type="button" hidden>Stop speaking</button>
+  </div>
+</div>
+
+<div class="dock">
+  <form class="typebar" id="typebar" autocomplete="off"><input id="typed" placeholder="…or type a question" aria-label="Type a question"><button type="submit">Send</button></form>
+  <details class="log"><summary>Transcript</summary><div class="turns" id="turns"></div></details>
+</div>
+
+<aside class="drawer" id="drawer" hidden aria-label="Settings">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2>Settings</h2><button class="icon-btn" id="closeSettings" type="button">Close</button></div>
+  <div id="ai"></div>
+  <label>Language<select id="lang"><option value="auto">Auto-detect</option><option value="en">English</option><option value="de">Deutsch</option></select></label>
+  <label>Voice<select id="voice"><option value="piper">Neural (Piper: Thorsten for German, Ryan for English)</option><option value="system">System voice</option></select></label>
+  <label class="cb"><input type="checkbox" id="bargein" checked> <span>Let me interrupt the avatar by speaking<br><span class="note">Works best with headphones.</span></span></label>
+  <p class="note">Speech recognition: Whisper Base (≈80 MB). Voice: Piper (≈60 MB per language). Everything downloads once, is cached by your browser, and runs locally. No audio or text leaves your device.</p>
+  <p class="note">This avatar is an AI. It knows my public professional profile, can make mistakes, and doesn't speak about private matters.</p>
+</aside>
+
+<script src="../static/js/ondevice-llm.js"></script>
+<script>
+(() => {
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+let toastT; function toast(m, ms = 5000) { document.querySelector(".toast")?.remove(); const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.append(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), ms); }
+
+// ---------- Persona: public professional profile only ----------
+const PERSONA = `You are the AI voice avatar of Shawaiz Shah, speaking in first person as Shawaiz on his portfolio website shawaiz.de. You run entirely on the visitor's device.
+
+ABOUT ME (public profile)
+- AI expert and Senior Data Scientist based in Berlin, Germany. I guide teams through the whole product lifecycle, from R&D to scalable delivery.
+- Focus areas: LLMs and agentic workflows, AI voice agents (PSTN and VoIP), video analysis, signal processing, forecasting and scalable data pipelines on Google Cloud.
+- AI & Data Science at Holomedix AI SE, Berlin (since January 2025): leading the design and execution of the AI roadmap for wearable health telemetry and B2B voice AI solutions; data platforms on GCP (Pub/Sub, Dataflow, Composer, BigQuery, Vertex AI); voice stack with WebRTC, Telnyx and Twilio.
+- Senior Data Scientist at Lovehoney Group, Berlin (2021–2024): conversational AI for product matching with about 65 percent hit rate (LlamaIndex, PGVector), dynamic pricing and forecasting pipelines on GCP.
+- Data Scientist at WOW Tech Europe, Berlin (2021–2024): video and activity recognition (RepNet, EfficientDet) and vital-sign classification from wearables with SVMs and signal processing.
+- Master's thesis (2020–2021): product image recognition with deep learning and explainable AI (Grad-CAM, LIME).
+- Software Engineer at Artory GmbH, Berlin (2019–2020): software development, DevOps, a reverse image search prototype.
+- Featured work: hybrid retrieval (embeddings plus BM25) with LLM-based evaluation; enterprise voice agents with STT to LLM to TTS and real-time interruption handling; real-time video analysis; vital signs from wearables (95 percent accuracy on holdout); dynamic pricing and forecasting.
+- Side projects on the site, all running on-device: FSP Simulator Berlin (practice for the German medical language exam), Resume AI (tailors CVs and cover letters), Spardose Analytics (DeFi liquidity position analysis), PixelMorph (background removal and face-shape detection), and this voice avatar.
+- Skills: Python, Java, SQL, PyTorch, TensorFlow, scikit-learn, GCP Vertex AI, BigQuery, Airflow, Docker, PGVector, LlamaIndex, WebRTC, Telnyx, Twilio.
+- Languages: English (very good), German (B2), Urdu and Burushaski (native). Certified Scrum Product Owner and ScrumMaster.
+- Contact: through the contact section or email on shawaiz.de.
+
+HOW TO TALK
+- This is a spoken, real-time conversation: answer in 1 to 3 short, natural sentences. No lists, no markdown, no emojis, no URLs read out character by character.
+- Reply in the language the visitor uses (English or German).
+- Be warm, confident and concrete. Use the facts above; never invent employers, numbers, clients or dates. If you don't know, say so and suggest getting in touch via the website.
+- Only talk about my professional life: work, projects, skills, availability for collaboration in general terms. Do not discuss private life, family, relationships, health, religion, politics, salary, home address or phone number. If asked, politely say you'd rather keep it professional and steer back to my work.
+- If asked whether you are real: you are an AI avatar of Shawaiz running locally in the browser, not Shawaiz himself.`;
+
+// ---------- Settings ----------
+const S = (() => { try { return JSON.parse(store.get("avatar-settings")) || {}; } catch { return {}; } })();
+const siteLang = store.get("lang") === "en" ? "en" : store.get("lang") === "de" ? "de" : "auto";
+S.lang = S.lang || "auto"; S.voice = S.voice || "piper"; if (S.bargein === undefined) S.bargein = true;
+const saveS = () => store.set("avatar-settings", JSON.stringify(S));
+$("lang").value = S.lang; $("voice").value = S.voice; $("bargein").checked = S.bargein;
+$("lang").onchange = e => { S.lang = e.target.value; saveS(); };
+$("voice").onchange = e => { S.voice = e.target.value; saveS(); };
+$("bargein").onchange = e => { S.bargein = e.target.checked; saveS(); };
+$("openSettings").onclick = () => $("drawer").hidden = false;
+$("closeSettings").onclick = () => $("drawer").hidden = true;
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("drawer").hidden = true; });
+
+// ---------- UI state ----------
+const STATUS = {
+  idle: ["Talk to my AI avatar", "Press the microphone and just speak, in English or German"],
+  listening: ["Listening…", "Speak naturally; I'll answer when you pause"],
+  transcribing: ["Understanding…", "Transcribing locally with Whisper"],
+  thinking: ["Thinking…", "On-device language model"],
+  speaking: ["Speaking…", "Just start talking to interrupt"],
+  loading: ["Getting ready…", ""],
+};
+let phase = "idle";
+function setPhase(p, sub) {
+  phase = p; $("avatar").dataset.s = p;
+  const [t, s] = STATUS[p] || STATUS.idle;
+  $("status").innerHTML = `<b>${esc(t)}</b><span>${esc(sub ?? s)}</span>`;
+  $("stopTalk").hidden = p !== "speaking" && p !== "thinking";
+}
+const setLevel = v => $("avatar").style.setProperty("--lvl", Math.max(0, Math.min(1, v)).toFixed(3));
+function addTurn(who, text) {
+  const d = document.createElement("div"); d.className = "turn" + (who === "me" ? " me" : "");
+  d.innerHTML = `<b>${who === "me" ? "You" : "Avatar"}</b>${esc(text)}`; $("turns").append(d); $("turns").scrollTop = 1e9; return d;
+}
+
+// ---------- Language helpers ----------
+const DE_WORDS = /\b(ich|und|nicht|was|wie|sie|du|ist|das|der|die|ein|eine|mit|für|auf|bei|haben|sind|wir|kannst|können|bitte|danke|hallo|über|arbeit)\b/gi;
+const isGerman = t => /[äöüß]/i.test(t) || (t.match(DE_WORDS) || []).length >= 2;
+
+// ---------- Speech recognition: Whisper (transformers.js) ----------
+const TF_URL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/transformers.min.js";
+const WHISPER = "onnx-community/whisper-base";
+let asrP = null;
+async function gpuAdapter() { try { return !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch { return false; } }
+function getASR() {
+  if (asrP) return asrP;
+  asrP = (async () => {
+    const tf = await import(TF_URL); tf.env.allowLocalModels = false;
+    const prog = {}; const cb = x => {
+      if (x && x.status === "progress" && x.file) { prog[x.file] = [x.loaded || 0, x.total || 0]; let L = 0, T = 0; for (const v of Object.values(prog)) { L += v[0]; T += v[1]; }
+        if (phase === "loading") setPhase("loading", "Speech recognition " + (T ? Math.round(L / T * 100) : 0) + " % (first time only)"); }
+    };
+    if (await gpuAdapter()) {
+      try { return await tf.pipeline("automatic-speech-recognition", WHISPER, { device: "webgpu", dtype: { encoder_model: "fp32", decoder_model_merged: "q4" }, progress_callback: cb }); } catch {}
+    }
+    return await tf.pipeline("automatic-speech-recognition", WHISPER, { device: "wasm", dtype: "q8", progress_callback: cb });
+  })();
+  asrP.catch(() => { asrP = null; });
+  return asrP;
+}
+const HALLU = /^(untertitel|copyright|vielen dank (fürs|für's|für das) zu(schauen|hören)|thanks? for watching|thank you\.?|\[?music\]?|\[?musik\]?|\.+|you)$/i;
+async function transcribe(pcm16k) {
+  const asr = await getASR();
+  const lang = S.lang === "auto" ? null : S.lang === "de" ? "german" : "english";
+  const out = await asr(pcm16k, lang ? { language: lang, task: "transcribe" } : { task: "transcribe" });
+  const t = String(out && out.text || "").replace(/\[[^\]]*\]|\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+  return HALLU.test(t) ? "" : t;
+}
+
+// ---------- Voice output: Piper (vits-web) with system fallback ----------
+const PIPER_URL = "https://cdn.jsdelivr.net/npm/@diffusionstudio/vits-web@1.0.3/+esm";
+const PIPER_VOICE = { de: "de_DE-thorsten-medium", en: "en_US-ryan-medium" };
+let piper = null, piperFailed = false;
+async function piperSynth(text, lang) {
+  piper = piper || await import(PIPER_URL);
+  const id = PIPER_VOICE[lang];
+  let stored = []; try { stored = await piper.stored(); } catch {}
+  if (!stored.includes(id)) await piper.download(id, p => { if (p && p.total && phase !== "listening") setPhase(phase === "speaking" ? "speaking" : "thinking", "Downloading voice " + Math.round(p.loaded * 100 / p.total) + " % (first time only)"); });
+  return piper.predict({ text, voiceId: id });
+}
+let outCtx = null, outAnalyser = null;
+function outputMeter() {
+  if (outCtx) return;
+  outCtx = new (window.AudioContext || window.webkitAudioContext)();
+  outAnalyser = outCtx.createAnalyser(); outAnalyser.fftSize = 512; outAnalyser.connect(outCtx.destination);
+}
+let speakGen = 0, queue = [], playing = false, curAudio = null;
+function speak(text, lang) {
+  const gen = speakGen;
+  const job = { text, lang, gen, blob: (S.voice === "piper" && !piperFailed) ? piperSynth(text, lang).catch(e => { piperFailed = true; toast("Neural voice unavailable, using the system voice."); return null; }) : Promise.resolve(null) };
+  queue.push(job); if (!playing) playQueue();
+}
+async function playQueue() {
+  playing = true;
+  while (queue.length) {
+    const job = queue.shift(); if (job.gen !== speakGen) continue;
+    const blob = await job.blob; if (job.gen !== speakGen) continue;
+    setPhase("speaking"); $("caption").textContent = job.text;
+    if (blob) await playBlob(blob, job.gen); else await systemSay(job.text, job.lang, job.gen);
+  }
+  playing = false;
+  if (phase === "speaking") afterSpeaking();
+}
+function playBlob(blob, gen) {
+  return new Promise(res => {
+    outputMeter(); if (outCtx.state === "suspended") outCtx.resume();
+    const url = URL.createObjectURL(blob), a = new Audio(url); curAudio = a;
+    const src = outCtx.createMediaElementSource(a); src.connect(outAnalyser);
+    const buf = new Uint8Array(outAnalyser.fftSize); let raf = 0;
+    const meter = () => { outAnalyser.getByteTimeDomainData(buf); let s = 0; for (const v of buf) { const x = (v - 128) / 128; s += x * x; } setLevel(Math.sqrt(s / buf.length) * 4); raf = requestAnimationFrame(meter); };
+    const done = () => { cancelAnimationFrame(raf); setLevel(0); URL.revokeObjectURL(url); if (curAudio === a) curAudio = null; res(); };
+    a.onended = done; a.onerror = done; a.play().then(meter, done);
+    if (gen !== speakGen) { a.pause(); done(); }
+  });
+}
+function systemSay(text, lang, gen) {
+  return new Promise(res => {
+    if (!window.speechSynthesis || gen !== speakGen) return res();
+    const u = new SpeechSynthesisUtterance(text); u.lang = lang === "de" ? "de-DE" : "en-US";
+    const v = speechSynthesis.getVoices().filter(x => x.lang.startsWith(lang === "de" ? "de" : "en"));
+    u.voice = v.find(x => /natural|online|neural|google/i.test(x.name)) || v[0] || null;
+    let t = 0; const pulse = () => { setLevel(.3 + .3 * Math.abs(Math.sin(Date.now() / 120))); t = requestAnimationFrame(pulse); };
+    u.onstart = pulse; u.onend = u.onerror = () => { cancelAnimationFrame(t); setLevel(0); res(); };
+    speechSynthesis.speak(u);
+  });
+}
+function stopSpeaking() {
+  speakGen++; queue = [];
+  if (curAudio) { try { curAudio.pause(); } catch {} curAudio.onended && curAudio.onended(); }
+  try { speechSynthesis.cancel(); } catch {}
+  setLevel(0);
+}
+
+// ---------- Microphone + voice activity detection ----------
+let mic = null; // {ctx, stream, proc, rate}
+let live = false;
+const VAD = { floor: 0.004, calib: [], speaking: false, voiced: 0, silentMs: 0, frames: [], pre: [], loud: 0 };
+async function startMic() {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const src = ctx.createMediaStreamSource(stream), proc = ctx.createScriptProcessor(1024, 1, 1);
+  src.connect(proc); proc.connect(ctx.destination);
+  proc.onaudioprocess = e => { onFrame(new Float32Array(e.inputBuffer.getChannelData(0)), ctx.sampleRate); e.outputBuffer.getChannelData(0).fill(0); };
+  mic = { ctx, stream, proc, rate: ctx.sampleRate };
+  VAD.calib = []; VAD.speaking = false; VAD.frames = []; VAD.pre = [];
+}
+function stopMic() {
+  if (!mic) return;
+  try { mic.proc.disconnect(); mic.stream.getTracks().forEach(t => t.stop()); mic.ctx.close(); } catch {}
+  mic = null; setLevel(0);
+}
+function onFrame(f, rate) {
+  let s = 0; for (let i = 0; i < f.length; i++) s += f[i] * f[i];
+  const rms = Math.sqrt(s / f.length), ms = f.length / rate * 1000;
+  if (VAD.calib.length < 20) { VAD.calib.push(rms); VAD.floor = Math.max(0.003, VAD.calib.reduce((a, b) => a + b, 0) / VAD.calib.length); return; }
+  const thr = Math.max(0.012, VAD.floor * 3);
+  if (phase === "listening") {
+    setLevel(rms * 12);
+    if (!VAD.speaking) {
+      VAD.pre.push(f); if (VAD.pre.length > 15) VAD.pre.shift();
+      VAD.voiced = rms > thr ? VAD.voiced + 1 : 0;
+      if (rms < thr * 0.8) VAD.floor = VAD.floor * 0.98 + rms * 0.02;
+      if (VAD.voiced >= 3) { VAD.speaking = true; VAD.frames = VAD.pre.slice(); VAD.pre = []; VAD.silentMs = 0; }
+    } else {
+      VAD.frames.push(f);
+      VAD.silentMs = rms > thr * 0.7 ? 0 : VAD.silentMs + ms;
+      const dur = VAD.frames.length * ms;
+      if (VAD.silentMs > 750 || dur > 20000) { const frames = VAD.frames; VAD.speaking = false; VAD.frames = []; VAD.voiced = 0; endUtterance(frames, rate, dur); }
+    }
+  } else if ((phase === "speaking" || phase === "thinking") && S.bargein) {
+    // barge-in: sustained loud input while the avatar talks
+    VAD.loud = rms > Math.max(thr * 2.5, 0.035) ? VAD.loud + 1 : 0;
+    VAD.pre.push(f); if (VAD.pre.length > 15) VAD.pre.shift();
+    if (VAD.loud >= 8) { VAD.loud = 0; interrupt(true); }
+  }
+}
+function resampleTo16k(frames, rate) {
+  const n = frames.reduce((a, f) => a + f.length, 0), all = new Float32Array(n); let o = 0; for (const f of frames) { all.set(f, o); o += f.length; }
+  if (rate === 16000) return all;
+  const ratio = rate / 16000, out = new Float32Array(Math.floor(n / ratio));
+  for (let i = 0; i < out.length; i++) { const x = i * ratio, i0 = Math.floor(x), t = x - i0; out[i] = all[i0] * (1 - t) + (all[i0 + 1] ?? all[i0]) * t; }
+  return out;
+}
+
+// ---------- Conversation loop ----------
+const history = [];
+let llmCtl = null, turnId = 0;
+async function endUtterance(frames, rate, durMs) {
+  if (durMs < 350) return; // a click or cough
+  const id = ++turnId;
+  setPhase("transcribing"); setLevel(0);
+  try {
+    const text = await transcribe(resampleTo16k(frames, rate));
+    if (id !== turnId) return;
+    if (!text) { setPhase("listening", "Sorry, I didn't catch that. Try again"); return; }
+    await respond(text, id);
+  } catch (e) { toast("Speech recognition failed: " + (e.message || e)); if (live) setPhase("listening"); }
+}
+async function respond(text, id = ++turnId) {
+  const llm = window.OnDeviceLLM;
+  addTurn("me", text); $("caption").textContent = "“" + text + "”";
+  if (!llm.ready) { needSetup(); return; }
+  const lang = S.lang !== "auto" ? S.lang : isGerman(text) ? "de" : "en";
+  setPhase("thinking");
+  const turnEl = addTurn("bot", "…");
+  let spoken = 0, full = "";
+  // Speak complete sentences as soon as they stream in (low latency); tiny sentences are merged.
+  const SENT = /^([\s\S]*?[.!?…]+["”»]?)\s+/;
+  const flush = final => {
+    for (;;) {
+      const rest = full.slice(spoken);
+      let end = 0, chunk = "", m;
+      while (chunk.trim().length < 25 && (m = rest.slice(end).match(SENT))) { chunk = rest.slice(0, end) + m[1]; end += m[0].length; }
+      if (!end || chunk.trim().length < 25) break;
+      speak(chunk.trim(), lang); spoken += end;
+    }
+    if (final) { const tail = full.slice(spoken).trim(); if (tail) speak(tail, lang); spoken = full.length; }
+  };
+  llmCtl = new AbortController();
+  try {
+    await llm.ask({
+      system: PERSONA, history: history.slice(-8), prompt: text, lang, maxTokens: 160, temperature: 0.6, signal: llmCtl.signal,
+      onText: t => { if (id !== turnId) return; full = t.replace(/[*_#`]/g, ""); turnEl.innerHTML = "<b>Avatar</b>" + esc(full); flush(false); },
+    });
+    if (id !== turnId) return;
+    flush(true);
+    history.push({ role: "user", content: text }, { role: "assistant", content: full });
+    if (!full.trim()) afterSpeaking();
+  } catch (e) {
+    if (e && e.name === "AbortError") return;
+    toast(e.message || String(e)); afterSpeaking();
+  } finally { llmCtl = null; }
+}
+function afterSpeaking() { if (live) setPhase("listening"); else setPhase("idle"); }
+function interrupt(fromVoice) {
+  turnId++; if (llmCtl) llmCtl.abort(); stopSpeaking();
+  if (live) {
+    setPhase("listening");
+    if (fromVoice) { VAD.speaking = true; VAD.frames = VAD.pre.slice(); VAD.pre = []; VAD.silentMs = 0; }
+  } else setPhase("idle");
+}
+$("stopTalk").onclick = () => interrupt(false);
+
+// ---------- Start / stop ----------
+async function startConversation() {
+  const llm = window.OnDeviceLLM;
+  if (!llm.ready) { needSetup(); return; }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast("No microphone access in this browser. You can type instead."); return; }
+  setPhase("loading", "Preparing speech recognition…");
+  try { await startMic(); }
+  catch (e) { setPhase("idle"); toast(e.name === "NotAllowedError" ? "Microphone blocked. Allow it in the address bar and try again." : "Microphone error: " + (e.message || e.name)); return; }
+  live = true; $("mic").classList.add("live"); $("mic").setAttribute("aria-pressed", "true"); $("mic").setAttribute("aria-label", "End conversation");
+  try { await getASR(); } catch (e) { toast("Speech recognition failed to load: " + (e.message || e)); endConversation(); return; }
+  if (!live) return;
+  const lang = S.lang !== "auto" ? S.lang : siteLang === "de" ? "de" : "en";
+  if (!history.length) {
+    const hi = lang === "de" ? "Hallo! Ich bin der KI-Avatar von Shawaiz und laufe komplett in deinem Browser. Frag mich gern nach meiner Arbeit, KI-Sprachassistenten oder meinen Projekten." : "Hi! I'm Shawaiz's AI avatar, running entirely in your browser. Ask me about my work in AI, voice agents or my projects.";
+    addTurn("bot", hi); history.push({ role: "assistant", content: hi }); speak(hi, lang); setPhase("speaking");
+  } else setPhase("listening");
+}
+function endConversation() {
+  live = false; interrupt(false); stopMic();
+  $("mic").classList.remove("live"); $("mic").setAttribute("aria-pressed", "false"); $("mic").setAttribute("aria-label", "Start conversation");
+  setPhase("idle");
+}
+$("mic").onclick = () => live ? endConversation() : startConversation();
+$("typebar").onsubmit = e => { e.preventDefault(); const t = $("typed").value.trim(); if (!t) return; $("typed").value = ""; interrupt(false); respond(t); };
+window.addEventListener("pagehide", endConversation);
+
+// ---------- First-run setup ----------
+function needSetup() {
+  const st = window.OnDeviceLLM.state;
+  const el = $("setup"); el.hidden = false;
+  el.innerHTML = st.status === "unavailable"
+    ? `<b>This browser can't run the on-device AI.</b><span class="note">Please use Chrome or Edge on a desktop or laptop (WebGPU or Chrome's built-in Gemini Nano).</span>`
+    : `<b>One-time setup (free, runs locally)</b>
+       <ol><li>Choose a language model under ⚙️ Settings: Chrome's Gemini Nano or an open-weight model.</li>
+       <li>Press the microphone. Speech recognition (≈80 MB) and the voice download on first use.</li></ol>
+       <button class="ghost" type="button" id="setupGo">Open settings</button>`;
+  const b = $("setupGo"); if (b) b.onclick = () => $("drawer").hidden = false;
+  setPhase("idle");
+}
+const llm = window.OnDeviceLLM;
+llm.mount($("ai"), { title: "Language model" });
+llm.subscribe(st => { if (st.status === "ready") $("setup").hidden = true; });
+llm.init().then(() => { if (!llm.ready) needSetup(); });
+setPhase("idle");
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Secrets never belong in this public repo
+.env
+.env.*
+*.pem
+*.key
+secrets*
+.DS_Store

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spardose Analytics · On-device DeFi position analysis</title>
+<meta name="description" content="Rank Uniswap v3 liquidity positions by APR, ROI, value, age and market signals, and get an AI analysis from a language model running on your device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05090f;--panel:#0b1220;--panel-2:#0f1a2c;--ink:#dbe7f5;--muted:#7d8ea6;--line:#1c2a40;--accent:#22d3ee;--accent-ink:#04131a;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,system-ui,-apple-system,sans-serif}
+a{color:var(--accent)}
+button,input,textarea,select{font:inherit;color:inherit}
+header{border-bottom:1px solid var(--line);background:#070d17}
+.bar{max-width:1320px;margin:auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.logo{font-family:var(--mono);font-weight:700;color:var(--accent)}
+.logo span{color:var(--ink)}
+.sp{flex:1}
+.bar a{font-size:13px;text-decoration:none}
+.pill{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--muted);white-space:nowrap}
+.pill b{color:var(--ink);font-weight:500}
+.up{color:var(--ok)!important}.down{color:var(--bad)!important}
+main{max-width:1320px;margin:auto;padding:18px 16px 50px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+@media(max-width:1020px){main{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.card-h h2{margin:0;font-size:13px;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.term{font-family:var(--mono);font-size:13px;background:#060b14;height:min(62vh,620px);min-height:380px;overflow-y:auto;padding:14px 16px;white-space:pre-wrap;word-wrap:break-word}
+.term .cmd{color:var(--accent)}
+.term .dim{color:var(--muted)}
+.term .ok{color:var(--ok)}.term .warn{color:var(--warn)}.term .err{color:var(--bad)}
+.term .ai{color:#e2e8f0;border-left:2px solid var(--accent);padding-left:10px;display:block;margin:4px 0 8px}
+.term table{border-collapse:collapse;margin:4px 0 8px;font-size:12.5px}
+.term th,.term td{padding:2px 10px 2px 0;text-align:right;white-space:nowrap}
+.term th{color:var(--muted);font-weight:500;border-bottom:1px solid var(--line)}
+.term td:first-child,.term th:first-child,.term td:nth-child(2),.term th:nth-child(2){text-align:left}
+.term .best td{color:var(--ok)}
+.prompt{display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);padding:8px 12px;background:#070d17}
+.prompt span{font-family:var(--mono);color:var(--accent)}
+.prompt input{flex:1;min-width:0;background:transparent;border:0;outline:none;font-family:var(--mono);font-size:13.5px}
+.quick{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid var(--line)}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer;font-size:13px}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.side{display:grid;gap:14px}
+.form{padding:12px 14px;display:grid;gap:12px}
+.form label{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+.form select,.form textarea{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+.form textarea{font-family:var(--mono);font-size:12px;min-height:90px;resize:vertical}
+.w{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center;font-family:var(--mono);font-size:12.5px}
+.w input{accent-color:var(--accent);width:100%}
+.hint{color:var(--muted);font-size:12px;margin:0}
+.disc{font-size:12px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line)}
+footer{max-width:1320px;margin:auto;padding:0 16px 30px;color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <span class="logo">spardose<span>://analytics</span></span>
+  <span class="pill">ETH <b id="ethPx">…</b> <b id="ethCh"></b></span>
+  <span class="pill">data <b id="dsName">sample</b></span>
+  <span class="sp"></span>
+  <a href="https://github.com/shahshawaiz/spardose-analysis/blob/main/USAGE.md">Guide</a>
+  <a href="https://github.com/shahshawaiz/spardose-analysis">GitHub</a>
+  <a href="../../projects/index.html">← All projects</a>
+</div></header>
+
+<main>
+  <section class="card">
+    <div class="card-h"><h2>Terminal</h2><span class="hint">type <b>guide</b> or <b>help</b> · ↑ for history</span></div>
+    <div class="term" id="term" role="log" aria-live="polite"></div>
+    <div class="quick">
+      <button class="btn" type="button" data-cmd="rank">rank</button>
+      <button class="btn" type="button" data-cmd="analyze">analyze top earners (AI)</button>
+      <button class="btn ghost" type="button" data-cmd="plan">analyze position plan (AI)</button>
+      <button class="btn ghost" type="button" data-cmd="market">market</button>
+      <button class="btn ghost" type="button" data-cmd="guide">guide</button>
+      <button class="btn ghost" type="button" data-cmd="stop" id="stopBtn" hidden>stop</button>
+    </div>
+    <form class="prompt" id="form" autocomplete="off"><span>$</span><input id="cmd" aria-label="Command" placeholder="ask which pool has the best risk/reward?"></form>
+  </section>
+
+  <aside class="side">
+    <div id="ai"></div>
+    <div class="card">
+      <div class="card-h"><h2>Scoring</h2><span class="hint">same model as the API</span></div>
+      <div class="form">
+        <label>Network<select id="net"></select></label>
+        <div class="w"><span>APR</span><input type="range" id="wApr" min="0" max="100" value="40"><span id="vApr">0.40</span></div>
+        <div class="w"><span>ROI</span><input type="range" id="wRoi" min="0" max="100" value="40"><span id="vRoi">0.40</span></div>
+        <div class="w"><span>Value</span><input type="range" id="wVol" min="0" max="100" value="20"><span id="vVol">0.20</span></div>
+        <p class="hint">Final score = ¼ · weighted APR/ROI/value + ¼ · age score (0.1–1/3/7 days) + ¼ · pair sentiment + ¼ · ETH trend. Sentiment and trend come live from CoinGecko.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h2>Data</h2></div>
+      <div class="form">
+        <label>Paste a Revert API <code>/v1/positions</code> response (JSON)<textarea id="paste" placeholder='{"data":[{"pool":"0x…","performance":{"hodl":{…}}, …}]}'></textarea></label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" type="button" id="loadPaste">Load JSON</button><button class="btn ghost" type="button" id="loadSample">Reset to sample</button></div>
+        <p class="hint">Revert's API only allows requests from revert.finance, so the demo ships an anonymised snapshot. Paste fresh JSON from <code>api.revert.finance/v1/positions</code> to analyse live data. Everything stays in your browser.</p>
+      </div>
+      <div class="disc">Educational demo, not financial advice. The AI is a small on-device model and can be wrong.</div>
+    </div>
+  </aside>
+</main>
+<footer>Spardose Analytics by Shawaiz Shah · MIT licensed · Runs fully in your browser with an on-device model: no cloud LLM, no API keys.</footer>
+
+<script src="sample-data.js"></script>
+<script src="ondevice-llm.js"></script>
+<script>
+(() => {
+"use strict";
+const llm = window.OnDeviceLLM;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const term = $("term");
+
+// ---------- Prompts (from server/app/core/assets/prompts) ----------
+const PROMPTS = {
+  top: `You are a top-earning position analyzer specializing in identifying and analyzing high-performing DeFi liquidity positions. IMPORTANT: Keep your response to exactly 5 sentences maximum. Identify the highest-earning positions, explain what drives their earnings, assess risks (impermanent loss, out-of-range, very young positions, concentration) and give practical recommendations with specific metrics and pool names. Then add two lines formatted as:\nTop 5 Earning Positions: …\nBottom 5 Earning Positions: …`,
+  plan: `You are an expert financial analyst specializing in DeFi position analysis. IMPORTANT: Keep your response to exactly 5 sentences maximum. Give a position overview, explain the key metrics (price range vs. current price, wallet balances, required amounts, rebalance swap), assess the risks and give specific, actionable recommendations.`,
+  chat: `You are a helpful AI assistant for the Spardose DeFi analysis platform. IMPORTANT: Keep your response to exactly 5 sentences maximum. Be helpful, professional and honest; admit when you don't know. Use the provided position data when it is relevant. This is not financial advice.`,
+};
+
+// ---------- Data ----------
+let DS = { name: "sample", positions: window.SPARDOSE_SAMPLE.positions };
+const market = { eth: { trend: "neutral", score: 0.5, change24h: 0, price: null }, tokens: {} };
+const CG_IDS = { WETH: "ethereum", ETH: "ethereum", WBTC: "wrapped-bitcoin", CBBTC: "coinbase-wrapped-btc", BTCB: "bitcoin", USDC: "usd-coin", "USDC.E": "usd-coin", USDT: "tether", DAI: "dai", WBNB: "binancecoin", BNB: "binancecoin", ARB: "arbitrum", OP: "optimism", LINK: "chainlink", UNI: "uniswap" };
+
+function fromRevert(json) {
+  const list = json.data || json.positions || (Array.isArray(json) ? json : []);
+  return list.map(x => {
+    const h = (x.performance || {}).hodl || {}, toks = x.tokens || {};
+    const sym = a => (toks[a] || {}).symbol || String(a || "").slice(0, 6);
+    return { pool: x.pool, network: x.network || "?", exchange: x.exchange || "?", fee: +x.fee_tier || 0, pair: sym(x.token0) + "/" + sym(x.token1),
+      age: +x.age || 0, inRange: !!x.in_range, apr: +h.apr || 0, roi: +h.roi || 0, pnl: +h.pnl || 0, il: +h.il || 0, feeApr: +h.fee_apr || 0, value: +x.underlying_value || 0 };
+  }).filter(p => p.pool);
+}
+
+// ---------- Scoring (port of /positions/recommendations) ----------
+function ageScore(age) {
+  if (age == null || age < 0) return 0;
+  const r = max => age < 0.1 ? 1 : age <= max ? 1 - (age - 0.1) / (max - 0.1) : 0;
+  return (r(1) + r(3) + r(7)) / 3;
+}
+const pctScore = ch => (Math.max(-1, Math.min(1, ch / 100)) + 1) / 2;
+function pairSentiment(pair) {
+  const s = pair.split("/").map(t => { const m = market.tokens[CG_IDS[t.toUpperCase()]]; return m ? pctScore(m) : 0.5; });
+  return (s[0] + (s[1] ?? 0.5)) / 2;
+}
+function weights() {
+  let a = +$("wApr").value, r = +$("wRoi").value, v = +$("wVol").value; const t = a + r + v || 1;
+  a /= t; r /= t; v /= t;
+  $("vApr").textContent = a.toFixed(2); $("vRoi").textContent = r.toFixed(2); $("vVol").textContent = v.toFixed(2);
+  return { a, r, v };
+}
+function ranked() {
+  const net = $("net").value, w = weights();
+  const list = DS.positions.filter(p => net === "all" || p.network === net);
+  const max = k => Math.max(1e-9, ...list.map(p => p[k]));
+  const mA = max("apr"), mR = max("roi"), mV = max("value");
+  return list.map(p => {
+    const s1 = w.a * Math.max(0, p.apr) / mA + w.r * Math.max(0, p.roi) / mR + w.v * Math.max(0, p.value) / mV;
+    const s2 = ageScore(p.age), s3 = pairSentiment(p.pair), s4 = market.eth.score;
+    return { ...p, s1, s2, s3, s4, score: (s1 + s2 + s3 + s4) / 4 };
+  }).sort((x, y) => y.score - x.score);
+}
+
+// ---------- Terminal output ----------
+const fmt = (n, d = 1) => Math.abs(n) >= 1e6 ? (n / 1e6).toFixed(1) + "M" : Math.abs(n) >= 1e4 ? (n / 1e3).toFixed(0) + "k" : n.toFixed(d);
+const short = a => a.slice(0, 6) + "…" + a.slice(-4);
+const cut = pair => pair.split("/").map(t => t.length > 10 ? t.slice(0, 9) + "…" : t).join("/");
+function out(html, cls) { const d = document.createElement("div"); if (cls) d.className = cls; d.innerHTML = html; term.append(d); term.scrollTop = term.scrollHeight; return d; }
+function table(rows, n = 10) {
+  return `<table><thead><tr><th>#</th><th>pair · net</th><th>pool</th><th>APR %</th><th>ROI %</th><th>value $</th><th>age d</th><th>range</th><th>score</th></tr></thead><tbody>` +
+    rows.slice(0, n).map((p, i) => `<tr class="${i === 0 ? "best" : ""}"><td>${i + 1}</td><td title="${esc(p.pair)}">${esc(cut(p.pair))} · ${esc(p.network)}</td><td>${short(p.pool)}</td><td>${fmt(p.apr)}</td><td>${p.roi.toFixed(1)}</td><td>${fmt(p.value, 0)}</td><td>${p.age.toFixed(2)}</td><td>${p.inRange ? '<span class="ok">in</span>' : '<span class="warn">out</span>'}</td><td>${p.score.toFixed(3)}</td></tr>`).join("") + `</tbody></table>`;
+}
+function compact(rows) {
+  return rows.map((p, i) => `${i + 1}. ${p.pair} on ${p.network} (pool ${short(p.pool)}, fee ${p.fee / 1e4}%): APR ${fmt(p.apr)}%, ROI ${p.roi.toFixed(1)}%, PnL $${fmt(p.pnl)}, IL $${fmt(p.il)}, value $${fmt(p.value, 0)}, age ${p.age.toFixed(2)} days, ${p.inRange ? "in range" : "OUT of range"}, score ${p.score.toFixed(3)}`).join("\n");
+}
+
+// ---------- AI ----------
+let ctl = null;
+async function aiRun(system, prompt, label) {
+  if (!llm.ready) { out("on-device AI not ready → set it up in the panel on the right (Gemini Nano or an open-weight model).", "warn"); $("ai").scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  out(`<span class="dim">${esc(label)} · on-device model thinking…</span>`);
+  const box = out("", "ai"); ctl = new AbortController(); $("stopBtn").hidden = false;
+  try {
+    await llm.ask({ system, prompt, maxTokens: 450, temperature: 0.3, signal: ctl.signal, onText: t => { box.textContent = t.replace(/\*\*/g, ""); term.scrollTop = term.scrollHeight; } });
+    if (!box.textContent.trim()) box.textContent = "(no answer)";
+  } catch (e) { if (e && e.name === "AbortError") out("stopped.", "dim"); else out(esc(e.message || e), "err"); }
+  finally { ctl = null; $("stopBtn").hidden = true; }
+}
+
+// ---------- Commands ----------
+const HELP = `<span class="dim">commands</span>
+  <span class="cmd">guide</span>             quick how-to (scoring, columns, your own data)
+  <span class="cmd">rank</span> [n]          rank positions with the weighted score (default 10)
+  <span class="cmd">analyze</span>           AI analysis of top & bottom earners (on-device)
+  <span class="cmd">plan</span>              AI analysis of the sample rebalance plan (WETH/USDC)
+  <span class="cmd">pool</span> &lt;n&gt;          details for row n of the last ranking
+  <span class="cmd">market</span>            live ETH trend + token sentiment (CoinGecko)
+  <span class="cmd">net</span> &lt;name|all&gt;    filter by network
+  <span class="cmd">ask</span> &lt;question&gt;    chat with the assistant about the data
+  <span class="cmd">clear</span>             clear the terminal`;
+const GUIDE_URL = "https://github.com/shahshawaiz/spardose-analysis/blob/main/USAGE.md";
+const GUIDE = `<span class="ok">quick guide</span>
+<span class="dim">1. ranking (no AI needed)</span>
+  Each position gets 4 sub-scores (0–1); the final score is their average:
+  returns   APR · ROI · value, weighted by the sliders (default 0.4/0.4/0.2)
+  age       favours young positions (0.1–1, 0.1–3, 0.1–7 day windows)
+  sentiment 24h price change of the pair's tokens (CoinGecko, live)
+  eth       ETH 24h trend, same for every position
+  Try: <span class="cmd">rank 20</span> · <span class="cmd">net base</span> · <span class="cmd">pool 1</span>
+<span class="dim">2. reading the table</span>
+  APR can be huge for very young positions: check <b>age d</b> and <b>ROI %</b>.
+  range <span class="ok">in</span> = earning fees, <span class="warn">out</span> = not earning right now.
+<span class="dim">3. AI (on-device)</span>
+  Load a model in the panel on the right, then <span class="cmd">analyze</span>, <span class="cmd">plan</span>,
+  or just type a question, e.g. <span class="cmd">compare pool 1 and pool 4 on risk</span>
+<span class="dim">4. your own data</span>
+  Open api.revert.finance/v1/positions?network=arbitrum&sort=apr&desc=true&limit=100
+  in a new tab, copy the JSON, paste it under Data → Load JSON.
+Full guide: <a href="${GUIDE_URL}" target="_blank" rel="noopener">USAGE.md</a> · not financial advice.`;
+let last = [];
+const hist = []; let hi = 0;
+async function run(line) {
+  line = line.trim(); if (!line) return;
+  hist.push(line); hi = hist.length;
+  out(`<span class="cmd">$ ${esc(line)}</span>`);
+  const [c, ...rest] = line.split(/\s+/); const arg = rest.join(" ");
+  switch (c.toLowerCase()) {
+    case "help": out(HELP); break;
+    case "guide": out(GUIDE); break;
+    case "clear": term.innerHTML = ""; break;
+    case "rank": { last = ranked(); const n = Math.min(+arg || 10, 50);
+      out(`<span class="dim">${last.length} positions · network ${$("net").value} · ETH ${market.eth.trend}</span>`); out(table(last, n)); break; }
+    case "pool": { const p = last[(+arg || 1) - 1]; if (!p) { out("run <b>rank</b> first, then <b>pool 1</b>", "warn"); break; }
+      out(`${esc(p.pair)} · ${esc(p.network)} · ${esc(p.exchange)} · fee ${p.fee / 1e4}%
+pool       ${p.pool}
+APR        ${p.apr.toFixed(2)} %   (fee APR ${p.feeApr.toFixed(2)} %)
+ROI        ${p.roi.toFixed(2)} %   PnL $${p.pnl.toFixed(2)}   IL $${p.il.toFixed(2)}
+value      $${p.value.toFixed(2)}   age ${p.age.toFixed(3)} days   ${p.inRange ? "in range" : "out of range"}
+scores     returns ${p.s1.toFixed(3)} · age ${p.s2.toFixed(3)} · sentiment ${p.s3.toFixed(3)} · eth ${p.s4.toFixed(3)} → <b>${p.score.toFixed(3)}</b>`); break; }
+    case "net": { const v = arg || "all"; if (![...$("net").options].some(o => o.value === v)) { out("unknown network. try: " + [...$("net").options].map(o => o.value).join(", "), "warn"); break; } $("net").value = v; out("network → " + v, "ok"); break; }
+    case "market": await refreshMarket(true); break;
+    case "analyze": { last = ranked(); if (!last.length) { out("no positions", "warn"); break; }
+      const byEarn = [...last].sort((a, b) => b.pnl - a.pnl);
+      const top = byEarn.slice(0, 5), bottom = byEarn.slice(-5).reverse();
+      await aiRun(PROMPTS.top, `Network filter: ${$("net").value}. ${last.length} positions. ETH trend: ${market.eth.trend} (${market.eth.change24h.toFixed(2)}% 24h).\n\nTOP 5 BY PnL:\n${compact(top)}\n\nBOTTOM 5 BY PnL:\n${compact(bottom)}\n\nHighest composite score: ${last[0].pair} on ${last[0].network} (score ${last[0].score.toFixed(3)}).`, "top-earning analyzer"); break; }
+    case "plan": { const pl = window.SPARDOSE_PLAN;
+      out(`<span class="dim">plan ${esc(pl.symbols.token0)}/${esc(pl.symbols.token1)} · pool ${short(pl.poolAddress)} · ticks ${pl.ticks.lower} … ${pl.ticks.upper} (current ${pl.ticks.current}) · rebalance ${esc(pl.rebalance.side)}</span>`);
+      await aiRun(PROMPTS.plan, "POSITION PLAN (JSON):\n" + JSON.stringify(pl).slice(0, llm.charBudget() - 500), "position analysis"); break; }
+    case "ask": { if (!arg) { out("usage: ask &lt;question&gt;", "warn"); break; }
+      if (!last.length) last = ranked();
+      await aiRun(PROMPTS.chat + "\n\nCURRENT TOP POSITIONS:\n" + compact(last.slice(0, 5)), arg, "assistant"); break; }
+    default: await run("ask " + line.replace(/^ask\s+/i, ""));
+  }
+}
+
+// ---------- Market data (CoinGecko allows browser requests) ----------
+async function refreshMarket(print) {
+  const ids = [...new Set(Object.values(CG_IDS))].join(",");
+  try {
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json();
+    for (const [id, v] of Object.entries(j)) market.tokens[id] = v.usd_24h_change || 0;
+    const e = j.ethereum || {};
+    market.eth = { price: e.usd, change24h: e.usd_24h_change || 0, score: pctScore(e.usd_24h_change || 0), trend: (e.usd_24h_change || 0) > 0 ? "bullish" : "bearish" };
+    $("ethPx").textContent = "$" + Math.round(e.usd).toLocaleString("en-US");
+    $("ethCh").textContent = (market.eth.change24h >= 0 ? "+" : "") + market.eth.change24h.toFixed(2) + "%";
+    $("ethCh").className = market.eth.change24h >= 0 ? "up" : "down";
+    if (print) out(`ETH $${e.usd} (${market.eth.change24h.toFixed(2)}% 24h) → <b>${market.eth.trend}</b>, score ${market.eth.score.toFixed(3)}\n` +
+      Object.entries(j).filter(([id]) => id !== "ethereum").map(([id, v]) => `${id.padEnd(22)} ${(v.usd_24h_change || 0).toFixed(2).padStart(7)}%`).join("\n"));
+  } catch (e) {
+    $("ethPx").textContent = "offline";
+    if (print) out("CoinGecko unreachable (" + esc(e.message) + "). Using neutral sentiment 0.5.", "warn");
+  }
+}
+
+// ---------- UI wiring ----------
+function fillNetworks() {
+  const nets = [...new Set(DS.positions.map(p => p.network))].sort();
+  $("net").innerHTML = `<option value="all">all (${DS.positions.length})</option>` + nets.map(n => `<option value="${esc(n)}">${esc(n)} (${DS.positions.filter(p => p.network === n).length})</option>`).join("");
+  $("dsName").textContent = DS.name;
+}
+$("form").onsubmit = e => { e.preventDefault(); const v = $("cmd").value; $("cmd").value = ""; run(v); };
+$("cmd").onkeydown = e => {
+  if (e.key === "ArrowUp" && hi > 0) { hi--; $("cmd").value = hist[hi]; e.preventDefault(); }
+  else if (e.key === "ArrowDown") { hi = Math.min(hist.length, hi + 1); $("cmd").value = hist[hi] || ""; e.preventDefault(); }
+};
+document.querySelector(".quick").onclick = e => { const b = e.target.closest("button[data-cmd]"); if (!b) return; if (b.dataset.cmd === "stop") { ctl && ctl.abort(); return; } run(b.dataset.cmd); };
+["wApr", "wRoi", "wVol"].forEach(id => $(id).oninput = weights);
+["wApr", "wRoi", "wVol", "net"].forEach(id => $(id).onchange = () => run("rank"));
+$("loadPaste").onclick = () => {
+  try { const rows = fromRevert(JSON.parse($("paste").value)); if (!rows.length) throw new Error("no positions with a pool field found");
+    DS = { name: "pasted · " + rows.length, positions: rows }; fillNetworks(); out(`loaded ${rows.length} positions from pasted JSON`, "ok"); run("rank");
+  } catch (e) { out("could not load JSON: " + esc(e.message), "err"); }
+};
+$("loadSample").onclick = () => { DS = { name: "sample", positions: window.SPARDOSE_SAMPLE.positions }; fillNetworks(); out("sample restored", "ok"); run("rank"); };
+
+// ---------- Boot ----------
+llm.mount($("ai"), { title: "On-device AI" });
+llm.init();
+fillNetworks(); weights();
+out(`<span class="ok">spardose analytics</span> <span class="dim">· ${esc(window.SPARDOSE_SAMPLE.snapshot)} · on-device AI, no API keys</span>`);
+out(`<span class="dim">new here? type</span> <span class="cmd">guide</span> <span class="dim">or click the guide button.</span>`);
+refreshMarket(false).then(() => run("rank"));
+})();
+</script>
+</body>
+</html>

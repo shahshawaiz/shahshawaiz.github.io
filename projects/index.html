@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WMXR04KQX5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WMXR04KQX5');
+  </script>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eigene Projekte | Shawaiz Shah</title>
+  <meta name="description" content="Side Projects von Shawaiz Shah: Browser-Apps mit On-Device-KI – FSP-Simulator, Resume AI, PixelMorph, Spardose Analytics." />
+  <meta name="author" content="Shawaiz Shah" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://shawaiz.de/projects/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Shawaiz Shah – Side Projects" />
+  <meta property="og:description" content="Browser-Apps mit On-Device-KI: Modelle laufen lokal, keine Cloud-LLMs." />
+  <meta property="og:url" content="https://shawaiz.de/projects/" />
+  <meta property="og:image" content="https://shawaiz.de/static/fsp-simulator.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{--bg:#030712;--fg:#e5f2ff;--muted:#64748b;--card:#0f172a;--accent:#0ea5e9;--accent2:#22d3ee;--max:1200px;--radius:18px;--shadow:0 8px 28px rgba(0,0,0,.55);}
+    [data-theme="light"]{--bg:#f8fafc;--fg:#0f172a;--muted:#475569;--card:#ffffff;--shadow:0 8px 24px rgba(0,0,0,.08);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;overflow-x:hidden;}
+    a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+    header{position:sticky;top:0;background:rgba(15,23,42,.65);backdrop-filter:blur(12px);z-index:90;border-bottom:1px solid rgba(255,255,255,.05);}
+    [data-theme="light"] header{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.08);}
+    nav{max-width:var(--max);margin:auto;padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+    nav .home{font-weight:600;color:var(--fg);}
+    nav .back{font-size:.95rem;font-weight:500;}
+    .tg{border:none;background:var(--card);color:var(--fg);padding:.45rem .65rem;border-radius:50%;cursor:pointer;box-shadow:var(--shadow);font-size:1rem;}
+    main{max-width:var(--max);margin:auto;padding:3.5rem 1rem 3rem;}
+    h1{font-size:2.6rem;line-height:1.1;margin-bottom:.8rem;font-weight:700;letter-spacing:-.5px;text-align:center;}
+    h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .subtitle{max-width:720px;margin:0 auto 1.4rem;color:var(--muted);font-size:1.05rem;text-align:center;}
+    .principles{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.6rem;}
+    .principles span{border:1px solid rgba(34,211,238,.45);color:var(--accent2);border-radius:999px;padding:.25rem .75rem;font-size:.8rem;font-weight:500;}
+    [data-theme="light"] .principles span{color:#0e7490;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:1.4rem;}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
+    .thumb{height:190px;background:#000;position:relative;overflow:hidden;}
+    .thumb img{width:100%;height:100%;object-fit:cover;object-position:top left;transition:transform .8s;}
+    .card:hover .thumb img{transform:scale(1.05);}
+    .badge{position:absolute;top:.7rem;right:.7rem;background:rgba(3,7,18,.78);color:#e5f2ff;border:1px solid var(--accent2);padding:.2rem .55rem;border-radius:999px;font-size:.7rem;font-weight:600;backdrop-filter:blur(6px);}
+    .badge.soon{border-color:#f59e0b;color:#fde68a;}
+    .card-body{padding:1.2rem 1.35rem 1.4rem;display:flex;flex-direction:column;flex:1;}
+    .card-body h2{font-size:1.15rem;margin-bottom:.45rem;}
+    .card-body p{color:var(--muted);font-size:.9rem;flex:1;}
+    .tags{margin-top:.7rem;}
+    .tags span{display:inline-block;background:rgba(255,255,255,.08);padding:.18rem .5rem;border-radius:7px;font-size:.68rem;margin:0 .3rem .3rem 0;}
+    [data-theme="light"] .tags span{background:rgba(0,0,0,.07);}
+    .actions{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:1rem;}
+    .try{background:var(--accent);color:#fff;padding:.45rem .9rem;border-radius:8px;font-size:.8rem;font-weight:600;}
+    .try:hover{text-decoration:none;filter:brightness(1.1);}
+    .ghost{background:transparent;color:var(--accent);border:1px solid var(--accent);padding:.42rem .8rem;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:inherit;}
+    .ghost:hover{text-decoration:none;}
+    .status{font-size:.78rem;color:var(--muted);}
+    dialog{border:none;border-radius:var(--radius);background:var(--card);color:var(--fg);max-width:760px;width:calc(100% - 2rem);padding:2rem 2.1rem;box-shadow:var(--shadow);}
+    dialog::backdrop{background:rgba(0,0,0,.55);}
+    dialog h2{font-size:1.4rem;margin-bottom:.4rem;padding-right:2rem;}
+    dialog .lead{color:var(--muted);margin-bottom:1rem;}
+    dialog ul{padding-left:1.2rem;display:grid;gap:.35rem;}
+    dialog .note{margin-top:1rem;color:var(--muted);font-size:.9rem;}
+    dialog .x{position:absolute;top:1rem;right:1.2rem;font-size:1.7rem;background:none;border:none;color:var(--muted);cursor:pointer;}
+    footer{border-top:1px solid rgba(255,255,255,.07);padding:2rem 1rem;text-align:center;font-size:.85rem;color:var(--muted);}
+    [data-theme="light"] footer{border-color:rgba(0,0,0,.08);}
+    @media(max-width:640px){nav .back{display:none;}h1{font-size:2rem;}.subtitle{font-size:.95rem;}main{padding-top:2.4rem;}dialog{padding:1.5rem 1.3rem;}}
+  </style>
+</head>
+<body data-theme="dark">
+<header>
+  <nav aria-label="Primary">
+    <a class="home" href="../index.html">Shawaiz Shah</a>
+    <div style="display:flex;gap:.8rem;align-items:center;">
+      <a class="back" id="backLink" href="../index.html"></a>
+      <button class="tg" id="langToggle" type="button"></button>
+      <button class="tg" id="themeToggle" type="button"></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <h1 id="title"></h1>
+  <p class="subtitle" id="subtitle"></p>
+  <div class="principles" id="principles"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer id="footer"></footer>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <button class="x" id="dlgClose" type="button">×</button>
+  <h2 id="dlgTitle"></h2>
+  <p class="lead" id="dlgLead"></p>
+  <div id="dlgBody"></div>
+  <div class="actions" id="dlgActions"></div>
+</dialog>
+
+<script>
+(() => {
+  // live: url = live demo (this site or a project site under shawaiz.de). soon: on-device port in progress.
+  const PROJECTS = [
+    { id: "fsp", img: "../static/fsp-simulator.jpg", url: "../fsp/index.html", live: true,
+      de: { title: "FSP-Simulator Berlin", short: "Übungsumgebung für die Fachsprachprüfung (Ärztekammer Berlin): Anamnese mit KI-Patient, Arztbrief, Fallvorstellung bei der KI-Oberärztin und automatische Auswertung.",
+        tags: ["On-Device-KI","Sprach-KI","LLMs","Medizin"],
+        body: ["Alle drei Prüfungsteile: Arzt-Patienten-Gespräch (Rollenspiel per Sprache), Arztbrief in Fachsprache, Arzt-Arzt-Gespräch, danach Bewertung mit Satzkorrekturen.",
+          "On-Device-LLMs: Chrome-KI (Gemini Nano) oder Open-Weight-Modelle über WebLLM/WebGPU (Qwen 2.5, Llama 3).",
+          "Lokale Spracherkennung mit Whisper (transformers.js, WebGPU/WASM) inkl. Pausenerkennung und Freihand-Modus; neuronale Sprachausgabe mit Piper.",
+          "8 realistische Notaufnahme-Fälle mit eigenen Persönlichkeiten (z. B. Berliner Dialekt, schwerhörig, verharmlosend).",
+          "Eine einzige HTML-Datei, kein Backend: Audio und Text verlassen das Gerät nicht."],
+        note: "Beste Erfahrung in Chrome oder Edge am Computer." },
+      en: { title: "FSP Simulator Berlin", short: "Practice environment for the German medical language exam (Fachsprachprüfung, Berlin): history-taking with an AI patient, discharge letter, case presentation to an AI senior physician, and automatic grading.",
+        tags: ["On-device AI","Voice AI","LLMs","Healthcare"],
+        body: ["All three exam parts: doctor–patient interview (voice role-play), discharge letter in medical German, doctor–doctor case presentation, then grading with sentence-level corrections.",
+          "On-device LLMs: Chrome built-in AI (Gemini Nano) or open-weight models via WebLLM/WebGPU (Qwen 2.5, Llama 3).",
+          "Local speech-to-text with Whisper (transformers.js, WebGPU/WASM) incl. pause detection and hands-free mode; neural text-to-speech with Piper.",
+          "8 realistic emergency cases with distinct personas (e.g. Berlin dialect, hard of hearing, downplaying symptoms).",
+          "A single HTML file, no backend: audio and text never leave the device."],
+        note: "Works best in Chrome or Edge on desktop." } },
+    { id: "resume", img: "../static/resume-ai.jpg", url: "../demos/resume-ai/index.html", live: true, repo: "https://github.com/shahshawaiz/resume-ai",
+      de: { title: "Resume AI", short: "Lebenslauf (PDF) hochladen, Stellenanzeige einfügen: Die On-Device-KI passt den Lebenslauf Zeile für Zeile an die Stelle an und schreibt ein passendes Anschreiben – Export als PDF und Word.",
+        tags: ["On-Device-KI","LLMs","Dokumente","Karriere"],
+        body: ["Der Lebenslauf (PDF) wird lokal im Browser mit pdf.js ausgelesen – nichts wird hochgeladen.",
+          "Deterministischer Keyword-Abgleich mit der Stellenanzeige ergibt einen nachvollziehbaren Match-Score.",
+          "Ein On-Device-LLM (Chrome-KI oder WebLLM/WebGPU) schlägt Zeile für Zeile Umformulierungen vor – ohne Erfahrungen zu erfinden.",
+          "Schreibt ein passendes Anschreiben auf Deutsch oder Englisch.",
+          "Export als PDF (jsPDF) oder Word-Dokument."],
+        note: "Beste Erfahrung in Chrome oder Edge am Computer." },
+      en: { title: "Resume AI", short: "Upload your CV (PDF), paste a job ad: on-device AI tailors the CV line by line to the role and writes a matching cover letter, exported as PDF and Word.",
+        tags: ["On-device AI","LLMs","Documents","Careers"],
+        body: ["Your CV (PDF) is parsed locally in the browser with pdf.js – nothing is uploaded.",
+          "A deterministic keyword match against the job ad gives a transparent match score.",
+          "An on-device LLM (Chrome built-in AI or WebLLM/WebGPU) suggests line-by-line rewrites – never inventing experience.",
+          "Writes a matching cover letter in English or German.",
+          "Export to PDF (jsPDF) or Word."],
+        note: "Works best in Chrome or Edge on desktop." } },
+    { id: "pixelmorph", img: "../static/pixelmorph.jpg", url: "../demos/pixelmorph/index.html", live: true, repo: "https://github.com/shahshawaiz/pixelmorph",
+      de: { title: "PixelMorph", short: "KI-Bildwerkzeuge im Browser: Hintergrund entfernen und Gesichtsform erkennen, mit Stil-Tipps von einer On-Device-KI. Bilder verlassen nie den Browser.",
+        tags: ["On-Device-KI","Computer Vision","LLMs"],
+        body: ["Hintergrundentfernung lokal mit MODNet über transformers.js (WebGPU/WASM).",
+          "Gesichtsform-Erkennung mit dem MediaPipe Face Landmarker direkt im Browser.",
+          "Ein On-Device-LLM gibt passende Stil-Tipps (Frisur, Brille, Bart) zur erkannten Gesichtsform.",
+          "Bilder werden nicht hochgeladen – alles läuft auf Ihrem Gerät."],
+        note: "Der Gesichtstausch (InsightFace) läuft nur in der Server-Version und ist nicht Teil der Web-Demo." },
+      en: { title: "PixelMorph", short: "AI image tools in the browser: background removal and face-shape detection, with style tips from on-device AI. Images never leave the browser.",
+        tags: ["On-device AI","Computer Vision","LLMs"],
+        body: ["Local background removal with MODNet via transformers.js (WebGPU/WASM).",
+          "Face-shape detection with MediaPipe Face Landmarker, right in the browser.",
+          "An on-device LLM gives style tips (haircut, glasses, beard) for the detected face shape.",
+          "Images are never uploaded – everything runs on your device."],
+        note: "Face swap (InsightFace) is server-only and not part of the web demo." } },
+    { id: "spardose", img: "../static/spardose.svg", url: "../demos/spardose/index.html", live: true, repo: "https://github.com/shahshawaiz/spardose-analysis",
+      de: { title: "Spardose Analytics", short: "Analyse von Uniswap-v3-Liquiditätspositionen in einer Terminal-Oberfläche: Positionen bewerten, Top- und Flop-Performer finden, Rebalancing-Plan von einer On-Device-KI.",
+        tags: ["On-Device-KI","LLMs","Krypto / DeFi"],
+        body: ["Rangliste nach demselben 4-teiligen Score wie die API: gewichtete APR/ROI/Wert, Alters-Score, Live-Token-Sentiment (CoinGecko) und ETH-Trend.",
+          "Ein On-Device-LLM analysiert die besten und schwächsten Positionen und schlägt einen Rebalancing-Plan vor.",
+          "Enthält einen anonymisierten Beispiel-Datensatz; eigene Daten als Revert-API-JSON einfügen.",
+          "Terminal-Oberfläche, keine Cloud-LLMs, keine API-Schlüssel."],
+        note: "Keine Finanzberatung." },
+      en: { title: "Spardose Analytics", short: "Analysis of Uniswap v3 liquidity positions in a terminal-style UI: score positions, find top and bottom earners, get a rebalance plan from on-device AI.",
+        tags: ["On-device AI","LLMs","Crypto / DeFi"],
+        body: ["Ranks positions with the same 4-part score as the API: weighted APR/ROI/value, age score, live token sentiment (CoinGecko) and ETH trend.",
+          "An on-device LLM analyzes top and bottom earners and proposes a rebalance plan.",
+          "Ships an anonymised snapshot; paste your own Revert API JSON.",
+          "Terminal-style UI, no cloud LLMs, no API keys."],
+        note: "Not financial advice." } }
+  ];
+
+  const T = {
+    de: { title: 'Eigene <span>Projekte</span>', subtitle: 'Dinge, die ich in meiner Freizeit baue. Live-Demos laufen direkt in Ihrem Browser – mit On-Device-KI: Modelle und Spracherkennung laufen lokal auf Ihrem Gerät.',
+      principles: ['On-Device-KI','Keine Cloud-LLMs','Keine API-Schlüssel','Kostenlos'], back: '← Zurück zum Portfolio', try: 'Jetzt testen →', more: 'Mehr erfahren', code: 'Code auf GitHub',
+      liveBadge: 'On-Device-KI · Live', soonBadge: 'Demo folgt', soon: 'On-Device-Version in Arbeit', close: 'Schließen', footer: 'Gebaut mit ❤ und lokalen Modellen.', doc: 'Eigene Projekte | Shawaiz Shah' },
+    en: { title: 'Side <span>Projects</span>', subtitle: 'Things I build in my spare time. Live demos run right in your browser with on-device AI: the models and speech recognition run locally on your machine.',
+      principles: ['On-device AI','No cloud LLMs','No API keys','Free'], back: '← Back to portfolio', try: 'Try now →', more: 'Learn more', code: 'Code on GitHub',
+      liveBadge: 'On-device AI · Live', soonBadge: 'Demo coming', soon: 'On-device version in progress', close: 'Close', footer: 'Built with ❤ and local models.', doc: 'Side Projects | Shawaiz Shah' }
+  };
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+  let lang = store.get('lang') === 'en' ? 'en' : 'de';
+  let theme = store.get('theme') === 'light' ? 'light' : 'dark';
+
+  function actions(p, t) {
+    const a = [];
+    if (p.live) a.push(`<a class="try" href="${p.url}" target="_blank" rel="noopener">${t.try}</a>`);
+    if (p.repo) a.push(`<a class="ghost" href="${p.repo}" target="_blank" rel="noopener">${t.code}</a>`);
+    return a.join('');
+  }
+
+  function render() {
+    const t = T[lang];
+    document.documentElement.lang = lang;
+    document.title = t.doc;
+    $('title').innerHTML = t.title;
+    $('subtitle').textContent = t.subtitle;
+    $('principles').innerHTML = t.principles.map(x => `<span>${x}</span>`).join('');
+    $('backLink').textContent = t.back;
+    $('langToggle').textContent = lang === 'de' ? '🇬🇧' : '🇩🇪';
+    $('langToggle').setAttribute('aria-label', lang === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln');
+    $('dlgClose').setAttribute('aria-label', t.close);
+    $('footer').textContent = `© ${new Date().getFullYear()} Shawaiz Shah. ${t.footer}`;
+    $('grid').innerHTML = PROJECTS.map((p, i) => {
+      const c = p[lang];
+      return `<article class="card" itemscope itemtype="https://schema.org/CreativeWork">
+        <div class="thumb"><img loading="lazy" src="${p.img}" alt="${esc(c.title)}" itemprop="image">
+          <span class="badge${p.live ? '' : ' soon'}">${p.live ? t.liveBadge : t.soonBadge}</span></div>
+        <div class="card-body">
+          <h2 itemprop="name">${esc(c.title)}</h2>
+          <p itemprop="description">${esc(c.short)}</p>
+          <div class="tags">${c.tags.map(x => `<span>${esc(x)}</span>`).join('')}</div>
+          <div class="actions">${actions(p, t)}<button class="ghost" type="button" data-i="${i}">${t.more}</button></div>
+          ${p.live ? '' : `<span class="status" style="margin-top:.6rem;">${t.soon}</span>`}
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  function applyTheme() {
+    document.body.setAttribute('data-theme', theme);
+    $('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+    $('themeToggle').setAttribute('aria-label', theme === 'dark' ? 'Light mode' : 'Dark mode');
+  }
+
+  $('grid').addEventListener('click', e => {
+    const b = e.target.closest('button[data-i]'); if (!b) return;
+    const p = PROJECTS[+b.dataset.i], c = p[lang], t = T[lang];
+    $('dlgTitle').textContent = c.title;
+    $('dlgLead').textContent = c.short;
+    $('dlgBody').innerHTML = `<ul>${c.body.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` +
+      (c.note ? `<p class="note">${esc(c.note)}</p>` : '') + (p.live ? '' : `<p class="note">${t.soon}.</p>`);
+    $('dlgActions').innerHTML = actions(p, t);
+    $('dlg').showModal();
+  });
+  $('dlgClose').addEventListener('click', () => $('dlg').close());
+  $('dlg').addEventListener('click', e => { if (e.target === $('dlg')) $('dlg').close(); });
+  $('langToggle').addEventListener('click', () => { lang = lang === 'de' ? 'en' : 'de'; store.set('lang', lang); render(); });
+  $('themeToggle').addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; store.set('theme', theme); applyTheme(); });
+
+  applyTheme();
+  render();
+})();
+</script>
+</body>
+</html>

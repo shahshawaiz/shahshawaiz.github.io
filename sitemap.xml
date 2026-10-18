@@ -9,11 +9,46 @@
     <!-- The main (and only) page -->
     <loc>https://www.shawaiz.de/</loc>
     <!-- ISO‑8601 timestamp of last modification -->
-    <lastmod>2025-07-24T00:00:00+02:00</lastmod>
+    <lastmod>2026-10-18T00:00:00+02:00</lastmod>
     <!-- How often the content is likely to change -->
     <changefreq>weekly</changefreq>
     <!-- Priority relative to other URLs on your site -->
     <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shawaiz.de/projects/</loc>
+    <lastmod>2026-10-18T00:00:00+02:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shawaiz.de/fsp/</loc>
+    <lastmod>2026-10-18T00:00:00+02:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shawaiz.de/demos/resume-ai/</loc>
+    <lastmod>2026-10-18T00:00:00+02:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shawaiz.de/demos/spardose/</loc>
+    <lastmod>2026-10-18T00:00:00+02:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.shawaiz.de/demos/pixelmorph/</loc>
+    <lastmod>2026-10-18T00:00:00+02:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
 
 </urlset>

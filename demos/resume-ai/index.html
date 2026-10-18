@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume AI · On-device CV tailoring</title>
+<meta name="description" content="Tailor your CV to a job ad and write a matching cover letter with an on-device LLM. Your CV never leaves your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#030712;--panel:#0f172a;--panel-2:#111c31;--ink:#e5f2ff;--muted:#8193ab;--line:#1f2b42;--accent:#0ea5e9;--accent-ink:#fff;--ok:#22c55e;--warn:#f59e0b;--bad:#f87171;--add:rgba(34,197,94,.14);--del:rgba(248,113,113,.12);color-scheme:dark}
+[data-theme="light"]{--bg:#f8fafc;--panel:#fff;--panel-2:#f1f5f9;--ink:#0f172a;--muted:#5b6b80;--line:#dbe3ee;--ok:#15803d;--warn:#b45309;--bad:#dc2626;--add:rgba(21,128,61,.10);--del:rgba(220,38,38,.08);color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+button,input,textarea,select{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{max-width:1240px;margin:auto;padding:10px 16px;display:flex;gap:12px;align-items:center}
+.bar .logo{font-weight:700;letter-spacing:-.2px}
+.bar .logo span{color:var(--accent)}
+.bar .sp{flex:1}
+.bar a{font-size:13.5px;text-decoration:none}
+.tg{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:5px 9px;cursor:pointer}
+main{max-width:1240px;margin:auto;padding:22px 16px 60px}
+.hero h1{margin:0 0 4px;font-size:26px;letter-spacing:-.4px}
+.hero p{margin:0 0 18px;color:var(--muted);max-width:760px}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:18px;align-items:start}
+@media(max-width:960px){.cols{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.card-h h2{margin:0;font-size:14.5px}
+.card-b{padding:14px;display:grid;gap:12px}
+.stack{display:grid;gap:14px}
+label.l{font-weight:600;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:8px;align-items:center}
+textarea{width:100%;border:1px solid var(--line);border-radius:9px;background:var(--panel-2);padding:10px;resize:vertical;line-height:1.5}
+textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.drop{border:1.5px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--muted);cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);color:var(--ink)}
+.drop b{color:var(--ink)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:9px;padding:9px 14px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.quiet{background:var(--panel-2);border-color:var(--line);color:var(--ink);font-weight:500}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hint{color:var(--muted);font-size:12.5px}
+select{border:1px solid var(--line);border-radius:8px;background:var(--panel-2);padding:7px 9px}
+.tabs{display:flex;gap:4px;padding:6px 8px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs button{border:0;background:none;padding:7px 12px;border-radius:8px;cursor:pointer;color:var(--muted);font-weight:500}
+.tabs button[aria-selected=true]{background:var(--panel-2);color:var(--ink)}
+.tabs .n{font-size:11.5px;background:var(--panel-2);border-radius:999px;padding:1px 7px;margin-left:4px}
+.tabs button[aria-selected=true] .n{background:var(--accent);color:var(--accent-ink)}
+.pane{padding:16px}
+.empty{color:var(--muted);text-align:center;padding:40px 10px}
+.score{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ring{--p:0;width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--panel-2) 0);display:grid;place-items:center;flex:none}
+.ring b{width:76px;height:76px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:22px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:12.5px}
+.chip.ok{border-color:color-mix(in srgb,var(--ok) 60%,transparent);color:var(--ok)}
+.chip.miss{border-color:color-mix(in srgb,var(--warn) 60%,transparent);color:var(--warn)}
+h3{font-size:13px;margin:16px 0 8px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.sug{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:6px;margin-bottom:10px}
+.sug.on{border-color:color-mix(in srgb,var(--ok) 55%,transparent)}
+.sug .old{background:var(--del);border-radius:6px;padding:5px 8px;text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--bad) 60%,transparent)}
+.sug .new{background:var(--add);border-radius:6px;padding:5px 8px}
+.sug .why{color:var(--muted);font-size:12.5px}
+.sug label{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer;font-weight:600}
+.out{min-height:340px;font-family:inherit;font-size:14px}
+.stream{white-space:pre-wrap;background:var(--panel-2);border-radius:9px;padding:12px;min-height:120px}
+.status{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px;min-height:22px}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;font-size:13.5px;z-index:20;max-width:calc(100% - 32px)}
+footer{color:var(--muted);text-align:center;font-size:12.5px;padding:24px 16px}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <span class="logo">Resume<span>AI</span></span>
+  <span class="hint">on-device</span>
+  <span class="sp"></span>
+  <a href="../../projects/index.html">← All projects</a>
+  <button class="tg" id="theme" type="button" aria-label="Toggle theme">☀️</button>
+</div></header>
+
+<main>
+  <section class="hero">
+    <h1>Tailor your CV to any job ad, privately</h1>
+    <p>Upload your CV and paste a job ad. A language model running <b>on your device</b> rewrites your CV lines to fit the role and drafts a matching cover letter. Your CV is never uploaded anywhere.</p>
+  </section>
+
+  <div class="cols">
+    <div class="stack">
+      <div id="ai"></div>
+
+      <div class="card">
+        <div class="card-h"><h2>1 · Your CV</h2><button class="btn quiet sm" id="sample" type="button">Load sample CV + job ad</button></div>
+        <div class="card-b">
+          <div class="drop" id="drop" tabindex="0" role="button"><b>Drop your CV PDF here</b> or click to choose a file · text is extracted locally</div>
+          <input type="file" id="file" accept="application/pdf,.pdf,.txt,.md" hidden>
+          <label class="l" for="cv">CV text <span class="hint" id="cvCount"></span></label>
+          <textarea id="cv" rows="12" placeholder="…or paste your CV as text"></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2>2 · Job ad</h2></div>
+        <div class="card-b">
+          <textarea id="job" rows="9" placeholder="Paste the job description"></textarea>
+          <div class="row">
+            <label class="hint" for="lang">Cover letter language</label>
+            <select id="lang"><option value="en">English</option><option value="de">Deutsch</option></select>
+          </div>
+          <div class="row">
+            <button class="btn" id="run" type="button">Tailor my CV</button>
+            <button class="btn quiet" id="stop" type="button" hidden>Stop</button>
+          </div>
+          <div class="status" id="status"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="results">
+      <div class="tabs" role="tablist">
+        <button role="tab" data-t="match" aria-selected="true">Match</button>
+        <button role="tab" data-t="cv" aria-selected="false">Tailored CV <span class="n" id="nSug">0</span></button>
+        <button role="tab" data-t="letter" aria-selected="false">Cover letter</button>
+      </div>
+      <div class="pane" id="pane"></div>
+    </div>
+  </div>
+</main>
+<footer>Part of <a href="../../projects/index.html">Shawaiz Shah's side projects</a>. Runs fully in your browser with an open or built-in model, so there are no API keys and no costs.</footer>
+
+<script src="ondevice-llm.js"></script>
+<script>
+(() => {
+"use strict";
+const llm = window.OnDeviceLLM;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+let toastT; function toast(m) { document.querySelector(".toast")?.remove(); const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.append(t); clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 4500); }
+
+// ---------- Theme (shared with the main site) ----------
+let theme = store.get("theme") === "light" ? "light" : "dark";
+const applyTheme = () => { document.documentElement.dataset.theme = theme; $("theme").textContent = theme === "dark" ? "☀️" : "🌙"; };
+$("theme").onclick = () => { theme = theme === "dark" ? "light" : "dark"; store.set("theme", theme); applyTheme(); };
+applyTheme();
+
+// ---------- State ----------
+const R = { keywords: null, suggestions: [], accepted: new Set(), summary: "", letter: "", tab: "match", busy: false };
+let ctl = null;
+
+// ---------- Samples (fictional) ----------
+const SAMPLE_CV = `Alex Morgan
+Data Scientist · Berlin, Germany · alex.morgan@example.com
+
+SUMMARY
+Data scientist with 5 years of experience building machine learning models for e-commerce and logistics.
+
+EXPERIENCE
+Data Scientist, ShopLine GmbH, Berlin (2021 – present)
+- Built demand forecasting models in Python that improved stock planning
+- Worked on a recommendation system for the online shop
+- Created dashboards for the marketing team
+- Moved some batch jobs to the cloud
+
+Junior Data Analyst, CargoFlow AG, Hamburg (2019 – 2021)
+- Wrote SQL queries and reports for operations
+- Cleaned data and did analyses in pandas
+- Helped with an A/B testing framework
+
+EDUCATION
+M.Sc. Computer Science, TU Berlin (2019)
+
+SKILLS
+Python, pandas, scikit-learn, SQL, Tableau, Git, Docker, basic AWS
+Languages: English (fluent), German (B2)`;
+const SAMPLE_JOB = `Machine Learning Engineer (m/w/d) – Nordlicht Health GmbH, Berlin
+
+Nordlicht Health builds AI products that help clinics predict patient demand and plan staff.
+
+Your tasks
+- Design, train and deploy machine learning models for time-series forecasting
+- Build production ML pipelines on Google Cloud (Vertex AI, BigQuery)
+- Own MLOps: CI/CD, monitoring and model retraining
+- Work closely with product and clinical experts
+
+Your profile
+- 3+ years of experience with Python, scikit-learn or PyTorch
+- Experience with forecasting, recommendation or NLP systems in production
+- Strong SQL and experience with cloud platforms (GCP preferred)
+- Docker and Kubernetes; Airflow is a plus
+- Good communication skills in English; German is a plus`;
+
+$("sample").onclick = () => { $("cv").value = SAMPLE_CV; $("job").value = SAMPLE_JOB; onInput(); analyzeKeywords(); render(); toast("Sample loaded (fictional person and company)."); };
+
+// ---------- CV input: PDF via pdf.js, all local ----------
+const PDFJS = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/";
+let pdfjs = null;
+async function pdfToText(file) {
+  pdfjs = pdfjs || await import(PDFJS + "pdf.min.mjs");
+  pdfjs.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.mjs";
+  const doc = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
+  const pages = [];
+  for (let i = 1; i <= doc.numPages; i++) {
+    const tc = await (await doc.getPage(i)).getTextContent();
+    let line = "", lines = [], lastY = null;
+    for (const it of tc.items) {
+      const y = it.transform ? Math.round(it.transform[5]) : lastY;
+      if (lastY !== null && y !== null && Math.abs(y - lastY) > 2 && line.trim()) { lines.push(line.trim()); line = ""; }
+      line += it.str + (it.hasEOL ? "\n" : "");
+      if (it.hasEOL) { lines.push(...line.split("\n").map(s => s.trim()).filter(Boolean)); line = ""; }
+      lastY = y;
+    }
+    if (line.trim()) lines.push(line.trim());
+    pages.push(lines.join("\n"));
+  }
+  return pages.join("\n\n").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
+}
+async function takeFile(f) {
+  if (!f) return;
+  try {
+    status("Reading " + f.name + " locally …", true);
+    const text = /\.pdf$/i.test(f.name) || f.type === "application/pdf" ? await pdfToText(f) : await f.text();
+    if (!text) throw new Error("No text found. Is it a scanned image? Paste the text instead.");
+    $("cv").value = text; onInput(); analyzeKeywords(); render(); status("");
+    toast("CV text extracted in your browser.");
+  } catch (e) { status(""); toast("Could not read the file: " + (e.message || e)); }
+}
+const drop = $("drop");
+drop.onclick = () => $("file").click();
+drop.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("file").click(); } };
+$("file").onchange = e => takeFile(e.target.files[0]);
+["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => takeFile(e.dataTransfer.files[0]));
+
+function onInput() { const n = $("cv").value.trim().split(/\s+/).filter(Boolean).length; $("cvCount").textContent = n ? n + " words" : ""; }
+$("cv").oninput = () => { onInput(); scheduleKw(); };
+$("job").oninput = scheduleKw;
+let kwT; function scheduleKw() { clearTimeout(kwT); kwT = setTimeout(() => { analyzeKeywords(); if (R.tab === "match") render(); }, 400); }
+
+// ---------- Keyword match (deterministic, instant, no AI needed) ----------
+const SKILLS = ["Python","R","SQL","Java","Scala","Go","JavaScript","TypeScript","C++","Rust","pandas","NumPy","scikit-learn","PyTorch","TensorFlow","Keras","XGBoost","LightGBM","Spark","PySpark","Hadoop","Kafka","Airflow","dbt","Docker","Kubernetes","Terraform","Git","CI/CD","MLOps","LLM","LLMs","RAG","NLP","computer vision","deep learning","machine learning","time-series","forecasting","recommendation","A/B testing","statistics","Bayesian","optimization","AWS","GCP","Google Cloud","Azure","Vertex AI","BigQuery","SageMaker","Snowflake","Databricks","Tableau","Power BI","Looker","React","Node.js","FastAPI","Flask","Django","REST","GraphQL","PostgreSQL","MongoDB","Redis","Elasticsearch","Linux","agile","Scrum","stakeholder","leadership","mentoring","communication","English","German","Deutsch","Englisch","monitoring","data pipelines","ETL","microservices"];
+const STOP = new Set("the and for with you your our are will this that from have has into about who what when where which their they them its job team role work working years year experience plus strong good great etc you'll we're m/w/d gmbh ag se kg ceo cto cv eu usa uk der die das und mit für wir sie ihr ihre ein eine von bei auf als zum zur oder".split(" "));
+const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const hasTerm = (text, term) => new RegExp("(^|[^a-z0-9+#])" + escRe(term.toLowerCase()) + "s?($|[^a-z0-9+#])", "i").test(text);
+function extractTerms(text) {
+  const out = new Map();
+  for (const sk of SKILLS) if (hasTerm(text, sk)) out.set(sk.toLowerCase(), sk);
+  for (const m of text.matchAll(/[A-Za-z][A-Za-z0-9+#./-]{1,24}/g)) {
+    const w = m[0].replace(/[./-]+$/, "");
+    if (w.length < 2 || STOP.has(w.toLowerCase())) continue;
+    // tech-looking tokens: acronyms (SQL, GCP), camel case (PyTorch), digits/symbols (C++, Node.js, S3)
+    const techy = /^[A-Z]{2,6}$/.test(w) || /[a-z][A-Z]/.test(w) || /\d/.test(w) || /[+#]/.test(w) || /\.[a-z]/i.test(w);
+    if (techy) {
+      if (![...out.keys()].some(k => k.includes(w.toLowerCase()))) out.set(w.toLowerCase(), w);
+    }
+  }
+  return out;
+}
+function analyzeKeywords() {
+  const cv = $("cv").value, job = $("job").value;
+  if (!cv.trim() || !job.trim()) { R.keywords = null; return; }
+  const terms = [...extractTerms(job).values()];
+  const hit = terms.filter(t => hasTerm(cv, t)), miss = terms.filter(t => !hasTerm(cv, t));
+  R.keywords = { hit, miss, score: terms.length ? Math.round(hit.length * 100 / terms.length) : 0 };
+}
+
+// ---------- AI pipeline ----------
+function status(msg, spin) { $("status").innerHTML = msg ? (spin ? '<span class="spin"></span>' : "") + "<span>" + esc(msg) + "</span>" : ""; }
+const cvLines = () => $("cv").value.split("\n").map(s => s.trim()).filter(Boolean);
+const clip = (s, n) => s.length > n ? s.slice(0, n) + "\n…" : s;
+
+const SUG_SCHEMA = { type: "object", properties: {
+  summary: { type: "string" },
+  suggestions: { type: "array", maxItems: 8, items: { type: "object", properties: { line: { type: "integer" }, improved: { type: "string" }, why: { type: "string" } }, required: ["line", "improved", "why"] } } },
+  required: ["summary", "suggestions"] };
+
+async function run() {
+  const cv = $("cv").value.trim(), job = $("job").value.trim();
+  if (!cv || !job) { toast("Add your CV and a job ad first (or load the sample)."); return; }
+  if (!llm.ready) { toast("Set up the on-device AI first (panel at the top)."); $("ai").scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  analyzeKeywords();
+  R.busy = true; R.suggestions = []; R.accepted = new Set(); R.summary = ""; R.letter = "";
+  ctl = new AbortController(); $("run").disabled = true; $("stop").hidden = false;
+  const budget = llm.charBudget();
+  const lines = cvLines();
+  const numbered = clip(lines.map((l, i) => i + 1 + ": " + l).join("\n"), Math.round(budget * 0.6));
+  const jobT = clip(job, Math.round(budget * 0.35));
+  const missing = R.keywords ? R.keywords.miss.slice(0, 15).join(", ") : "";
+  try {
+    // Step 1: line-level rewrite suggestions (structured JSON)
+    switchTab("cv"); status("Step 1/2 · Finding CV lines to strengthen …", true);
+    const res = await llm.ask({
+      system: "You are an expert CV writer. You improve CV lines so they match a job ad better. Never invent experience, employers, numbers or skills the candidate does not show. Rephrase, use the job ad's vocabulary for things the candidate really did, and make achievements concrete and active. Reply with JSON only.",
+      prompt: `JOB AD:\n${jobT}\n\nCV (numbered lines):\n${numbered}\n\nKeywords from the job ad missing in the CV: ${missing || "none"}\n\nReturn JSON: {"summary": "2 sentences on how well the CV fits and the biggest gap", "suggestions": [{"line": <number of the CV line to replace>, "improved": "<rewritten line, same language as the CV>", "why": "<short reason>"}]}. Give 4 to 8 suggestions for experience bullets, summary or skills lines. Do not change names, dates, contact details or headings.`,
+      schema: SUG_SCHEMA, maxTokens: 900, temperature: 0.3, signal: ctl.signal,
+    });
+    R.summary = String(res.summary || "");
+    const seen = new Set();
+    R.suggestions = (Array.isArray(res.suggestions) ? res.suggestions : [])
+      .map(s => ({ line: parseInt(s.line, 10) - 1, improved: String(s.improved || "").trim(), why: String(s.why || "").trim() }))
+      .filter(s => s.line >= 0 && s.line < lines.length && s.improved && s.improved !== lines[s.line] && !seen.has(s.line) && seen.add(s.line))
+      .map(s => ({ ...s, original: lines[s.line] }));
+    R.suggestions.forEach((_, i) => R.accepted.add(i));
+    render();
+
+    // Step 2: cover letter (streamed)
+    const lang = $("lang").value;
+    switchTab("letter"); status("Step 2/2 · Writing your cover letter …", true);
+    R.letter = "";
+    R.letter = await llm.ask({
+      system: lang === "de"
+        ? "Du schreibst überzeugende, ehrliche Anschreiben auf Deutsch. Nur Fakten aus dem Lebenslauf verwenden, nichts erfinden. Keine Platzhalter in eckigen Klammern. Reiner Text ohne Markdown."
+        : "You write persuasive, honest cover letters. Use only facts from the CV, invent nothing. No placeholders in square brackets. Plain text, no markdown.",
+      prompt: `JOB AD:\n${jobT}\n\nCV:\n${clip(tailoredText(), Math.round(budget * 0.55))}\n\n` + (lang === "de"
+        ? "Schreibe ein Anschreiben (max. 250 Wörter) des Kandidaten an das Unternehmen aus der Stellenanzeige: Anrede, 3 kurze Absätze (Motivation, passende Erfahrung mit konkreten Beispielen, Abschluss), Grußformel mit dem Namen aus dem Lebenslauf."
+        : "Write a cover letter (max 250 words) from the candidate to the company in the job ad: greeting, 3 short paragraphs (motivation, matching experience with concrete examples, closing), sign-off with the name from the CV."),
+      lang, maxTokens: 700, temperature: 0.6, signal: ctl.signal,
+      onText: t => { R.letter = t; const s = $("letterStream"); if (s) s.textContent = t; },
+    });
+    status("Done. Review the suggestions and export.");
+    render();
+  } catch (e) {
+    if (e && e.name === "AbortError") status("Stopped.");
+    else { status(""); toast(e.message || String(e)); }
+    render();
+  } finally { R.busy = false; ctl = null; $("run").disabled = false; $("stop").hidden = true; if (R.tab === "letter") render(); }
+}
+$("run").onclick = run;
+$("stop").onclick = () => ctl && ctl.abort();
+
+function tailoredText() {
+  const lines = cvLines(), map = new Map();
+  R.suggestions.forEach((s, i) => { if (R.accepted.has(i)) map.set(s.line, s.improved); });
+  return lines.map((l, i) => map.get(i) ?? l).join("\n");
+}
+
+// ---------- Results rendering ----------
+function switchTab(t) { R.tab = t; document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.t === t))); render(); }
+document.querySelector(".tabs").onclick = e => { const b = e.target.closest("button[data-t]"); if (b) switchTab(b.dataset.t); };
+
+function render() {
+  $("nSug").textContent = R.suggestions.length;
+  const p = $("pane");
+  if (R.tab === "match") {
+    const k = R.keywords;
+    if (!k) { p.innerHTML = `<div class="empty">Add a CV and a job ad to see how well they match.<br><br><button class="btn ghost sm" type="button" onclick="document.getElementById('sample').click()">Load the sample</button></div>`; return; }
+    p.innerHTML = `<div class="score"><div class="ring" style="--p:${k.score}"><b>${k.score}%</b></div>
+      <div><b>Keyword coverage</b><div class="hint">Share of the job ad's skills and tools that also appear in your CV. Computed locally and instantly.</div>
+      ${R.summary ? `<p style="margin:.6rem 0 0">${esc(R.summary)}</p>` : ""}</div></div>
+      <h3>Found in your CV · ${k.hit.length}</h3><div class="chips">${k.hit.map(t => `<span class="chip ok">✓ ${esc(t)}</span>`).join("") || '<span class="hint">None yet</span>'}</div>
+      <h3>Missing · ${k.miss.length}</h3><div class="chips">${k.miss.map(t => `<span class="chip miss">${esc(t)}</span>`).join("") || '<span class="hint">Nothing missing 🎉</span>'}</div>
+      <p class="hint" style="margin-top:14px">Only add missing keywords you really have. The AI is instructed never to invent experience.</p>
+      <div class="row" style="margin-top:12px"><button class="btn" type="button" id="goRun">${R.suggestions.length ? "Run again" : "Tailor my CV with on-device AI"}</button></div>`;
+    $("goRun").onclick = run; return;
+  }
+  if (R.tab === "cv") {
+    if (!R.suggestions.length && !R.busy) { p.innerHTML = `<div class="empty">No suggestions yet. Click <b>Tailor my CV</b>.</div>`; return; }
+    if (!R.suggestions.length) { p.innerHTML = `<div class="empty"><span class="spin" style="display:inline-block"></span><br>The on-device model is reading your CV …</div>`; return; }
+    p.innerHTML = `<div class="row" style="justify-content:space-between;margin-bottom:10px"><span class="hint">${R.accepted.size} of ${R.suggestions.length} changes applied</span>
+        <span class="row"><button class="btn quiet sm" type="button" data-all="1">Accept all</button><button class="btn quiet sm" type="button" data-all="0">Reject all</button></span></div>
+      ${R.suggestions.map((s, i) => `<div class="sug ${R.accepted.has(i) ? "on" : ""}">
+        <label><input type="checkbox" data-i="${i}" ${R.accepted.has(i) ? "checked" : ""}> Line ${s.line + 1}</label>
+        <div class="old">${esc(s.original)}</div><div class="new">${esc(s.improved)}</div>${s.why ? `<div class="why">${esc(s.why)}</div>` : ""}</div>`).join("")}
+      <h3>Tailored CV</h3>
+      <textarea class="out" id="cvOut" rows="16"></textarea>
+      <div class="row" style="margin-top:10px">${exportButtons("cv")}</div>`;
+    $("cvOut").value = tailoredText();
+    p.querySelectorAll("input[data-i]").forEach(c => c.onchange = () => { const i = +c.dataset.i; c.checked ? R.accepted.add(i) : R.accepted.delete(i); render(); });
+    p.querySelectorAll("button[data-all]").forEach(b => b.onclick = () => { R.accepted = new Set(b.dataset.all === "1" ? R.suggestions.map((_, i) => i) : []); render(); });
+    bindExports("cv", () => $("cvOut").value); return;
+  }
+  if (R.busy && !R.letter.trim()) { p.innerHTML = `<div class="stream" id="letterStream"></div>`; return; }
+  if (R.busy) { p.innerHTML = `<div class="stream" id="letterStream">${esc(R.letter)}</div>`; return; }
+  if (!R.letter) { p.innerHTML = `<div class="empty">The cover letter appears here after you click <b>Tailor my CV</b>.</div>`; return; }
+  p.innerHTML = `<textarea class="out" id="letterOut" rows="18"></textarea><div class="row" style="margin-top:10px">${exportButtons("letter")}</div>`;
+  $("letterOut").value = R.letter; $("letterOut").oninput = e => R.letter = e.target.value;
+  bindExports("letter", () => $("letterOut").value);
+}
+const exportButtons = k => `<button class="btn sm" type="button" data-x="pdf-${k}">Download PDF</button><button class="btn ghost sm" type="button" data-x="doc-${k}">Download Word</button><button class="btn quiet sm" type="button" data-x="copy-${k}">Copy</button>`;
+function bindExports(k, get) {
+  const name = (k === "cv" ? "CV-tailored" : "Cover-letter");
+  $("pane").querySelector(`[data-x=pdf-${k}]`).onclick = () => exportPDF(get(), name);
+  $("pane").querySelector(`[data-x=doc-${k}]`).onclick = () => exportDoc(get(), name);
+  $("pane").querySelector(`[data-x=copy-${k}]`).onclick = () => navigator.clipboard.writeText(get()).then(() => toast("Copied."), () => toast("Copy not allowed. Select the text and copy manually."));
+}
+
+// ---------- Export (all local) ----------
+function save(blob, filename) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = filename; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("Could not load " + src)); document.head.append(s); }); }
+async function exportPDF(text, name) {
+  try {
+    if (!window.jspdf) await loadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js");
+    const doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4" });
+    const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 56;
+    let y = M;
+    const safe = s => s.replace(/[^\x00-\xFF–—•’‘“”€…]/g, "");
+    text.split("\n").forEach((raw, i) => {
+      const line = safe(raw);
+      const heading = i === 0 || (/^[A-ZÄÖÜ0-9 &/·,-]{4,}$/.test(line.trim()) && line.trim().length < 40);
+      doc.setFont("helvetica", heading ? "bold" : "normal"); doc.setFontSize(i === 0 ? 16 : heading ? 11.5 : 10.5);
+      const wrapped = line.trim() ? doc.splitTextToSize(line, W - 2 * M) : [""];
+      for (const w of wrapped) { if (y > H - M) { doc.addPage(); y = M; } doc.text(w, M, y); y += i === 0 ? 22 : 14.5; }
+      if (heading && i) y += 2;
+    });
+    doc.save(name + ".pdf");
+  } catch (e) { toast("PDF export failed: " + (e.message || e)); }
+}
+function exportDoc(text, name) {
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${esc(name)}</title></head>
+<body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.4">${text.split("\n").map((l, i) => i === 0 ? `<h1 style="font-size:18pt;margin:0 0 6pt">${esc(l)}</h1>` : `<p style="margin:0 0 4pt">${esc(l) || "&nbsp;"}</p>`).join("")}</body></html>`;
+  save(new Blob(["﻿", html], { type: "application/msword" }), name + ".doc");
+}
+
+// ---------- Boot ----------
+llm.mount($("ai"), { title: "On-device AI" });
+llm.subscribe(s => { $("run").title = s.status === "ready" ? "" : "Set up the on-device AI first"; });
+llm.init();
+render();
+})();
+</script>
+</body>
+</html>
