@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.">
+<meta name="description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and natural on-device voices (Kokoro, Piper) run entirely in your browser.">
 <!-- seo:start (managed: canonical + backlink to shawaiz.de) -->
 <title>Talk to Shawaiz – On-device realtime voice AI avatar | Shawaiz Shah</title>
 <link rel="canonical" href="https://shawaiz.de/avatar/">
@@ -13,15 +13,15 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Shawaiz Shah · shawaiz.de">
 <meta property="og:title" content="Talk to Shawaiz – On-device realtime voice AI avatar | Shawaiz Shah">
-<meta property="og:description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.">
+<meta property="og:description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and natural on-device voices (Kokoro, Piper) run entirely in your browser.">
 <meta property="og:url" content="https://shawaiz.de/avatar/">
 <meta property="og:image" content="https://shawaiz.de/static/portrait.jpeg">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Talk to Shawaiz – On-device realtime voice AI avatar | Shawaiz Shah">
-<meta name="twitter:description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.">
+<meta name="twitter:description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and natural on-device voices (Kokoro, Piper) run entirely in your browser.">
 <meta name="twitter:image" content="https://shawaiz.de/static/portrait.jpeg">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Talk to Shawaiz", "url": "https://shawaiz.de/avatar/", "description": "A realtime voice conversation with Shawaiz Shah's AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.", "applicationCategory": "CommunicationApplication", "operatingSystem": "Any (web browser)", "browserRequirements": "Chrome or Edge with WebGPU or built-in AI", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "inLanguage": "en", "image": "https://shawaiz.de/static/portrait.jpeg", "author": {"@type": "Person", "name": "Shawaiz Shah", "url": "https://shawaiz.de/", "jobTitle": "AI Expert & Senior Data Scientist", "sameAs": ["https://github.com/shahshawaiz", "https://www.linkedin.com/in/shawaiz-shah-32b40537"]}, "creator": {"@type": "Person", "name": "Shawaiz Shah", "url": "https://shawaiz.de/", "jobTitle": "AI Expert & Senior Data Scientist", "sameAs": ["https://github.com/shahshawaiz", "https://www.linkedin.com/in/shawaiz-shah-32b40537"]}, "isPartOf": {"@type": "WebSite", "name": "Shawaiz Shah", "url": "https://shawaiz.de/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Talk to Shawaiz", "url": "https://shawaiz.de/avatar/", "description": "A realtime voice conversation with Shawaiz Shah's AI avatar. Whisper speech recognition, a local language model and natural on-device voices (Kokoro, Piper) run entirely in your browser.", "applicationCategory": "CommunicationApplication", "operatingSystem": "Any (web browser)", "browserRequirements": "Chrome or Edge with WebGPU or built-in AI", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "inLanguage": "en", "image": "https://shawaiz.de/static/portrait.jpeg", "author": {"@type": "Person", "name": "Shawaiz Shah", "url": "https://shawaiz.de/", "jobTitle": "AI Expert & Senior Data Scientist", "sameAs": ["https://github.com/shahshawaiz", "https://www.linkedin.com/in/shawaiz-shah-32b40537"]}, "creator": {"@type": "Person", "name": "Shawaiz Shah", "url": "https://shawaiz.de/", "jobTitle": "AI Expert & Senior Data Scientist", "sameAs": ["https://github.com/shahshawaiz", "https://www.linkedin.com/in/shawaiz-shah-32b40537"]}, "isPartOf": {"@type": "WebSite", "name": "Shawaiz Shah", "url": "https://shawaiz.de/"}}</script>
 <!-- seo:end -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -120,9 +120,10 @@ details.log summary{cursor:pointer;padding:9px 14px;color:var(--muted);font-size
 <aside class="drawer" id="drawer" hidden aria-label="Settings">
   <div style="display:flex;justify-content:space-between;align-items:center"><h2>Settings</h2><button class="icon-btn" id="closeSettings" type="button">Close</button></div>
   <div id="ai"></div>
-    <label>Voice<select id="voice"><option value="piper">Neural (Piper: Thorsten for German, Ryan for English)</option><option value="system">System voice</option></select></label>
+    <label>Voice<select id="voice"><option value="natural">Natural (Kokoro on GPU for English, Thorsten for German)</option><option value="piper">Fastest on CPU (Piper: Ryan / Thorsten)</option><option value="system">System voice</option></select></label>
+    <label>English voice (Kokoro)<select id="enVoice"><option value="am_michael">Michael · warm, American</option><option value="am_fenrir">Fenrir · deeper, American</option><option value="am_puck">Puck · lively, American</option><option value="bm_george">George · British</option></select></label>
   <label class="cb"><input type="checkbox" id="bargein" checked> <span>Let me interrupt the avatar by speaking<br><span class="note">Works best with headphones.</span></span></label>
-  <p class="note">Speech recognition: Whisper Base (≈80 MB). Voice: Piper (≈60 MB per language). Everything downloads once, is cached by your browser, and runs locally. No audio or text leaves your device.</p>
+  <p class="note">Speech recognition: Whisper Base (≈80 MB). Voice: Kokoro-82M (≈330 MB, needs WebGPU) for natural English, Piper (≈60 MB) for German and as the fast CPU fallback. Everything downloads once, is cached by your browser, and runs locally. No audio or text leaves your device.</p>
   <p class="note">This avatar is an AI. It knows my public professional profile, can make mistakes, and doesn't speak about private matters.</p>
 </aside>
 
@@ -162,13 +163,14 @@ HOW TO TALK
 // ---------- Settings ----------
 const S = (() => { try { return JSON.parse(store.get("avatar-settings")) || {}; } catch { return {}; } })();
 const siteLang = store.get("lang") === "en" ? "en" : store.get("lang") === "de" ? "de" : "auto";
-if (S.lang !== "en" && S.lang !== "de") S.lang = siteLang === "en" ? "en" : "de"; S.voice = S.voice || "piper"; if (S.bargein === undefined) S.bargein = true;
+if (S.lang !== "en" && S.lang !== "de") S.lang = siteLang === "en" ? "en" : "de"; if (!["natural", "piper", "system"].includes(S.voice) || S.voice === "piper" && !S.voicePicked) S.voice = "natural"; S.enVoice = S.enVoice || "am_michael"; if (S.bargein === undefined) S.bargein = true;
 const saveS = () => store.set("avatar-settings", JSON.stringify(S));
-$("voice").value = S.voice;
+$("voice").value = S.voice; $("enVoice").value = S.enVoice;
 function paintLang() { document.querySelectorAll(".langs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === S.lang))); }
 document.querySelector(".langs").onclick = e => { const b = e.target.closest("button[data-l]"); if (!b) return; S.lang = b.dataset.l; saveS(); paintLang(); if (live) warmVoice(); };
 paintLang(); $("bargein").checked = S.bargein;
-$("voice").onchange = e => { S.voice = e.target.value; saveS(); };
+$("voice").onchange = e => { S.voice = e.target.value; S.voicePicked = true; saveS(); if (live) warmVoice(); };
+$("enVoice").onchange = e => { S.enVoice = e.target.value; saveS(); };
 $("bargein").onchange = e => { S.bargein = e.target.checked; saveS(); };
 $("openSettings").onclick = () => $("drawer").hidden = false;
 $("closeSettings").onclick = () => $("drawer").hidden = true;
@@ -204,7 +206,18 @@ const isGerman = t => /[äöüß]/i.test(t) || (t.match(DE_WORDS) || []).length 
 const TF_URL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/transformers.min.js";
 const WHISPER = "onnx-community/whisper-base";
 let asrP = null, asrDevice = "", asrLock = Promise.resolve();
-async function gpuAdapter() { try { return !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch { return false; } }
+// A real GPU only: software adapters (SwiftShader / "fallback") are slower than plain WASM for these models.
+let gpuP = null;
+function gpuAdapter() {
+  return gpuP = gpuP || (async () => {
+    try {
+      const a = navigator.gpu && await navigator.gpu.requestAdapter(); if (!a) return false;
+      const info = a.info || (a.requestAdapterInfo ? await a.requestAdapterInfo() : {}) || {};
+      if (a.isFallbackAdapter || info.isFallbackAdapter) return false;
+      return !/swiftshader|llvmpipe|software|basic render/i.test([info.vendor, info.architecture, info.device, info.description].join(" "));
+    } catch { return false; }
+  })();
+}
 function getASR() {
   if (asrP) return asrP;
   asrP = (async () => {
@@ -249,14 +262,39 @@ function ensureVoice(lang) {
   voiceReady[id].catch(() => { delete voiceReady[id]; });
   return voiceReady[id];
 }
+// Kokoro-82M: the most natural on-device English voice. Fast on WebGPU; on CPU, Piper is quicker, so we only use Kokoro with a GPU.
+const KOKORO_URL = "https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/+esm";
+let kokoroP = null, kokoroFailed = false;
+function getKokoro() {
+  if (kokoroP) return kokoroP;
+  kokoroP = (async () => {
+    if (!(await gpuAdapter())) throw new Error("no WebGPU");
+    const { KokoroTTS } = await import(KOKORO_URL);
+    const files = {};
+    const tts = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", { dtype: "fp32", device: "webgpu", progress_callback: p => {
+      if (p && p.status === "progress" && p.file) { files[p.file] = [p.loaded || 0, p.total || 0]; let L = 0, T = 0; for (const v of Object.values(files)) { L += v[0]; T += v[1]; }
+        if (phase === "thinking" || phase === "loading") $("status").querySelector("span").textContent = "Loading natural voice " + (T ? Math.round(L * 100 / T) : 0) + " % (first time only)"; } } });
+    // Latency guard: if a short phrase isn't fast on this GPU, Piper will answer quicker.
+    const t0 = performance.now(); await tts.generate("Hi there.", { voice: S.enVoice || "am_michael" });
+    if (performance.now() - t0 > 1200) { toast("Natural voice is slow on this device, so the fast voice is used instead."); throw new Error("too slow"); }
+    return tts;
+  })();
+  kokoroP.catch(() => { kokoroP = null; kokoroFailed = true; });
+  return kokoroP;
+}
+const useKokoro = lang => lang === "en" && S.voice === "natural" && !kokoroFailed;
 // Synthesize one sentence at a time, in order, so the first sentence gets the whole CPU/GPU.
-function piperSynth(text, lang) {
-  const job = synthChain.then(async () => { await ensureVoice(lang); return piper.predict({ text, voiceId: PIPER_VOICE[lang] }); });
-  synthChain = job.catch(() => {});
-  return job;
+function serial(fn) { const job = synthChain.then(fn); synthChain = job.catch(() => {}); return job; }
+function piperSynth(text, lang) { return serial(async () => { await ensureVoice(lang); return piper.predict({ text, voiceId: PIPER_VOICE[lang] }); }); }
+function kokoroSynth(text) { return serial(async () => { const tts = await getKokoro(); return (await tts.generate(text, { voice: S.enVoice || "am_michael" })).toBlob(); }); }
+function synth(text, lang) {
+  if (S.voice === "system") return Promise.resolve(null);
+  if (useKokoro(lang)) return kokoroSynth(text).catch(() => { kokoroFailed = true; return piperFailed ? null : piperSynth(text, lang); });
+  if (piperFailed) return Promise.resolve(null);
+  return piperSynth(text, lang);
 }
 // Load the voice model before the first answer so the first sentence starts quickly.
-function warmVoice() { if (S.voice === "piper" && !piperFailed) piperSynth(S.lang === "de" ? "Hallo." : "Hi.", S.lang).catch(() => {}); }
+function warmVoice() { if (S.voice !== "system") synth(S.lang === "de" ? "Hallo." : "Hi.", S.lang).catch(() => {}); }
 let outCtx = null, outAnalyser = null;
 function outputMeter() {
   if (outCtx) return;
@@ -266,7 +304,7 @@ function outputMeter() {
 let speakGen = 0, queue = [], playing = false, curAudio = null;
 function speak(text, lang) {
   const gen = speakGen;
-  const job = { text, lang, gen, blob: (S.voice === "piper" && !piperFailed) ? piperSynth(text, lang).catch(e => { piperFailed = true; toast("Neural voice unavailable, using the system voice."); return null; }) : Promise.resolve(null) };
+  const job = { text, lang, gen, blob: synth(text, lang).catch(() => { piperFailed = true; toast("Neural voice unavailable, using the system voice."); return null; }) };
   queue.push(job); if (!playing) playQueue();
 }
 async function playQueue() {

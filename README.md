@@ -24,7 +24,7 @@ projects/index.html      Side-projects page (cards + detail dialogs, DE/EN)
 fsp/index.html           FSP Simulator Berlin: medical-language exam trainer (single file)
 static/                  Images (portrait, project thumbnails)
 static/js/ondevice-llm.js  Shared on-device LLM helper (window.OnDeviceLLM: Chrome AI / WebLLM)
-avatar/index.html        On-device realtime voice avatar (Whisper → local LLM → Piper)
+avatar/index.html        On-device realtime voice avatar (Whisper → local LLM → Kokoro/Piper)
 demos/                   Copies of the project demos (synced from each repo's docs/)
 scripts/sync-demos.sh    Refreshes demos/ from the sibling repos
 sitemap.xml, CNAME, LICENSE
@@ -63,7 +63,7 @@ Then open http://localhost:8080. Most pages also work when opened directly via `
 - There are no API keys, no cloud LLM providers and no backend in this repo. Demo inputs (audio, text, files) are processed in the browser.
 - Model weights are downloaded from public CDNs and Hugging Face on first use, then cached by the browser.
 - The main page and the projects page use **Google Analytics** (gtag) for basic visitor statistics, and they load Google Fonts.
-- The "speak to my avatar" button opens `avatar/`: a realtime voice conversation where speech recognition (Whisper), the language model (Gemini Nano or WebLLM) and the voice (Piper) all run in the browser. No audio leaves the device.
+- The "speak to my avatar" button opens `avatar/`: a realtime voice conversation where speech recognition (Whisper), the language model (Gemini Nano or WebLLM) and the voice (Kokoro on GPU for English, Piper/Thorsten for German) all run in the browser. No audio leaves the device.
 
 ## License
 
