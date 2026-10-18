@@ -37,6 +37,7 @@ The FSP simulator lives only in this repo. Each of the other demos is developed 
 | Project | Demo on this site | Source |
 |---|---|---|
 | FSP Simulator Berlin | https://shawaiz.de/fsp/ | this repo |
+| Talk to Shawaiz (voice avatar) | https://shawaiz.de/avatar/ | this repo |
 | Resume AI | https://shawaiz.de/demos/resume-ai/ | [shahshawaiz/resume-ai](https://github.com/shahshawaiz/resume-ai) `docs/` |
 | Spardose Analytics | https://shawaiz.de/demos/spardose/ | [shahshawaiz/spardose-analysis](https://github.com/shahshawaiz/spardose-analysis) `docs/` |
 | PixelMorph | https://shawaiz.de/demos/pixelmorph/ | [shahshawaiz/pixelmorph](https://github.com/shahshawaiz/pixelmorph) `docs/` |

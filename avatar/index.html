@@ -3,8 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Talk to Shawaiz · On-device voice avatar</title>
-<meta name="description" content="A realtime voice conversation with Shawaiz Shah's AI avatar. Speech recognition, language model and voice all run locally in your browser.">
+<meta name="description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.">
+<!-- seo:start (managed: canonical + backlink to shawaiz.de) -->
+<title>Talk to Shawaiz – On-device realtime voice AI avatar | Shawaiz Shah</title>
+<link rel="canonical" href="https://shawaiz.de/avatar/">
+<meta name="author" content="Shawaiz Shah">
+<link rel="author" href="https://shawaiz.de/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Shawaiz Shah · shawaiz.de">
+<meta property="og:title" content="Talk to Shawaiz – On-device realtime voice AI avatar | Shawaiz Shah">
+<meta property="og:description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.">
+<meta property="og:url" content="https://shawaiz.de/avatar/">
+<meta property="og:image" content="https://shawaiz.de/static/portrait.jpeg">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Talk to Shawaiz – On-device realtime voice AI avatar | Shawaiz Shah">
+<meta name="twitter:description" content="A realtime voice conversation with Shawaiz Shah&#x27;s AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.">
+<meta name="twitter:image" content="https://shawaiz.de/static/portrait.jpeg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Talk to Shawaiz", "url": "https://shawaiz.de/avatar/", "description": "A realtime voice conversation with Shawaiz Shah's AI avatar. Whisper speech recognition, a local language model and Piper voices run entirely in your browser.", "applicationCategory": "CommunicationApplication", "operatingSystem": "Any (web browser)", "browserRequirements": "Chrome or Edge with WebGPU or built-in AI", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "inLanguage": "en", "image": "https://shawaiz.de/static/portrait.jpeg", "author": {"@type": "Person", "name": "Shawaiz Shah", "url": "https://shawaiz.de/", "jobTitle": "AI Expert & Senior Data Scientist", "sameAs": ["https://github.com/shahshawaiz", "https://www.linkedin.com/in/shawaiz-shah-32b40537"]}, "creator": {"@type": "Person", "name": "Shawaiz Shah", "url": "https://shawaiz.de/", "jobTitle": "AI Expert & Senior Data Scientist", "sameAs": ["https://github.com/shahshawaiz", "https://www.linkedin.com/in/shawaiz-shah-32b40537"]}, "isPartOf": {"@type": "WebSite", "name": "Shawaiz Shah", "url": "https://shawaiz.de/"}}</script>
+<!-- seo:end -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +39,9 @@ button,input,select{font:inherit;color:inherit}
 .top .pill{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--muted)}
 .top .sp{flex:1}
 .icon-btn{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:7px 10px;cursor:pointer}
-.stage{flex:1;display:grid;place-items:center;align-content:center;gap:14px;padding:22px 0 12px;min-height:0;overflow-y:auto}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:14px;padding:8px 0 12px;min-height:0;overflow-y:auto}
+.caption:empty{display:none}
+.stage>*{flex-shrink:0}
 .avatar{--lvl:0;position:relative;width:min(46vw,220px,24vh);aspect-ratio:1;border-radius:50%;margin:18px}
 .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;position:relative;z-index:2;border:3px solid var(--panel)}
 .avatar::before,.avatar::after{content:"";position:absolute;inset:-6px;border-radius:50%;z-index:1;transition:transform .08s linear,opacity .2s}
@@ -37,11 +57,15 @@ button,input,select{font:inherit;color:inherit}
 .status{text-align:center;min-height:48px}
 .status b{display:block;font-size:18px}
 .status span{color:var(--muted);font-size:13.5px}
+.caption.partial{color:var(--muted);font-style:italic}
 .caption{max-width:640px;text-align:center;color:#cfe3f5;font-size:16px;min-height:2.6em;padding:0 8px}
 .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
 .mic{width:76px;height:76px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:grid;place-items:center;box-shadow:0 10px 30px rgba(14,165,233,.35)}
 .mic svg{width:30px;height:30px}
 .mic.live{background:var(--rec);box-shadow:0 10px 30px rgba(244,63,94,.35)}
+.langs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+.langs button{border:0;background:none;border-radius:999px;padding:5px 14px;cursor:pointer;color:var(--muted);font-size:13px}
+.langs button[aria-pressed=true]{background:var(--accent);color:#fff}
 .ghost{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:13.5px}
 .dock{max-width:760px;width:100%;margin:0 auto 14px;display:grid;gap:10px}
 .typebar{display:flex;gap:8px}
@@ -59,6 +83,7 @@ details.log summary{cursor:pointer;padding:9px 14px;color:var(--muted);font-size
 .drawer select{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px}
 .cb{display:flex!important;grid-template-columns:none;gap:8px;align-items:flex-start;color:var(--ink)!important;cursor:pointer}
 .note{font-size:12.5px;color:var(--muted);margin:0}
+.note a{color:var(--accent-2)}
 .setup{max-width:520px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:10px;font-size:14px}
 .setup ol{margin:0;padding-left:18px;display:grid;gap:4px}
 .bar{height:5px;border-radius:3px;background:var(--panel-2);overflow:hidden}
@@ -68,13 +93,13 @@ details.log summary{cursor:pointer;padding:9px 14px;color:var(--muted);font-size
 </head>
 <body>
 <div class="top">
-  <b>Shawaiz · AI avatar</b><span class="pill">on-device</span><span class="sp"></span>
+  <b>Shawaiz · AI avatar</b><span class="pill">on-device · realtime</span><span class="pill" id="lat" hidden title="Time from the end of your sentence to the first spoken word"></span><span class="sp"></span>
   <button class="icon-btn" id="openSettings" type="button" aria-label="Settings">⚙️</button>
 </div>
 
 <div class="stage">
   <div class="avatar" id="avatar" data-s="idle"><img src="../static/portrait.jpeg" alt="Shawaiz Shah"></div>
-  <div class="status" id="status"><b>Talk to my AI avatar</b><span>Press the microphone and just speak, in English or German</span></div>
+  <div class="status" id="status"><b>Talk to my AI avatar</b><span>Press the microphone and just speak</span></div>
   <div class="caption" id="caption" aria-live="polite"></div>
   <div class="setup" id="setup" hidden></div>
   <div class="controls">
@@ -83,18 +108,19 @@ details.log summary{cursor:pointer;padding:9px 14px;color:var(--muted);font-size
     </button>
     <button class="ghost" id="stopTalk" type="button" hidden>Stop speaking</button>
   </div>
+  <div class="langs" role="group" aria-label="Conversation language"><button type="button" data-l="de">Deutsch</button><button type="button" data-l="en">English</button></div>
 </div>
 
 <div class="dock">
   <form class="typebar" id="typebar" autocomplete="off"><input id="typed" placeholder="…or type a question" aria-label="Type a question"><button type="submit">Send</button></form>
   <details class="log"><summary>Transcript</summary><div class="turns" id="turns"></div></details>
+  <p class="note" style="text-align:center">AI avatar of <a href="https://shawaiz.de/" rel="author" target="_top">Shawaiz Shah</a> · runs on your device · <a href="https://shawaiz.de/projects/" target="_top">side projects</a></p>
 </div>
 
 <aside class="drawer" id="drawer" hidden aria-label="Settings">
   <div style="display:flex;justify-content:space-between;align-items:center"><h2>Settings</h2><button class="icon-btn" id="closeSettings" type="button">Close</button></div>
   <div id="ai"></div>
-  <label>Language<select id="lang"><option value="auto">Auto-detect</option><option value="en">English</option><option value="de">Deutsch</option></select></label>
-  <label>Voice<select id="voice"><option value="piper">Neural (Piper: Thorsten for German, Ryan for English)</option><option value="system">System voice</option></select></label>
+    <label>Voice<select id="voice"><option value="piper">Neural (Piper: Thorsten for German, Ryan for English)</option><option value="system">System voice</option></select></label>
   <label class="cb"><input type="checkbox" id="bargein" checked> <span>Let me interrupt the avatar by speaking<br><span class="note">Works best with headphones.</span></span></label>
   <p class="note">Speech recognition: Whisper Base (≈80 MB). Voice: Piper (≈60 MB per language). Everything downloads once, is cached by your browser, and runs locally. No audio or text leaves your device.</p>
   <p class="note">This avatar is an AI. It knows my public professional profile, can make mistakes, and doesn't speak about private matters.</p>
@@ -136,10 +162,12 @@ HOW TO TALK
 // ---------- Settings ----------
 const S = (() => { try { return JSON.parse(store.get("avatar-settings")) || {}; } catch { return {}; } })();
 const siteLang = store.get("lang") === "en" ? "en" : store.get("lang") === "de" ? "de" : "auto";
-S.lang = S.lang || "auto"; S.voice = S.voice || "piper"; if (S.bargein === undefined) S.bargein = true;
+if (S.lang !== "en" && S.lang !== "de") S.lang = siteLang === "en" ? "en" : "de"; S.voice = S.voice || "piper"; if (S.bargein === undefined) S.bargein = true;
 const saveS = () => store.set("avatar-settings", JSON.stringify(S));
-$("lang").value = S.lang; $("voice").value = S.voice; $("bargein").checked = S.bargein;
-$("lang").onchange = e => { S.lang = e.target.value; saveS(); };
+$("voice").value = S.voice;
+function paintLang() { document.querySelectorAll(".langs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === S.lang))); }
+document.querySelector(".langs").onclick = e => { const b = e.target.closest("button[data-l]"); if (!b) return; S.lang = b.dataset.l; saveS(); paintLang(); if (live) warmVoice(); };
+paintLang(); $("bargein").checked = S.bargein;
 $("voice").onchange = e => { S.voice = e.target.value; saveS(); };
 $("bargein").onchange = e => { S.bargein = e.target.checked; saveS(); };
 $("openSettings").onclick = () => $("drawer").hidden = false;
@@ -148,7 +176,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") $("drawer").
 
 // ---------- UI state ----------
 const STATUS = {
-  idle: ["Talk to my AI avatar", "Press the microphone and just speak, in English or German"],
+  idle: ["Talk to my AI avatar", "Press the microphone and just speak"],
   listening: ["Listening…", "Speak naturally; I'll answer when you pause"],
   transcribing: ["Understanding…", "Transcribing locally with Whisper"],
   thinking: ["Thinking…", "On-device language model"],
@@ -175,7 +203,7 @@ const isGerman = t => /[äöüß]/i.test(t) || (t.match(DE_WORDS) || []).length 
 // ---------- Speech recognition: Whisper (transformers.js) ----------
 const TF_URL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1/dist/transformers.min.js";
 const WHISPER = "onnx-community/whisper-base";
-let asrP = null;
+let asrP = null, asrDevice = "", asrLock = Promise.resolve();
 async function gpuAdapter() { try { return !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch { return false; } }
 function getASR() {
   if (asrP) return asrP;
@@ -186,8 +214,9 @@ function getASR() {
         if (phase === "loading") setPhase("loading", "Speech recognition " + (T ? Math.round(L / T * 100) : 0) + " % (first time only)"); }
     };
     if (await gpuAdapter()) {
-      try { return await tf.pipeline("automatic-speech-recognition", WHISPER, { device: "webgpu", dtype: { encoder_model: "fp32", decoder_model_merged: "q4" }, progress_callback: cb }); } catch {}
+      try { const p = await tf.pipeline("automatic-speech-recognition", WHISPER, { device: "webgpu", dtype: { encoder_model: "fp32", decoder_model_merged: "q4" }, progress_callback: cb }); asrDevice = "webgpu"; return p; } catch {}
     }
+    asrDevice = "wasm";
     return await tf.pipeline("automatic-speech-recognition", WHISPER, { device: "wasm", dtype: "q8", progress_callback: cb });
   })();
   asrP.catch(() => { asrP = null; });
@@ -196,8 +225,10 @@ function getASR() {
 const HALLU = /^(untertitel|copyright|vielen dank (fürs|für's|für das) zu(schauen|hören)|thanks? for watching|thank you\.?|\[?music\]?|\[?musik\]?|\.+|you)$/i;
 async function transcribe(pcm16k) {
   const asr = await getASR();
-  const lang = S.lang === "auto" ? null : S.lang === "de" ? "german" : "english";
-  const out = await asr(pcm16k, lang ? { language: lang, task: "transcribe" } : { task: "transcribe" });
+  const run = asrLock.then(() => asr(pcm16k, { language: S.lang === "de" ? "german" : "english", task: "transcribe" }));
+  asrLock = run.catch(() => {});
+  const out = await run;
+  // Whisper here doesn't auto-detect reliably (it falls back to English), so the language is explicit.
   const t = String(out && out.text || "").replace(/\[[^\]]*\]|\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
   return HALLU.test(t) ? "" : t;
 }
@@ -206,13 +237,26 @@ async function transcribe(pcm16k) {
 const PIPER_URL = "https://cdn.jsdelivr.net/npm/@diffusionstudio/vits-web@1.0.3/+esm";
 const PIPER_VOICE = { de: "de_DE-thorsten-medium", en: "en_US-ryan-medium" };
 let piper = null, piperFailed = false;
-async function piperSynth(text, lang) {
-  piper = piper || await import(PIPER_URL);
+const voiceReady = {};      // voiceId -> Promise (download once per session)
+let synthChain = Promise.resolve();
+function ensureVoice(lang) {
   const id = PIPER_VOICE[lang];
-  let stored = []; try { stored = await piper.stored(); } catch {}
-  if (!stored.includes(id)) await piper.download(id, p => { if (p && p.total && phase !== "listening") setPhase(phase === "speaking" ? "speaking" : "thinking", "Downloading voice " + Math.round(p.loaded * 100 / p.total) + " % (first time only)"); });
-  return piper.predict({ text, voiceId: id });
+  if (!voiceReady[id]) voiceReady[id] = (async () => {
+    piper = piper || await import(PIPER_URL);
+    let stored = []; try { stored = await piper.stored(); } catch {}
+    if (!stored.includes(id)) await piper.download(id, p => { if (p && p.total && (phase === "thinking" || phase === "loading")) $("status").querySelector("span").textContent = "Downloading voice " + Math.round(p.loaded * 100 / p.total) + " % (first time only)"; });
+  })();
+  voiceReady[id].catch(() => { delete voiceReady[id]; });
+  return voiceReady[id];
 }
+// Synthesize one sentence at a time, in order, so the first sentence gets the whole CPU/GPU.
+function piperSynth(text, lang) {
+  const job = synthChain.then(async () => { await ensureVoice(lang); return piper.predict({ text, voiceId: PIPER_VOICE[lang] }); });
+  synthChain = job.catch(() => {});
+  return job;
+}
+// Load the voice model before the first answer so the first sentence starts quickly.
+function warmVoice() { if (S.voice === "piper" && !piperFailed) piperSynth(S.lang === "de" ? "Hallo." : "Hi.", S.lang).catch(() => {}); }
 let outCtx = null, outAnalyser = null;
 function outputMeter() {
   if (outCtx) return;
@@ -230,7 +274,8 @@ async function playQueue() {
   while (queue.length) {
     const job = queue.shift(); if (job.gen !== speakGen) continue;
     const blob = await job.blob; if (job.gen !== speakGen) continue;
-    setPhase("speaking"); $("caption").textContent = job.text;
+    setPhase("speaking"); $("caption").classList.remove("partial"); $("caption").textContent = job.text;
+    if (tUtterEnd) { const l = $("lat"); l.hidden = false; l.textContent = "⚡ " + ((performance.now() - tUtterEnd) / 1000).toFixed(1) + " s"; tUtterEnd = 0; }
     if (blob) await playBlob(blob, job.gen); else await systemSay(job.text, job.lang, job.gen);
   }
   playing = false;
@@ -300,7 +345,8 @@ function onFrame(f, rate) {
       VAD.frames.push(f);
       VAD.silentMs = rms > thr * 0.7 ? 0 : VAD.silentMs + ms;
       const dur = VAD.frames.length * ms;
-      if (VAD.silentMs > 750 || dur > 20000) { const frames = VAD.frames; VAD.speaking = false; VAD.frames = []; VAD.voiced = 0; endUtterance(frames, rate, dur); }
+      if (asrDevice === "webgpu" && !partialBusy && dur - lastPartialAt > 900) livePartial(VAD.frames.slice(), rate, dur);
+      if (VAD.silentMs > 600 || dur > 20000) { const frames = VAD.frames; VAD.speaking = false; VAD.frames = []; VAD.voiced = 0; endUtterance(frames, rate, dur); }
     }
   } else if ((phase === "speaking" || phase === "thinking") && S.bargein) {
     // barge-in: sustained loud input while the avatar talks
@@ -308,6 +354,15 @@ function onFrame(f, rate) {
     VAD.pre.push(f); if (VAD.pre.length > 15) VAD.pre.shift();
     if (VAD.loud >= 8) { VAD.loud = 0; interrupt(true); }
   }
+}
+// Show words while the visitor is still talking (only where Whisper runs on the GPU, so it stays fast).
+let partialBusy = false, lastPartialAt = 0, partialTurn = 0;
+async function livePartial(frames, rate, dur) {
+  partialBusy = true; lastPartialAt = dur; const t = partialTurn;
+  try {
+    const text = await transcribe(resampleTo16k(frames, rate));
+    if (t === partialTurn && phase === "listening" && VAD.speaking && text) { const c = $("caption"); c.classList.add("partial"); c.textContent = text + " …"; }
+  } catch {} finally { partialBusy = false; }
 }
 function resampleTo16k(frames, rate) {
   const n = frames.reduce((a, f) => a + f.length, 0), all = new Float32Array(n); let o = 0; for (const f of frames) { all.set(f, o); o += f.length; }
@@ -319,10 +374,11 @@ function resampleTo16k(frames, rate) {
 
 // ---------- Conversation loop ----------
 const history = [];
-let llmCtl = null, turnId = 0;
+let llmCtl = null, turnId = 0, tUtterEnd = 0;
 async function endUtterance(frames, rate, durMs) {
+  partialTurn++; lastPartialAt = 0;
   if (durMs < 350) return; // a click or cough
-  const id = ++turnId;
+  const id = ++turnId; tUtterEnd = performance.now();
   setPhase("transcribing"); setLevel(0);
   try {
     const text = await transcribe(resampleTo16k(frames, rate));
@@ -331,11 +387,14 @@ async function endUtterance(frames, rate, durMs) {
     await respond(text, id);
   } catch (e) { toast("Speech recognition failed: " + (e.message || e)); if (live) setPhase("listening"); }
 }
-async function respond(text, id = ++turnId) {
+async function respond(text, id = ++turnId, typed = false) {
   const llm = window.OnDeviceLLM;
-  addTurn("me", text); $("caption").textContent = "“" + text + "”";
+  addTurn("me", text); $("caption").classList.remove("partial"); $("caption").textContent = "“" + text + "”";
+  if (!tUtterEnd) tUtterEnd = performance.now();
   if (!llm.ready) { needSetup(); return; }
-  const lang = S.lang !== "auto" ? S.lang : isGerman(text) ? "de" : "en";
+  // typed text may switch the language; spoken text follows the selected language
+  let lang = S.lang;
+  if (typed && isGerman(text) !== (S.lang === "de")) { lang = S.lang = isGerman(text) ? "de" : "en"; saveS(); paintLang(); }
   setPhase("thinking");
   const turnEl = addTurn("bot", "…");
   let spoken = 0, full = "";
@@ -346,7 +405,8 @@ async function respond(text, id = ++turnId) {
       const rest = full.slice(spoken);
       let end = 0, chunk = "", m;
       while (chunk.trim().length < 25 && (m = rest.slice(end).match(SENT))) { chunk = rest.slice(0, end) + m[1]; end += m[0].length; }
-      if (!end || chunk.trim().length < 25) break;
+      if (!end && spoken === 0 && rest.length > 60) { const c = rest.slice(20, 90).search(/[,;:–—]\s/); if (c >= 0) { end = 20 + c + 2; chunk = rest.slice(0, end); } }
+      if (!end || chunk.trim().length < 20) break;
       speak(chunk.trim(), lang); spoken += end;
     }
     if (final) { const tail = full.slice(spoken).trim(); if (tail) speak(tail, lang); spoken = full.length; }
@@ -387,7 +447,8 @@ async function startConversation() {
   live = true; $("mic").classList.add("live"); $("mic").setAttribute("aria-pressed", "true"); $("mic").setAttribute("aria-label", "End conversation");
   try { await getASR(); } catch (e) { toast("Speech recognition failed to load: " + (e.message || e)); endConversation(); return; }
   if (!live) return;
-  const lang = S.lang !== "auto" ? S.lang : siteLang === "de" ? "de" : "en";
+  const lang = S.lang;
+  warmVoice();
   if (!history.length) {
     const hi = lang === "de" ? "Hallo! Ich bin der KI-Avatar von Shawaiz und laufe komplett in deinem Browser. Frag mich gern nach meiner Arbeit, KI-Sprachassistenten oder meinen Projekten." : "Hi! I'm Shawaiz's AI avatar, running entirely in your browser. Ask me about my work in AI, voice agents or my projects.";
     addTurn("bot", hi); history.push({ role: "assistant", content: hi }); speak(hi, lang); setPhase("speaking");
@@ -399,7 +460,7 @@ function endConversation() {
   setPhase("idle");
 }
 $("mic").onclick = () => live ? endConversation() : startConversation();
-$("typebar").onsubmit = e => { e.preventDefault(); const t = $("typed").value.trim(); if (!t) return; $("typed").value = ""; interrupt(false); respond(t); };
+$("typebar").onsubmit = e => { e.preventDefault(); const t = $("typed").value.trim(); if (!t) return; $("typed").value = ""; tUtterEnd = performance.now(); interrupt(false); respond(t, ++turnId, true); };
 window.addEventListener("pagehide", endConversation);
 
 // ---------- First-run setup ----------

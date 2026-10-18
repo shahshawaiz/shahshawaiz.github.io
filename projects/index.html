@@ -22,6 +22,12 @@
   <meta property="og:description" content="Browser-Apps mit On-Device-KI: Modelle laufen lokal, keine Cloud-LLMs." />
   <meta property="og:url" content="https://shawaiz.de/projects/" />
   <meta property="og:image" content="https://shawaiz.de/static/fsp-simulator.jpg" />
+  <meta property="og:site_name" content="Shawaiz Shah · shawaiz.de" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Shawaiz Shah – Side Projects" />
+  <meta name="twitter:image" content="https://shawaiz.de/static/fsp-simulator.jpg" />
+  <link rel="author" href="https://shawaiz.de/" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Side Projects – Shawaiz Shah", "url": "https://shawaiz.de/projects/", "description": "Browser apps with on-device AI by Shawaiz Shah.", "isPartOf": {"@type": "WebSite", "name": "Shawaiz Shah", "url": "https://shawaiz.de/"}, "author": {"@type": "Person", "name": "Shawaiz Shah", "url": "https://shawaiz.de/"}, "mainEntity": {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "FSP-Simulator Berlin", "url": "https://shawaiz.de/fsp/"}, {"@type": "ListItem", "position": 2, "name": "Talk to Shawaiz – AI voice avatar", "url": "https://shawaiz.de/avatar/"}, {"@type": "ListItem", "position": 3, "name": "Resume AI", "url": "https://shawaiz.de/demos/resume-ai/"}, {"@type": "ListItem", "position": 4, "name": "Spardose Analytics", "url": "https://shawaiz.de/demos/spardose/"}, {"@type": "ListItem", "position": 5, "name": "PixelMorph", "url": "https://shawaiz.de/demos/pixelmorph/"}]}}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -126,6 +132,21 @@
           "8 realistic emergency cases with distinct personas (e.g. Berlin dialect, hard of hearing, downplaying symptoms).",
           "A single HTML file, no backend: audio and text never leave the device."],
         note: "Works best in Chrome or Edge on desktop." } },
+    { id: "avatar", img: "../static/portrait.jpeg", url: "../avatar/index.html", live: true,
+      de: { title: "Sprich mit meinem KI-Avatar", short: "Ein Echtzeit-Sprachgespräch mit meinem KI-Avatar: einfach sprechen, er antwortet mit Stimme, unterbrechbar wie ein echtes Gespräch. Alles läuft lokal im Browser.",
+        tags: ["On-Device-KI","Sprach-KI","Echtzeit"],
+        body: ["Freihändig: Sprachaktivitätserkennung erkennt, wann Sie sprechen und wann Sie fertig sind; Sie können den Avatar jederzeit unterbrechen.",
+          "Spracherkennung mit Whisper (transformers.js, WebGPU/WASM) inkl. Live-Untertiteln, Antworten von einem lokalen LLM (Gemini Nano oder WebLLM), gestreamt Satz für Satz.",
+          "Neuronale Stimme mit Piper: Thorsten für Deutsch, Ryan für Englisch.",
+          "Kein Server, kein LiveKit, keine Cloud-KI: Audio und Text verlassen das Gerät nicht."],
+        note: "Beste Erfahrung in Chrome oder Edge am Computer, idealerweise mit Kopfhörern." },
+      en: { title: "Talk to my AI avatar", short: "A realtime voice conversation with my AI avatar: just speak, it answers out loud and you can interrupt it like a real conversation. Everything runs locally in your browser.",
+        tags: ["On-device AI","Voice AI","Realtime"],
+        body: ["Hands-free: voice activity detection notices when you start and stop speaking; you can interrupt the avatar at any time.",
+          "Speech recognition with Whisper (transformers.js, WebGPU/WASM) including live captions; answers from a local LLM (Gemini Nano or WebLLM), streamed sentence by sentence.",
+          "Neural voice with Piper: Thorsten for German, Ryan for English.",
+          "No server, no LiveKit, no cloud AI: audio and text never leave the device."],
+        note: "Works best in Chrome or Edge on desktop, ideally with headphones." } },
     { id: "resume", img: "../static/resume-ai.jpg", url: "../demos/resume-ai/index.html", live: true, repo: "https://github.com/shahshawaiz/resume-ai",
       de: { title: "Resume AI", short: "Lebenslauf (PDF) hochladen, Stellenanzeige einfügen: Die On-Device-KI passt den Lebenslauf Zeile für Zeile an die Stelle an und schreibt ein passendes Anschreiben – Export als PDF und Word.",
         tags: ["On-Device-KI","LLMs","Dokumente","Karriere"],
