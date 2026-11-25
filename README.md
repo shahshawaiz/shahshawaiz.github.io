@@ -41,6 +41,7 @@ The FSP simulator lives only in this repo. Each of the other demos is developed 
 | Resume AI | https://shawaiz.de/demos/resume-ai/ | [shahshawaiz/resume-ai](https://github.com/shahshawaiz/resume-ai) `docs/` |
 | Spardose Analytics | https://shawaiz.de/demos/spardose/ | [shahshawaiz/spardose-analysis](https://github.com/shahshawaiz/spardose-analysis) `docs/` |
 | PixelMorph | https://shawaiz.de/demos/pixelmorph/ | [shahshawaiz/pixelmorph](https://github.com/shahshawaiz/pixelmorph) `docs/` |
+| Contraction Watch | https://shawaiz.de/demos/contraction-watch/ | local project (web demo and Smart Band 10 app), copied by hand |
 
 To refresh the copies after changing a demo in its own repo (with the repos checked out side by side):
 

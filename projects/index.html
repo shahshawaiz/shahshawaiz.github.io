@@ -193,15 +193,30 @@
           "An on-device LLM analyzes top and bottom earners and proposes a rebalance plan.",
           "Ships an anonymised snapshot; paste your own Revert API JSON.",
           "Terminal-style UI, no cloud LLMs, no API keys."],
-        note: "Not financial advice." } }
+        note: "Not financial advice." } },
+    { id: "contraction-watch", img: "../static/contraction-watch.jpg", url: "../demos/contraction-watch/index.html", live: true, install: "../demos/contraction-watch/install.html",
+      de: { title: "Contraction Watch", short: "Wehen-Timer für das Xiaomi Smart Band 10: Wehen per Tipp erfassen, Muster wie 5-1-1 erkennen, Warnung per Vibration, Notrufnummern groß auf dem Band.",
+        tags: ["Wearables","Medizin","Signalverarbeitung"],
+        body: ["Eigene Vela-JS-App (.rpk) für das Smart Band 10: großer Start/Stopp-Knopf, Diagramm der letzten Wehen, Tutorial und Telefonnummern zum Wählen am Handy.",
+          "Regel-Engine ohne DOM, die Web-App und Band teilen: 5-1-1, Frühgeburt-Warnung, Tachysystolie, verlängerte Wehe, Ruhepuls; per Tests und Mutationstests abgesichert.",
+          "Web-Begleiter mit Simulator und optionalem Puls über Bluetooth (Web Bluetooth); ein Pulsanstieg fragt nur „Wehe?“.",
+          "Alles lokal auf Gerät und Band, keine Cloud."],
+        note: "Kein Medizinprodukt und nicht klinisch validiert.", badge: "Wearable · Live" },
+      en: { title: "Contraction Watch", short: "Contraction timer for the Xiaomi Smart Band 10: tap to log contractions, spot patterns such as 5-1-1, get a vibration alert, and see your call numbers large on the band.",
+        tags: ["Wearables","Healthcare","Signal Processing"],
+        body: ["Custom Vela JS quick app (.rpk) for the Smart Band 10: a large start/stop button, a chart of recent contractions, a tutorial and phone numbers to dial from your phone.",
+          "A DOM-free rule engine shared by the web app and the band: 5-1-1, preterm, tachysystole, prolonged contraction and resting heart rate, covered by unit and mutation tests.",
+          "Web companion with a simulator and optional heart rate over Bluetooth (Web Bluetooth); a heart-rate rise only asks \"Contraction?\".",
+          "Runs locally on the device and band, with no cloud."],
+        note: "Not a medical device and not clinically validated.", badge: "Wearable · Live" } }
   ];
 
   const T = {
     de: { title: 'Eigene <span>Projekte</span>', subtitle: 'Dinge, die ich in meiner Freizeit baue. Live-Demos laufen direkt in Ihrem Browser – mit On-Device-KI: Modelle und Spracherkennung laufen lokal auf Ihrem Gerät.',
-      principles: ['On-Device-KI','Keine Cloud-LLMs','Keine API-Schlüssel','Kostenlos'], back: '← Zurück zum Portfolio', try: 'Jetzt testen →', more: 'Mehr erfahren', code: 'Code auf GitHub',
+      principles: ['On-Device-KI','Keine Cloud-LLMs','Keine API-Schlüssel','Kostenlos'], back: '← Zurück zum Portfolio', try: 'Jetzt testen →', more: 'Mehr erfahren', code: 'Code auf GitHub', install: 'Auf das Band installieren',
       liveBadge: 'On-Device-KI · Live', soonBadge: 'Demo folgt', soon: 'On-Device-Version in Arbeit', close: 'Schließen', footer: 'Gebaut mit ❤ und lokalen Modellen.', doc: 'Eigene Projekte | Shawaiz Shah' },
     en: { title: 'Side <span>Projects</span>', subtitle: 'Things I build in my spare time. Live demos run right in your browser with on-device AI: the models and speech recognition run locally on your machine.',
-      principles: ['On-device AI','No cloud LLMs','No API keys','Free'], back: '← Back to portfolio', try: 'Try now →', more: 'Learn more', code: 'Code on GitHub',
+      principles: ['On-device AI','No cloud LLMs','No API keys','Free'], back: '← Back to portfolio', try: 'Try now →', more: 'Learn more', code: 'Code on GitHub', install: 'Install on the band',
       liveBadge: 'On-device AI · Live', soonBadge: 'Demo coming', soon: 'On-device version in progress', close: 'Close', footer: 'Built with ❤ and local models.', doc: 'Side Projects | Shawaiz Shah' }
   };
 
@@ -214,6 +229,7 @@
   function actions(p, t) {
     const a = [];
     if (p.live) a.push(`<a class="try" href="${p.url}" target="_blank" rel="noopener">${t.try}</a>`);
+    if (p.install) a.push(`<a class="ghost" href="${p.install}" target="_blank" rel="noopener">${t.install}</a>`);
     if (p.repo) a.push(`<a class="ghost" href="${p.repo}" target="_blank" rel="noopener">${t.code}</a>`);
     return a.join('');
   }
@@ -234,7 +250,7 @@
       const c = p[lang];
       return `<article class="card" itemscope itemtype="https://schema.org/CreativeWork">
         <div class="thumb"><img loading="lazy" src="${p.img}" alt="${esc(c.title)}" itemprop="image">
-          <span class="badge${p.live ? '' : ' soon'}">${p.live ? t.liveBadge : t.soonBadge}</span></div>
+          <span class="badge${p.live ? '' : ' soon'}">${p.live ? esc(p[lang].badge || t.liveBadge) : t.soonBadge}</span></div>
         <div class="card-body">
           <h2 itemprop="name">${esc(c.title)}</h2>
           <p itemprop="description">${esc(c.short)}</p>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contraction watch</title><link rel="stylesheet" href="src/app.css"></head><body>
+<header><div class="bar"><h1>Contraction watch</h1><button id="chip" class="chip" type="button">Watch not connected</button></div>
+<nav role="tablist" aria-label="Sections"><button role="tab" data-tab="track">Track</button><button role="tab" data-tab="connect">Connect watch</button><button role="tab" data-tab="sim">Simulate</button><button role="tab" data-tab="checks">Tests</button></nav></header>
+<main>
+<div id="simbar" class="simbar" hidden><span>Simulated data, not yours</span><button id="exit">Back to my log</button></div>
+<section id="p-track">
+ <div id="setup" class="card setup"><label for="weeks"><b>How many weeks pregnant?</b></label><div class="row"><input id="weeks" type="number" min="20" max="43" step="1" inputmode="numeric" placeholder="e.g. 38"><span class="mute" id="wkmsg"></span></div></div>
+ <div id="status" class="status none"><div class="ic" id="sic" aria-hidden="true">i</div><div id="alerts" role="alert"></div></div>
+ <div class="grid">
+  <div class="card center">
+   <div class="dial"><svg viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="108" class="tr"/><circle cx="120" cy="120" r="108" class="pr" id="ring" transform="rotate(-90 120 120)"/><line x1="120" y1="220" x2="120" y2="236" class="mk"/></svg>
+   <button id="tap"><span id="cap">Ready</span><span id="time">0:00</span><span id="act">Tap to start</span></button></div>
+   <p class="mute" id="sub" role="status"></p>
+   <div id="ask" class="ask" hidden><b>Heart rate rose. Was that a contraction?</b><div class="row c"><button id="yes" class="pri">Yes, log it</button><button id="no">No</button></div></div>
+   <button id="undo">Undo last</button>
+  </div>
+  <div class="card"><h2 id="mh">Progress to the call rule</h2><div id="meters"></div></div>
+ </div>
+ <div class="card"><h2>Last 60 minutes</h2><p class="mute sm">Contraction length. Each bar is one contraction.</p><div class="plot"><svg id="tl" role="img" aria-label="Contraction lengths over the last 60 minutes; values are in the log"></svg></div>
+  <p class="mute sm">Heart rate (bpm)</p><div class="plot"><svg id="hrc" role="img" aria-label="Heart rate over the last 60 minutes"></svg></div><div id="tip" hidden></div></div>
+ <div class="card"><h2>Any of these right now?</h2><p class="mute sm">Tap one to flag it. Call your maternity unit straight away.</p><div id="flags"></div></div>
+ <div class="card"><div class="row sp"><h2>Log</h2><button id="clear">Clear log</button></div><div id="log"></div></div>
+</section>
+<section id="p-connect" hidden>
+ <div class="card"><h2>Connect your Mi watch</h2><p class="mute">You can skip this. Tap timing works without a watch.</p>
+ <ol class="steps">
+  <li id="st1"><h3>Choose your watch</h3><select id="model" aria-label="Watch model"><option value="">Select a model</option><option value="b10" selected>Smart Band 10</option><option value="b56">Mi Band 5 or 6</option><option value="b789">Smart Band 7, 8 or 9</option><option value="other">Mi Watch, Watch S series, Redmi Watch or not sure</option></select></li>
+  <li id="st2"><h3>Turn on heart rate sharing</h3><div id="how" class="mute">Choose a model first.</div><label class="ck"><input type="checkbox" id="shared"> It is on, and the watch is snug on my wrist</label></li>
+  <li id="st3"><h3>Check this browser</h3><div id="bt" class="mute">Checking...</div></li>
+  <li id="st4"><h3>Pair</h3><p class="mute">Keep the watch close. Press Connect, pick the watch, then Pair.</p><button id="ble" class="pri">Connect</button><button id="dis" hidden>Disconnect</button><p id="blemsg" role="status"></p></li>
+  <li id="st5"><h3>Confirm the signal</h3><div class="sig"><span id="bpm">--</span> bpm</div><p id="sigmsg" class="mute">Waiting for 5 good readings.</p><button id="go" class="pri" hidden>Start tracking</button></li>
+ </ol></div>
+ <div class="card"><details><summary>Watch not in the list?</summary><ul><li>Turn sharing off and on again. Some models only share while a workout is running.</li><li>Close other apps that are reading heart rate from the watch.</li><li>On a Mac: System Settings, Privacy &amp; Security, Bluetooth, allow Chrome.</li><li>iPhone browsers cannot do this. Use Chrome on a computer or Android phone.</li><li>If the watch has no sharing option, this demo cannot read it. Use tap timing.</li></ul></details></div>
+</section>
+<section id="p-sim" hidden><div class="card"><h2>Try a scenario</h2><p class="mute">Generated signals. Your own log is kept separate.</p><div id="scns"></div>
+ <div class="row"><label>Speed <select id="speed"><option value="1">1x</option><option value="20">20x</option><option value="60" selected>60x</option><option value="240">240x</option></select></label><label class="ck"><input type="checkbox" id="auto" checked> Tap automatically</label></div></div></section>
+<section id="p-checks" hidden><div class="card"><div class="row"><button id="rt" class="pri">Run tests</button><b id="tr" role="status"></b></div><div id="tlist"></div></div></section>
+<p class="foot">Prototype, not a medical device. A watch cannot measure the uterus: your taps are the record, and heart rate only asks a question. If something feels wrong, call, whatever this shows.</p>
+</main>
+<div id="player" hidden><span id="pname"></span><button id="play">Pause</button><button id="reset">Restart</button></div>
+<script src="src/engine.js"></script><script src="src/simulator.js"></script><script src="test/cases.js"></script><script src="src/app.js"></script>
+</body></html>
